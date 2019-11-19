@@ -35,22 +35,27 @@ func (el *Stage) GetRootElementHeight() float64 {
 }
 
 /*
-
---------
-        \
-         |
-         |
-         |
+ctx.beginPath();
+ctx.moveTo(x, y);
+ctx.lineTo(x+width, y);
+ctx.arcTo(x+width+border, y, x+width+border, y+border, radius);
+ctx.lineTo(x+width+border, y+border+height);
+ctx.stroke();
 */
-func (el *Stage) AddBasicBox(x, y, width, height, border, radius float64) {
+func (el *Stage) AddBasicBox(x, y, width, height, border float64) {
 
 	el.Stage.BeginPath()
 	el.Stage.MoveTo(x, y)
-	el.Stage.LineTo(x+width-border/2, y)
-	el.Stage.MoveTo(x+width+border/2, y)
-	el.Stage.LineTo(x+width+border/2, y+border/2)
-	//el.Stage.ArcTo(x + width - border/2, y, x + width + border/2, y + border/2, radius)
-	el.Stage.LineTo(x+width+border/2, y+height+border/2)
+	el.Stage.LineTo(x+width, y)
+
+	//el.Stage.MoveTo(x+width+border, y)
+	//el.Stage.LineTo(x+width+border, y+border)
+
+	el.Stage.ArcTo(x+width+border, y, x+width+border, y+border, border)
+	el.Stage.LineTo(x+width+border, y+border+height)
+
+	el.Stage.MoveTo(x+width+border, y)
+	el.Stage.LineTo(x+width+border, y+border)
 	el.Stage.Stroke()
 
 	//el.Stage.MoveTo(20, 20)
@@ -68,7 +73,7 @@ func (el *Stage) NewStageOnTheRoot(id string) {
 	el.Stage = pwb.NewCanvasWith2DContext("canvas_id", el.OriginalWidth, el.OriginalHeight)
 	el.Stage.AppendToDocumentBody()
 
-	el.AddBasicBox(20, 20, 100, 100, 40, 50)
+	el.AddBasicBox(20, 20, 100, 100, 10)
 	//el.Stage.BeginPath()
 	//el.Stage.StrokeStyle("#FF0000")
 	//el.Stage.MoveTo(0.0, 0.0)
