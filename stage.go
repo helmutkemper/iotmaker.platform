@@ -34,6 +34,8 @@ func (el *Stage) GetRootElementHeight() float64 {
 	return height
 }
 
+// en: Draw a basic box with rounded edges
+//
 // pt_br: Desenha uma caixa básica, com bordas arrendondadas
 //
 //              border        border
@@ -72,6 +74,7 @@ func (el *Stage) AddBasicBox(x, y, width, height, border float64) {
 	el.Stage.ArcTo(x1, y4, x1, y3, border) // i->j
 	el.Stage.LineTo(x1, y2)                // j->k
 	el.Stage.ArcTo(x1, y1, x2, y1, border) // i->j
+	el.Stage.ClosePath(x2, y1)             // a
 }
 
 func (el *Stage) NewStageOnTheRoot(id string) {
