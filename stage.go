@@ -83,7 +83,7 @@ func (el *Stage) NewStageOnTheRoot(id string) {
 	el.Stage.AppendToDocumentBody()
 
 	el.Stage.BeginPath()
-	el.AddBasicBox(20, 20, 100, 100, 4)
+	el.AddBasicBox(20, 20, 100, 100, 10)
 	el.Stage.Stroke()
 
 }
