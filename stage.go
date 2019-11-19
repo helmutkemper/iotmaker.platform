@@ -42,20 +42,38 @@ ctx.arcTo(x+width+border, y, x+width+border, y+border, radius);
 ctx.lineTo(x+width+border, y+border+height);
 ctx.stroke();
 */
+// pt_br: Desenha uma caixa básica, com bordas arrendondadas
+//
+//       border        border
+//       x1 x2         x3 x4
+//       +--|----------|--+  y1
+//       |                |    border
+//      ---              --- y2
+//       |                |
+//       |                |
+//      ---              --- y3
+//       |                |    border
+//       +--|----------|--+  y4
 func (el *Stage) AddBasicBox(x, y, width, height, border float64) {
 
+	// tired programmer's rules (kiss)
+	x1 := x
+	x2 := x1 + border
+	x3 := x2 + width - 2*border
+	x4 := x3 + border
+
+	y1 := y
+	y2 := y1 + border
+	y3 := y2 + height - 2*border
+	y4 := y3 + border
+
 	el.Stage.BeginPath()
-	el.Stage.MoveTo(x, y)
-	el.Stage.LineTo(x+width, y)
+	el.Stage.MoveTo(x1, y1)
+	el.Stage.LineTo(x2, y1)
 
-	//el.Stage.MoveTo(x+width+border, y)
-	//el.Stage.LineTo(x+width+border, y+border)
+	el.Stage.ArcTo(x3, y1, x4, y2, border)
+	el.Stage.LineTo(x4, y3)
 
-	el.Stage.ArcTo(x+width+border, y, x+width+border, y+border, border)
-	el.Stage.LineTo(x+width+border, y+border+height)
-
-	el.Stage.MoveTo(x+width+border, y)
-	el.Stage.LineTo(x+width+border, y+border)
 	el.Stage.Stroke()
 
 	//el.Stage.MoveTo(20, 20)
