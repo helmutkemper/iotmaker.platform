@@ -43,7 +43,7 @@ var gx1, gx4, gy1, gy4 float64
 // en: Draw a basic box with rounded edges
 //
 // pt_br: Desenha uma caixa básica, com bordas arrendondadas
-func (el *Stage) AddBasicBox(x, y, width, height, border float64) {
+func (el *Stage) AddBasicBox(x, y, width, height, border, LineWidth float64) {
 	//              border        border
 	//             x1  x2         x3 x4
 	//           l     a          b     c
@@ -60,6 +60,10 @@ func (el *Stage) AddBasicBox(x, y, width, height, border float64) {
 	//              border        border
 
 	// tired programmer's rules (kiss like)
+	x += LineWidth / 2
+	width -= LineWidth / 2
+	height -= LineWidth / 2
+
 	x1 := x
 	x2 := x1 + border
 	x3 := x2 + width - 2*border
@@ -75,7 +79,7 @@ func (el *Stage) AddBasicBox(x, y, width, height, border float64) {
 	gy1 = y1
 	gy4 = y4
 
-	el.Stage.LineWidth(4)
+	el.Stage.LineWidth(LineWidth)
 
 	el.Stage.MoveTo(x2, y1)                // a
 	el.Stage.LineTo(x3, y1)                // a->b
@@ -95,7 +99,7 @@ func (el *Stage) NewStageOnTheRoot(id string) {
 	el.Stage.AppendToDocumentBody()
 
 	el.Stage.BeginPath()
-	el.AddBasicBox(10, 10, 80, 80, 10)
+	el.AddBasicBox(50, 50, 180, 180, 10, 20)
 	el.Stage.Stroke()
 
 	ele := pwb.NewElement()
@@ -137,13 +141,13 @@ func (el *Stage) NewStageOnTheRoot(id string) {
 
 		//dest := make([]byte, int((gx4-gx1)*(gy4-gy1)*8))
 
-		data := el.Stage.SelfContext.Call("getImageData", 0, 0, 110, 110)
+		data := el.Stage.SelfContext.Call("getImageData", 0, 0, 300, 300)
 		output := data.Get("data")
-		coor := int((mouseY*110 + mouseX) * 4)
+		coor := int((mouseY*300 + mouseX) * 4)
 		//if mouseX >= gx1 && mouseX <= gx4 && mouseY >= gy1 && mouseY <= gy4 {
 		//if len( dest ) <= coor {
 
-		if coor > 110*110*4 {
+		if coor > 300*300*4 {
 			test.Set("innerHTML", "0:0:0:0")
 
 			return nil
