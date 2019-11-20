@@ -9,7 +9,7 @@ import (
 
 type BasicBox struct {
 	pwb.Document
-	Stage
+	Graphic
 }
 
 type Input struct {
@@ -53,18 +53,18 @@ func (el *BasicBox) Create(input Input) {
 	y3 := y2 + input.Height - 2*input.Border
 	y4 := y3 + input.Border
 
-	el.Stage.SelfElement = pwb.NewCanvasWith2DContext(input.Id, input.Width, input.Height)
+	el.SelfElement = pwb.NewCanvasWith2DContext(input.Id, input.Width, input.Height)
 
-	el.Stage.SelfContext.LineWidth(input.LineWidth)
+	el.SelfContext.LineWidth(input.LineWidth)
 
-	el.Stage.MoveTo(x2, y1)                      // a
-	el.Stage.LineTo(x3, y1)                      // a->b
-	el.Stage.ArcTo(x4, y1, x4, y2, input.Border) // c->d
-	el.Stage.LineTo(x4, y3)                      // d->e
-	el.Stage.ArcTo(x4, y4, x3, y4, input.Border) // f->g
-	el.Stage.LineTo(x2, y4)                      // g->h
-	el.Stage.ArcTo(x1, y4, x1, y3, input.Border) // i->j
-	el.Stage.LineTo(x1, y2)                      // j->k
-	el.Stage.ArcTo(x1, y1, x2, y1, input.Border) // i->j
-	el.Stage.ClosePath(x2, y1)                   // a
+	el.MoveTo(x2, y1)                      // a
+	el.LineTo(x3, y1)                      // a->b
+	el.ArcTo(x4, y1, x4, y2, input.Border) // c->d
+	el.LineTo(x4, y3)                      // d->e
+	el.ArcTo(x4, y4, x3, y4, input.Border) // f->g
+	el.LineTo(x2, y4)                      // g->h
+	el.ArcTo(x1, y4, x1, y3, input.Border) // i->j
+	el.LineTo(x1, y2)                      // j->k
+	el.ArcTo(x1, y1, x2, y1, input.Border) // i->j
+	el.ClosePath(x2, y1)                   // a
 }
