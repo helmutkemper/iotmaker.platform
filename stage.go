@@ -75,6 +75,8 @@ func (el *Stage) AddBasicBox(x, y, width, height, border float64) {
 	gy1 = y1
 	gy4 = y4
 
+	el.Stage.LineWidth(4)
+
 	el.Stage.MoveTo(x2, y1)                // a
 	el.Stage.LineTo(x3, y1)                // a->b
 	el.Stage.ArcTo(x4, y1, x4, y2, border) // c->d
@@ -93,7 +95,7 @@ func (el *Stage) NewStageOnTheRoot(id string) {
 	el.Stage.AppendToDocumentBody()
 
 	el.Stage.BeginPath()
-	el.AddBasicBox(20, 20, 100, 100, 10)
+	el.AddBasicBox(0, 0, 100, 100, 10)
 	el.Stage.Stroke()
 
 	ele := pwb.NewElement()
@@ -106,17 +108,17 @@ func (el *Stage) NewStageOnTheRoot(id string) {
 	   1 345
 	   2 678
 
-	   (x+y)+y
+	   (y*w)+x
 
 
 	      0    1    2    3
-	    0 0000.0000.0000.0000 1
+	    0 0000.0000.0000.0000
 	      4    5    6    7
-	    1 0000.0000.0000.0000 2
+	    1 0000.0000.0000.0000
 	      8    9    10   11
-	    2 0000.0000.0000.0000 3
+	    2 0000.0000.0000.0000
 	      12   13   14   15
-	    3 0000.0000.0000.0000 4
+	    3 0000.0000.0000.0000
 	*/
 	mouseMoveEvt := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
 		e := args[0]
@@ -124,19 +126,35 @@ func (el *Stage) NewStageOnTheRoot(id string) {
 		mouseY = e.Get("clientY").Float()
 		test := js.Global().Get("document").Call("getElementById", "id")
 
+		mouseX += 0
+		if mouseX < 0 {
+			mouseX = 0
+		}
+		mouseY += 0
+		if mouseY < 0 {
+			mouseY = 0
+		}
+
 		//dest := make([]byte, int((gx4-gx1)*(gy4-gy1)*8))
 
 		data := el.Stage.SelfContext.Call("getImageData", 0, 0, 110, 110)
 		output := data.Get("data")
-		coor := int((mouseX + mouseY) * 4)
+		coor := int((mouseY*110 + mouseX) * 4)
 		//if mouseX >= gx1 && mouseX <= gx4 && mouseY >= gy1 && mouseY <= gy4 {
 		//if len( dest ) <= coor {
+
+		if coor > 110*110*4 {
+			test.Set("innerHTML", "0:0:0:0")
+
+			return nil
+		}
+
 		test.Set("innerHTML",
-			strconv.FormatInt(int64(mouseX), 10)+
-				":"+
-				strconv.FormatInt(int64(mouseY), 10)+
-				":"+
-				strconv.FormatInt(int64(output.Index(coor+0).Int()), 16)+
+			//strconv.FormatInt(int64(mouseX), 10)+
+			//":"+
+			//strconv.FormatInt(int64(mouseY), 10)+
+			//":"+
+			strconv.FormatInt(int64(output.Index(coor+0).Int()), 16)+
 				":"+
 				strconv.FormatInt(int64(output.Index(coor+1).Int()), 16)+
 				":"+
