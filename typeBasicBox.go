@@ -1,0 +1,70 @@
+package iotmaker_platform
+
+import (
+	pwb "github.com/helmutkemper/iotmaker.platform.webbrowser"
+	"strconv"
+	"sync"
+	"syscall/js"
+)
+
+type BasicBox struct {
+	pwb.Document
+	Stage
+}
+
+type Input struct {
+	Id        string
+	X         float64
+	Y         float64
+	Width     float64
+	Height    float64
+	Border    float64
+	LineWidth float64
+}
+
+func (el *BasicBox) Create(input Input) {
+	//              border        border
+	//             x1  x2         x3 x4
+	//           l     a          b     c
+	//        y1    +--|----------|--+    y1
+	//  border      |                |      border
+	//        y2 k ---              --- d y2
+	//              |                |
+	//              |                |
+	//        y3 j ---              --- e y3
+	//  border      |                |      border
+	//        y4    +--|----------|--+    y4
+	//           i     h          g     f
+	//             x1  x2         x3 x4
+	//              border        border
+
+	// tired programmer's rules (kiss like)
+	input.X += input.LineWidth / 2
+	input.Width -= input.LineWidth / 2
+	input.Height -= input.LineWidth / 2
+
+	x1 := input.X
+	x2 := x1 + input.Border
+	x3 := x2 + input.Width - 2*input.Border
+	x4 := x3 + input.Border
+
+	y1 := input.Y
+	y2 := y1 + input.Border
+	y3 := y2 + input.Height - 2*input.Border
+	y4 := y3 + input.Border
+
+	el.Stage.SelfElement = pwb.NewCanvasWith2DContext(input.Id, input.Width, input.Height)
+
+	el.Stage.SelfContext.LineWidth(input.LineWidth)
+
+	el.Stage.MoveTo(x2, y1)                      // a
+	el.Stage.LineTo(x3, y1)                      // a->b
+	el.Stage.ArcTo(x4, y1, x4, y2, input.Border) // c->d
+	el.Stage.LineTo(x4, y3)                      // d->e
+	el.Stage.ArcTo(x4, y4, x3, y4, input.Border) // f->g
+	el.Stage.LineTo(x2, y4)                      // g->h
+	el.Stage.ArcTo(x1, y4, x1, y3, input.Border) // i->j
+	el.Stage.LineTo(x1, y2)                      // j->k
+	el.Stage.ArcTo(x1, y1, x2, y1, input.Border) // i->j
+	el.Stage.ClosePath(x2, y1)                   // a
+}
