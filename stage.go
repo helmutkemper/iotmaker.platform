@@ -2,8 +2,12 @@ package iotmaker_platform
 
 import (
 	pwb "github.com/helmutkemper/iotmaker.platform.webbrowser"
+	"strconv"
+	"sync"
 	"syscall/js"
 )
+
+var mouseX, mouseY float64
 
 type Stage struct {
 	pwb.Document
@@ -33,6 +37,8 @@ func (el *Stage) GetRootElementHeight() float64 {
 
 	return height
 }
+
+var gx1, gx4, gy1, gy4 float64
 
 // en: Draw a basic box with rounded edges
 //
@@ -64,6 +70,11 @@ func (el *Stage) AddBasicBox(x, y, width, height, border float64) {
 	y3 := y2 + height - 2*border
 	y4 := y3 + border
 
+	gx1 = x1
+	gx4 = x4
+	gy1 = y1
+	gy4 = y4
+
 	el.Stage.MoveTo(x2, y1)                // a
 	el.Stage.LineTo(x3, y1)                // a->b
 	el.Stage.ArcTo(x4, y1, x4, y2, border) // c->d
@@ -78,10 +89,78 @@ func (el *Stage) AddBasicBox(x, y, width, height, border float64) {
 
 func (el *Stage) NewStageOnTheRoot(id string) {
 	el.OriginalWidth, el.OriginalHeight = el.GetRootElementWidthAndHeight()
-	el.Stage = pwb.NewCanvasWith2DContext("canvas_id", el.OriginalWidth, el.OriginalHeight)
+	el.Stage = pwb.NewCanvasWith2DContext("canvas_id", el.OriginalWidth/2, el.OriginalHeight/2)
 	el.Stage.AppendToDocumentBody()
 
 	el.Stage.BeginPath()
 	el.AddBasicBox(20, 20, 100, 100, 10)
 	el.Stage.Stroke()
+
+	ele := pwb.NewElement()
+	ele.Create("p", "id")
+	ele.AppendElementToDocumentBody()
+
+	/*
+	     012
+	   0 012
+	   1 345
+	   2 678
+
+	   (x+y)+y
+
+
+	      0    1    2    3
+	    0 0000.0000.0000.0000 1
+	      4    5    6    7
+	    1 0000.0000.0000.0000 2
+	      8    9    10   11
+	    2 0000.0000.0000.0000 3
+	      12   13   14   15
+	    3 0000.0000.0000.0000 4
+	*/
+	mouseMoveEvt := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+		e := args[0]
+		mouseX = e.Get("clientX").Float()
+		mouseY = e.Get("clientY").Float()
+		test := js.Global().Get("document").Call("getElementById", "id")
+
+		//dest := make([]byte, int((gx4-gx1)*(gy4-gy1)*8))
+
+		data := el.Stage.SelfContext.Call("getImageData", 0, 0, 110, 110)
+		output := data.Get("data")
+		coor := int((mouseX + mouseY) * 4)
+		//if mouseX >= gx1 && mouseX <= gx4 && mouseY >= gy1 && mouseY <= gy4 {
+		//if len( dest ) <= coor {
+		test.Set("innerHTML",
+			strconv.FormatInt(int64(mouseX), 10)+
+				":"+
+				strconv.FormatInt(int64(mouseY), 10)+
+				":"+
+				strconv.FormatInt(int64(output.Index(coor+0).Int()), 16)+
+				":"+
+				strconv.FormatInt(int64(output.Index(coor+1).Int()), 16)+
+				":"+
+				strconv.FormatInt(int64(output.Index(coor+2).Int()), 16)+
+				":"+
+				strconv.FormatInt(int64(output.Index(coor+3).Int()), 16),
+		)
+		return nil
+		for i := 0; i != coor; i += 1 {
+			if output.Index(i).Int() != 0 {
+				test.Set("innerHTML", i)
+				break
+			}
+		}
+
+		//}
+		//}
+
+		return nil
+	})
+	defer mouseMoveEvt.Release()
+	js.Global().Get("document").Call("addEventListener", "mousemove", mouseMoveEvt)
+
+	var ws sync.WaitGroup
+	ws.Add(1)
+	ws.Wait()
 }
