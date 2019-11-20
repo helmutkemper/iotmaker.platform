@@ -95,7 +95,7 @@ func (el *Stage) NewStageOnTheRoot(id string) {
 	el.Stage.AppendToDocumentBody()
 
 	el.Stage.BeginPath()
-	el.AddBasicBox(0, 0, 100, 100, 10)
+	el.AddBasicBox(10, 10, 80, 80, 10)
 	el.Stage.Stroke()
 
 	ele := pwb.NewElement()
