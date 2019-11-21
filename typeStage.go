@@ -2,21 +2,22 @@ package iotmaker_platform
 
 import (
 	pwb "github.com/helmutkemper/iotmaker.platform.webbrowser"
+	iotmaker_types "github.com/helmutkemper/iotmaker.types"
 )
 
 type GraphicInput struct {
-	X                          float64
-	Y                          float64
-	Border                     float64
-	Width                      float64
-	Height                     float64
-	LineThickness              float64
-	UsedInTheCalcX             float64
-	UsedInTheCalcY             float64
-	UsedInTheCalcBorder        float64
-	UsedInTheCalcWidth         float64
-	UsedInTheCalcHeight        float64
-	UsedInTheCalcLineThickness float64
+	X                          iotmaker_types.Pixel
+	Y                          iotmaker_types.Pixel
+	Border                     iotmaker_types.Pixel
+	Width                      iotmaker_types.Pixel
+	Height                     iotmaker_types.Pixel
+	LineThickness              iotmaker_types.Pixel
+	UsedInTheCalcX             iotmaker_types.Pixel
+	UsedInTheCalcY             iotmaker_types.Pixel
+	UsedInTheCalcBorder        iotmaker_types.Pixel
+	UsedInTheCalcWidth         iotmaker_types.Pixel
+	UsedInTheCalcHeight        iotmaker_types.Pixel
+	UsedInTheCalcLineThickness iotmaker_types.Pixel
 }
 
 type Graphic struct {
@@ -25,39 +26,39 @@ type Graphic struct {
 	Input  GraphicInput
 }
 
-func (el *Graphic) SetX(x float64) {
+func (el *Graphic) SetX(x iotmaker_types.Pixel) {
 	el.Input.X = x
 }
 
-func (el *Graphic) SetY(y float64) {
+func (el *Graphic) SetY(y iotmaker_types.Pixel) {
 	el.Input.Y = y
 }
 
-func (el *Graphic) SetBorder(border float64) {
+func (el *Graphic) SetBorder(border iotmaker_types.Pixel) {
 	el.Input.Y = border
 }
 
-func (el *Graphic) SetWidth(width float64) {
+func (el *Graphic) SetWidth(width iotmaker_types.Pixel) {
 	el.Input.Width = width
 }
 
-func (el *Graphic) SetHeight(height float64) {
+func (el *Graphic) SetHeight(height iotmaker_types.Pixel) {
 	el.Input.Height = height
 }
 
-func (el *Graphic) SetWidthHeight(width, height float64) {
+func (el *Graphic) SetWidthHeight(width, height iotmaker_types.Pixel) {
 	el.Input.Width = width
 	el.Input.Height = height
 }
 
-func (el *Graphic) SetXYWidthHeight(x, y, width, height float64) {
+func (el *Graphic) SetXYWidthHeight(x, y, width, height iotmaker_types.Pixel) {
 	el.Input.X = x
 	el.Input.Y = y
 	el.Input.Width = width
 	el.Input.Height = height
 }
 
-func (el *Graphic) SetXYWidthHeightLineThickness(x, y, width, height, lineThickness float64) {
+func (el *Graphic) SetXYWidthHeightLineThickness(x, y, width, height, lineThickness iotmaker_types.Pixel) {
 	el.Input.X = x
 	el.Input.Y = y
 	el.Input.Width = width
@@ -65,7 +66,7 @@ func (el *Graphic) SetXYWidthHeightLineThickness(x, y, width, height, lineThickn
 	el.Input.LineThickness = lineThickness
 }
 
-func (el *Graphic) SetLineThickness(lineThickness float64) {
+func (el *Graphic) SetLineThickness(lineThickness iotmaker_types.Pixel) {
 	el.Input.LineThickness = lineThickness
 }
 
@@ -91,23 +92,23 @@ func (el *Graphic) managerCoordinateAndSizeToAdjustLineThicknessExtraSpacesIntoL
 	el.Input.UsedInTheCalcHeight = el.Input.Height + adjust
 }
 
-func (el *Graphic) LineTo(x, y float64) {
+func (el *Graphic) LineTo(x, y iotmaker_types.Pixel) {
 	el.Canvas.LineTo(x, y)
 }
 
-func (el *Graphic) MoveTo(x, y float64) {
+func (el *Graphic) MoveTo(x, y iotmaker_types.Pixel) {
 	el.Canvas.MoveTo(x, y)
 }
 
-func (el *Graphic) ArcTo(x1, y1, x2, y2, radius float64) {
+func (el *Graphic) ArcTo(x1, y1, x2, y2, radius iotmaker_types.Pixel) {
 	el.Canvas.ArcTo(x1, y1, x2, y2, radius)
 }
 
-func (el *Graphic) ClosePath(x, y float64) {
+func (el *Graphic) ClosePath(x, y iotmaker_types.Pixel) {
 	el.Canvas.ClosePath(x, y)
 }
 
-func (el *Graphic) LineThickness(value float64) {
+func (el *Graphic) LineThickness(value iotmaker_types.Pixel) {
 	el.Canvas.LineThickness(value)
 }
 
@@ -131,6 +132,6 @@ func (el *Graphic) GetContext() pwb.PlatformBasicType {
 	return el.Canvas.GetContext()
 }
 
-func (el *Graphic) GetImageData(x, y, width, height float64) pwb.PlatformBasicType {
+func (el *Graphic) GetImageData(x, y, width, height iotmaker_types.Pixel) pwb.PlatformBasicType {
 	return el.Canvas.GetImageData(x, y, width, height)
 }

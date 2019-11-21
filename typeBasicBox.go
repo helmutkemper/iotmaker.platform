@@ -2,6 +2,7 @@ package iotmaker_platform
 
 import (
 	pwb "github.com/helmutkemper/iotmaker.platform.webbrowser"
+	iotmaker_types "github.com/helmutkemper/iotmaker.types"
 	"strconv"
 	"sync"
 	"syscall/js"
@@ -14,12 +15,12 @@ type BasicBox struct {
 
 type Input struct {
 	Id        string
-	X         float64
-	Y         float64
-	Width     float64
-	Height    float64
-	Border    float64
-	LineWidth float64
+	X         iotmaker_types.Pixel
+	Y         iotmaker_types.Pixel
+	Width     iotmaker_types.Pixel
+	Height    iotmaker_types.Pixel
+	Border    iotmaker_types.Pixel
+	LineWidth iotmaker_types.Pixel
 }
 
 func (el *BasicBox) Create(input Input) {
