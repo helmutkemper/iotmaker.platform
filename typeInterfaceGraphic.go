@@ -3,9 +3,10 @@ package iotmaker_platform
 import (
 	pwb "github.com/helmutkemper/iotmaker.platform.webbrowser"
 	iotmaker_types "github.com/helmutkemper/iotmaker.types"
+	"image/color"
 )
 
-type InterfaceGraphic interface {
+type IGraphic interface {
 	SetX(x iotmaker_types.Pixel)
 	SetY(y iotmaker_types.Pixel)
 	SetBorder(border iotmaker_types.Pixel)
@@ -26,5 +27,5 @@ type InterfaceGraphic interface {
 	Stroke()
 	GetCanvas() pwb.PlatformBasicType
 	GetContext() pwb.PlatformBasicType
-	GetImageData(x, y, width, height iotmaker_types.Pixel) pwb.PlatformBasicType
+	GetImageData(x, y, width, height iotmaker_types.Pixel) [][]color.RGBA
 }

@@ -10,7 +10,7 @@ import (
 
 type BasicBox struct {
 	pwb.Document
-	Graphic
+	Draw
 }
 
 type Input struct {

@@ -3,6 +3,7 @@ package iotmaker_platform
 import (
 	pwb "github.com/helmutkemper/iotmaker.platform.webbrowser"
 	iotmaker_types "github.com/helmutkemper/iotmaker.types"
+	"image/color"
 )
 
 type canvas struct {
@@ -49,6 +50,6 @@ func (el *canvas) GetContext() pwb.PlatformBasicType {
 	return el.Canvas.GetContext()
 }
 
-func (el *canvas) GetImageData(x, y, width, height iotmaker_types.Pixel) pwb.PlatformBasicType {
+func (el *canvas) GetImageData(x, y, width, height iotmaker_types.Pixel) [][]color.RGBA {
 	return el.Canvas.GetImageData(x, y, width, height)
 }
