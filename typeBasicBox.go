@@ -2,14 +2,12 @@ package iotmaker_platform
 
 import (
 	pwb "github.com/helmutkemper/iotmaker.platform.webbrowser"
+	canvas2 "github.com/helmutkemper/iotmaker.platform.webbrowser/canvas"
 	iotmaker_types "github.com/helmutkemper/iotmaker.types"
-	"strconv"
-	"sync"
-	"syscall/js"
 )
 
 type BasicBox struct {
-	pwb.Document
+	canvas2.Document
 	Draw
 }
 

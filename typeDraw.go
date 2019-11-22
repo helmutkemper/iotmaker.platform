@@ -1,7 +1,7 @@
 package iotmaker_platform
 
 import (
-	pwb "github.com/helmutkemper/iotmaker.platform.webbrowser"
+	"github.com/helmutkemper/iotmaker.platform.webbrowser"
 	iotmaker_types "github.com/helmutkemper/iotmaker.types"
 	"image/color"
 )
@@ -23,7 +23,7 @@ type DrawInput struct {
 
 type Draw struct {
 	Canvas canvas
-	Data   pwb.PlatformBasicType
+	Data   iotmaker_platform_webbrowser.PlatformBasicType
 	Input  DrawInput
 }
 
@@ -125,11 +125,11 @@ func (el *Draw) Stroke() {
 	el.Canvas.Stroke()
 }
 
-func (el *Draw) GetCanvas() pwb.PlatformBasicType {
+func (el *Draw) GetCanvas() iotmaker_platform_webbrowser.PlatformBasicType {
 	return el.Canvas.GetCanvas()
 }
 
-func (el *Draw) GetContext() pwb.PlatformBasicType {
+func (el *Draw) GetContext() iotmaker_platform_webbrowser.PlatformBasicType {
 	return el.Canvas.GetContext()
 }
 

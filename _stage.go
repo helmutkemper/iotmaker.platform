@@ -2,6 +2,7 @@ package iotmaker_platform
 
 import (
 	pwb "github.com/helmutkemper/iotmaker.platform.webbrowser"
+	canvas2 "github.com/helmutkemper/iotmaker.platform.webbrowser/canvas"
 	"strconv"
 	"sync"
 	"syscall/js"
@@ -10,7 +11,7 @@ import (
 var mouseX, mouseY float64
 
 type Stage struct {
-	pwb.Document
+	canvas2.Document
 	Stage          pwb.Canvas
 	OriginalWidth  float64
 	OriginalHeight float64

@@ -1,7 +1,7 @@
 package iotmaker_platform
 
 import (
-	pwb "github.com/helmutkemper/iotmaker.platform.webbrowser"
+	"github.com/helmutkemper/iotmaker.platform.webbrowser"
 	iotmaker_types "github.com/helmutkemper/iotmaker.types"
 	"image/color"
 )
@@ -25,7 +25,7 @@ type IDraw interface {
 	AppendToDocumentBody()
 	BeginPath()
 	Stroke()
-	GetCanvas() pwb.PlatformBasicType
-	GetContext() pwb.PlatformBasicType
+	GetCanvas() iotmaker_platform_webbrowser.PlatformBasicType
+	GetContext() iotmaker_platform_webbrowser.PlatformBasicType
 	GetImageData(x, y, width, height iotmaker_types.Pixel) [][]color.RGBA
 }
