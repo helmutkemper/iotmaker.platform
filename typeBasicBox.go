@@ -1,17 +1,17 @@
 package iotmaker_platform
 
 import (
-	pwb "github.com/helmutkemper/iotmaker.platform.webbrowser"
 	canvas2 "github.com/helmutkemper/iotmaker.platform.webbrowser/canvas"
 	iotmaker_types "github.com/helmutkemper/iotmaker.types"
 )
 
 type BasicBox struct {
+	Platform ICanvas
 	canvas2.Document
-	Draw
 }
 
 type Input struct {
+	Density   float64
 	Id        string
 	X         iotmaker_types.Coordinate
 	Y         iotmaker_types.Coordinate
@@ -37,33 +37,35 @@ func (el *BasicBox) Create(input Input) {
 	//             x1  x2         x3 x4
 	//              border        border
 
-	// tired programmer's rules (kiss like)
-	input.X += input.LineWidth / 2
-	input.Width -= input.LineWidth / 2
-	input.Height -= input.LineWidth / 2
+	var x1, x2, x3, x4 iotmaker_types.Coordinate
+	var y1, y2, y3, y4 iotmaker_types.Coordinate
 
-	x1 := input.X
-	x2 := x1 + input.Border
-	x3 := x2 + input.Width - 2*input.Border
-	x4 := x3 + input.Border
+	input.X.Add(input.LineWidth.Int() / 2)
+	input.Width.Sub(input.LineWidth.Int() / 2)
+	input.Height.Sub(input.LineWidth.Int() / 2)
 
-	y1 := input.Y
-	y2 := y1 + input.Border
-	y3 := y2 + input.Height - 2*input.Border
-	y4 := y3 + input.Border
+	x1.Set(input.X.Int())
+	x2.Set(x1.Int() + input.Border.Int())
+	x3.Set(x2.Int() + input.Width.Int() - 2*input.Border.Int())
+	x4.Set(x3.Int() + input.Border.Int())
 
-	el.SelfElement = pwb.NewCanvasWith2DContext(input.Id, input.Width, input.Height)
+	y1.Set(input.Y.Int())
+	y2.Set(y1.Int() + input.Border.Int())
+	y3.Set(y2.Int() + input.Height.Int() - 2*input.Border.Int())
+	y4.Set(y3.Int() + input.Border.Int())
 
-	el.SelfContext.LineWidth(input.LineWidth)
+	//el.SelfElement = pwb.NewCanvasWith2DContext(input.Id, input.Width, input.Height)
 
-	el.MoveTo(x2, y1)                      // a
-	el.LineTo(x3, y1)                      // a->b
-	el.ArcTo(x4, y1, x4, y2, input.Border) // c->d
-	el.LineTo(x4, y3)                      // d->e
-	el.ArcTo(x4, y4, x3, y4, input.Border) // f->g
-	el.LineTo(x2, y4)                      // g->h
-	el.ArcTo(x1, y4, x1, y3, input.Border) // i->j
-	el.LineTo(x1, y2)                      // j->k
-	el.ArcTo(x1, y1, x2, y1, input.Border) // i->j
-	el.ClosePath(x2, y1)                   // a
+	//el.SelfContext.LineWidth(input.LineWidth)
+
+	el.Platform.MoveTo(x2, y1)                      // a
+	el.Platform.LineTo(x3, y1)                      // a->b
+	el.Platform.ArcTo(x4, y1, x4, y2, input.Border) // c->d
+	el.Platform.LineTo(x4, y3)                      // d->e
+	el.Platform.ArcTo(x4, y4, x3, y4, input.Border) // f->g
+	el.Platform.LineTo(x2, y4)                      // g->h
+	el.Platform.ArcTo(x1, y4, x1, y3, input.Border) // i->j
+	el.Platform.LineTo(x1, y2)                      // j->k
+	el.Platform.ArcTo(x1, y1, x2, y1, input.Border) // i->j
+	el.Platform.ClosePath(x2, y1)                   // a
 }
