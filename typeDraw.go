@@ -1,65 +1,66 @@
 package iotmaker_platform
 
 import (
-	"github.com/helmutkemper/iotmaker.platform.webbrowser"
+	"github.com/helmutkemper/iotmaker.platform/browserCanvas"
+	"github.com/helmutkemper/iotmaker.platform/canvas"
 	iotmaker_types "github.com/helmutkemper/iotmaker.types"
 	"image/color"
 )
 
 type DrawInput struct {
-	X                          iotmaker_types.Pixel
-	Y                          iotmaker_types.Pixel
-	Border                     iotmaker_types.Pixel
-	Width                      iotmaker_types.Pixel
-	Height                     iotmaker_types.Pixel
-	LineThickness              iotmaker_types.Pixel
-	UsedInTheCalcX             iotmaker_types.Pixel
-	UsedInTheCalcY             iotmaker_types.Pixel
-	UsedInTheCalcBorder        iotmaker_types.Pixel
-	UsedInTheCalcWidth         iotmaker_types.Pixel
-	UsedInTheCalcHeight        iotmaker_types.Pixel
-	UsedInTheCalcLineThickness iotmaker_types.Pixel
+	X                          iotmaker_types.Coordinate
+	Y                          iotmaker_types.Coordinate
+	Border                     iotmaker_types.Coordinate
+	Width                      iotmaker_types.Coordinate
+	Height                     iotmaker_types.Coordinate
+	LineThickness              iotmaker_types.Coordinate
+	UsedInTheCalcX             iotmaker_types.Coordinate
+	UsedInTheCalcY             iotmaker_types.Coordinate
+	UsedInTheCalcBorder        iotmaker_types.Coordinate
+	UsedInTheCalcWidth         iotmaker_types.Coordinate
+	UsedInTheCalcHeight        iotmaker_types.Coordinate
+	UsedInTheCalcLineThickness iotmaker_types.Coordinate
 }
 
 type Draw struct {
-	Canvas canvas
+	Canvas browserCanvas.Canvas
 	Data   iotmaker_types.PlatformBasicType
 	Input  DrawInput
 }
 
-func (el *Draw) SetX(x iotmaker_types.Pixel) {
+func (el *Draw) SetX(x iotmaker_types.Coordinate) {
 	el.Input.X = x
 }
 
-func (el *Draw) SetY(y iotmaker_types.Pixel) {
+func (el *Draw) SetY(y iotmaker_types.Coordinate) {
 	el.Input.Y = y
 }
 
-func (el *Draw) SetBorder(border iotmaker_types.Pixel) {
+func (el *Draw) SetBorder(border iotmaker_types.Coordinate) {
 	el.Input.Y = border
 }
 
-func (el *Draw) SetWidth(width iotmaker_types.Pixel) {
+func (el *Draw) SetWidth(width iotmaker_types.Coordinate) {
 	el.Input.Width = width
 }
 
-func (el *Draw) SetHeight(height iotmaker_types.Pixel) {
+func (el *Draw) SetHeight(height iotmaker_types.Coordinate) {
 	el.Input.Height = height
 }
 
-func (el *Draw) SetWidthHeight(width, height iotmaker_types.Pixel) {
+func (el *Draw) SetWidthHeight(width, height iotmaker_types.Coordinate) {
 	el.Input.Width = width
 	el.Input.Height = height
 }
 
-func (el *Draw) SetXYWidthHeight(x, y, width, height iotmaker_types.Pixel) {
+func (el *Draw) SetXYWidthHeight(x, y, width, height iotmaker_types.Coordinate) {
 	el.Input.X = x
 	el.Input.Y = y
 	el.Input.Width = width
 	el.Input.Height = height
 }
 
-func (el *Draw) SetXYWidthHeightLineThickness(x, y, width, height, lineThickness iotmaker_types.Pixel) {
+func (el *Draw) SetXYWidthHeightLineThickness(x, y, width, height, lineThickness iotmaker_types.Coordinate) {
 	el.Input.X = x
 	el.Input.Y = y
 	el.Input.Width = width
@@ -67,7 +68,7 @@ func (el *Draw) SetXYWidthHeightLineThickness(x, y, width, height, lineThickness
 	el.Input.LineThickness = lineThickness
 }
 
-func (el *Draw) SetLineThickness(lineThickness iotmaker_types.Pixel) {
+func (el *Draw) SetLineThickness(lineThickness iotmaker_types.Coordinate) {
 	el.Input.LineThickness = lineThickness
 }
 
@@ -93,23 +94,23 @@ func (el *Draw) managerCoordinateAndSizeToAdjustLineThicknessExtraSpacesIntoLine
 	el.Input.UsedInTheCalcHeight = el.Input.Height + adjust
 }
 
-func (el *Draw) LineTo(x, y iotmaker_types.Pixel) {
+func (el *Draw) LineTo(x, y iotmaker_types.Coordinate) {
 	el.Canvas.LineTo(x, y)
 }
 
-func (el *Draw) MoveTo(x, y iotmaker_types.Pixel) {
+func (el *Draw) MoveTo(x, y iotmaker_types.Coordinate) {
 	el.Canvas.MoveTo(x, y)
 }
 
-func (el *Draw) ArcTo(x1, y1, x2, y2, radius iotmaker_types.Pixel) {
+func (el *Draw) ArcTo(x1, y1, x2, y2, radius iotmaker_types.Coordinate) {
 	el.Canvas.ArcTo(x1, y1, x2, y2, radius)
 }
 
-func (el *Draw) ClosePath(x, y iotmaker_types.Pixel) {
+func (el *Draw) ClosePath(x, y iotmaker_types.Coordinate) {
 	el.Canvas.ClosePath(x, y)
 }
 
-func (el *Draw) LineThickness(value iotmaker_types.Pixel) {
+func (el *Draw) LineThickness(value iotmaker_types.Coordinate) {
 	el.Canvas.LineThickness(value)
 }
 
@@ -133,11 +134,11 @@ func (el *Draw) GetContext() iotmaker_types.PlatformBasicType {
 	return el.Canvas.GetContext()
 }
 
-func (el *Draw) GetImageData(x, y, width, height iotmaker_types.Pixel) [][]color.RGBA {
+func (el *Draw) GetImageData(x, y, width, height iotmaker_types.Coordinate) [][]color.RGBA {
 	return el.Canvas.GetImageData(x, y, width, height)
 }
 
-func (el *Draw) AddBasicBox(x, y, width, height, border, lineThickness iotmaker_types.Pixel) {
+func (el *Draw) AddBasicBox(x, y, width, height, border, lineThickness iotmaker_types.Coordinate) {
 	//              border        border
 	//             x1  x2         x3 x4
 	//           l     a          b     c
@@ -168,16 +169,18 @@ func (el *Draw) AddBasicBox(x, y, width, height, border, lineThickness iotmaker_
 	y3 := y2 + height - 2*border
 	y4 := y3 + border
 
+	var i ICanvas = &Draw{}
+
 	el.Canvas.LineThickness(lineThickness)
 
-	el.Canvas.MoveTo(x2, y1)                // a
-	el.Canvas.LineTo(x3, y1)                // a->b
-	el.Canvas.ArcTo(x4, y1, x4, y2, border) // c->d
-	el.Canvas.LineTo(x4, y3)                // d->e
-	el.Canvas.ArcTo(x4, y4, x3, y4, border) // f->g
-	el.Canvas.LineTo(x2, y4)                // g->h
-	el.Canvas.ArcTo(x1, y4, x1, y3, border) // i->j
-	el.Canvas.LineTo(x1, y2)                // j->k
-	el.Canvas.ArcTo(x1, y1, x2, y1, border) // i->j
-	el.Canvas.ClosePath(x2, y1)             // a
+	i.MoveTo(x2, y1)                // a
+	i.LineTo(x3, y1)                // a->b
+	i.ArcTo(x4, y1, x4, y2, border) // c->d
+	i.LineTo(x4, y3)                // d->e
+	i.ArcTo(x4, y4, x3, y4, border) // f->g
+	i.LineTo(x2, y4)                // g->h
+	i.ArcTo(x1, y4, x1, y3, border) // i->j
+	i.LineTo(x1, y2)                // j->k
+	i.ArcTo(x1, y1, x2, y1, border) // i->j
+	i.ClosePath(x2, y1)             // a
 }

@@ -13,12 +13,12 @@ type BasicBox struct {
 
 type Input struct {
 	Id        string
-	X         iotmaker_types.Pixel
-	Y         iotmaker_types.Pixel
-	Width     iotmaker_types.Pixel
-	Height    iotmaker_types.Pixel
-	Border    iotmaker_types.Pixel
-	LineWidth iotmaker_types.Pixel
+	X         iotmaker_types.Coordinate
+	Y         iotmaker_types.Coordinate
+	Width     iotmaker_types.Coordinate
+	Height    iotmaker_types.Coordinate
+	Border    iotmaker_types.Coordinate
+	LineWidth iotmaker_types.Coordinate
 }
 
 func (el *BasicBox) Create(input Input) {
