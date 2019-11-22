@@ -10,5 +10,5 @@ import (
 //     Tip: Use the fill() method to fill the drawing (black is default). Use the fillStyle property to fill with
 //     another color/gradient.
 func (el *Draw) ClosePath(x, y iotmaker_types.Coordinate) {
-	el.Canvas.Browser.ClosePath(x, y)
+	el.Canvas.Browser.ClosePath(x.Int(), y.Int())
 }

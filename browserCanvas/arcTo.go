@@ -11,5 +11,5 @@ import (
 //     startAngle:    The angle at which the arc starts in radians, measured from the positive x-axis.
 //     endAngle:      The angle at which the arc ends in radians, measured from the positive x-axis.
 func (el *Draw) ArcTo(x, y, radius, startAngle, endAngle iotmaker_types.Coordinate) {
-	el.Canvas.Browser.ArcTo(x, y, radius, startAngle, endAngle)
+	el.Canvas.Browser.ArcTo(x.Int(), y.Int(), radius.Int(), startAngle.Int(), endAngle.Int())
 }

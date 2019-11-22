@@ -1,10 +1,9 @@
 package iotmaker_platform
 
 import (
-	"github.com/helmutkemper/iotmaker.platform/browserCanvas"
-	"github.com/helmutkemper/iotmaker.platform/canvas"
-	iotmaker_types "github.com/helmutkemper/iotmaker.types"
-	"image/color"
+  "github.com/helmutkemper/iotmaker.platform/browserCanvas"
+  iotmaker_types "github.com/helmutkemper/iotmaker.types"
+  "image/color"
 )
 
 type DrawInput struct {

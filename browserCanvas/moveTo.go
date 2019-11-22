@@ -10,5 +10,5 @@ import (
 //     The moveTo() method moves the path to the specified point in the canvas, without creating a line.
 //     Tip: Use the stroke() method to actually draw the path on the canvas.
 func (el *Draw) MoveTo(x, y iotmaker_types.Coordinate) {
-	el.Canvas.Browser.MoveTo(x, y)
+	el.Canvas.Browser.MoveTo(x.Int(), y.Int())
 }

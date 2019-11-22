@@ -1,11 +1,9 @@
 package iotmaker_platform
 
 import (
-	"github.com/helmutkemper/iotmaker.platform.webbrowser"
-	"github.com/helmutkemper/iotmaker.platform.webbrowser/canvas"
-	iotmaker_types "github.com/helmutkemper/iotmaker.types"
-	"image/color"
-	"syscall/js"
+  iotmaker_types "github.com/helmutkemper/iotmaker.types"
+  "image/color"
+  "syscall/js"
 )
 
 type IDraw interface {

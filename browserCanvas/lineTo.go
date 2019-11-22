@@ -11,5 +11,5 @@ import (
 //     y:   The y-coordinate of where to create the line to
 //     Tip: Use the stroke() method to actually draw the path on the canvas.
 func (el *Draw) LineTo(x, y iotmaker_types.Coordinate) {
-	el.Canvas.Browser.LineTo(x, y)
+	el.Canvas.Browser.LineTo(x.Int(), y.Int())
 }
