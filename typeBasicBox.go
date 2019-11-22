@@ -22,6 +22,7 @@ type Input struct {
 }
 
 func (el *BasicBox) Create(input Input) {
+	//  draw_1:
 	//              border        border
 	//             x1  x2         x3 x4
 	//           l     a          b     c
@@ -40,10 +41,23 @@ func (el *BasicBox) Create(input Input) {
 	var x1, x2, x3, x4 iotmaker_types.Coordinate
 	var y1, y2, y3, y4 iotmaker_types.Coordinate
 
+	// set screen density of pixels
+	x1.SetDensityFactor(input.Density)
+	x2.SetDensityFactor(input.Density)
+	x3.SetDensityFactor(input.Density)
+	x4.SetDensityFactor(input.Density)
+
+	y1.SetDensityFactor(input.Density)
+	y2.SetDensityFactor(input.Density)
+	y3.SetDensityFactor(input.Density)
+	y4.SetDensityFactor(input.Density)
+
+	// correct the line width size
 	input.X.Add(input.LineWidth.Int() / 2)
 	input.Width.Sub(input.LineWidth.Int() / 2)
 	input.Height.Sub(input.LineWidth.Int() / 2)
 
+	// set coordinates from de box in draw_1
 	x1.Set(input.X.Int())
 	x2.Set(x1.Int() + input.Border.Int())
 	x3.Set(x2.Int() + input.Width.Int() - 2*input.Border.Int())
@@ -54,6 +68,7 @@ func (el *BasicBox) Create(input Input) {
 	y3.Set(y2.Int() + input.Height.Int() - 2*input.Border.Int())
 	y4.Set(y3.Int() + input.Border.Int())
 
+	// draw image
 	//el.SelfElement = pwb.NewCanvasWith2DContext(input.Id, input.Width, input.Height)
 
 	//el.SelfContext.LineWidth(input.LineWidth)
