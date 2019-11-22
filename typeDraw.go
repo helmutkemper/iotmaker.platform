@@ -23,7 +23,7 @@ type DrawInput struct {
 
 type Draw struct {
 	Canvas canvas
-	Data   iotmaker_platform_webbrowser.PlatformBasicType
+	Data   iotmaker_types.PlatformBasicType
 	Input  DrawInput
 }
 
@@ -125,11 +125,11 @@ func (el *Draw) Stroke() {
 	el.Canvas.Stroke()
 }
 
-func (el *Draw) GetCanvas() iotmaker_platform_webbrowser.PlatformBasicType {
+func (el *Draw) GetCanvas() iotmaker_types.PlatformBasicType {
 	return el.Canvas.GetCanvas()
 }
 
-func (el *Draw) GetContext() iotmaker_platform_webbrowser.PlatformBasicType {
+func (el *Draw) GetContext() iotmaker_types.PlatformBasicType {
 	return el.Canvas.GetContext()
 }
 
