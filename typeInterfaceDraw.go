@@ -6,7 +6,7 @@ import (
 	"image/color"
 )
 
-type IGraphic interface {
+type IDraw interface {
 	SetX(x iotmaker_types.Pixel)
 	SetY(y iotmaker_types.Pixel)
 	SetBorder(border iotmaker_types.Pixel)
