@@ -2,12 +2,18 @@ package abstractType
 
 import (
 	"github.com/helmutkemper/iotmaker.platform"
-	iotmaker_types "github.com/helmutkemper/iotmaker.types"
+	iotmaker_platform_webbrowser "github.com/helmutkemper/iotmaker.platform.webbrowser"
 )
 
 func NewBasicBox(platform iotmaker_platform.ICanvas) BasicBox {
 	bb := BasicBox{
-		Platform: platform,
+		Platform:  platform,
+		X:         &iotmaker_platform.Coordinate{},
+		Y:         &iotmaker_platform.Coordinate{},
+		Width:     &iotmaker_platform.Coordinate{},
+		Height:    &iotmaker_platform.Coordinate{},
+		Border:    &iotmaker_platform.Coordinate{},
+		LineWidth: &iotmaker_platform.Coordinate{},
 	}
 	bb.Create()
 
@@ -18,12 +24,12 @@ type BasicBox struct {
 	Platform  iotmaker_platform.ICanvas
 	Density   float64
 	Id        string
-	X         iotmaker_types.Coordinate
-	Y         iotmaker_types.Coordinate
-	Width     iotmaker_types.Coordinate
-	Height    iotmaker_types.Coordinate
-	Border    iotmaker_types.Coordinate
-	LineWidth iotmaker_types.Coordinate
+	X         iotmaker_platform_webbrowser.ICoordinate
+	Y         iotmaker_platform_webbrowser.ICoordinate
+	Width     iotmaker_platform_webbrowser.ICoordinate
+	Height    iotmaker_platform_webbrowser.ICoordinate
+	Border    iotmaker_platform_webbrowser.ICoordinate
+	LineWidth iotmaker_platform_webbrowser.ICoordinate
 }
 
 func (el *BasicBox) Create() {
@@ -43,8 +49,8 @@ func (el *BasicBox) Create() {
 	//             x1  x2         x3 x4
 	//              border        border
 
-	var x1, x2, x3, x4 iotmaker_types.Coordinate
-	var y1, y2, y3, y4 iotmaker_types.Coordinate
+	var x1, x2, x3, x4 iotmaker_platform_webbrowser.ICoordinate
+	var y1, y2, y3, y4 iotmaker_platform_webbrowser.ICoordinate
 
 	// set screen density of pixels
 	x1.SetDensityFactor(el.Density)

@@ -1,4 +1,4 @@
-package browserCanvas
+package iotmaker_platform
 
 //	en: Begins a path, or resets the current path
 //      Tip: Use moveTo(), lineTo(), quadricCurveTo(), bezierCurveTo(), arcTo(), and arc(), to create paths.

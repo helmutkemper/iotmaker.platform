@@ -1,14 +1,10 @@
-package browserCanvas
-
-import (
-	iotmaker_types "github.com/helmutkemper/iotmaker.types"
-)
+package iotmaker_platform
 
 // en: Creates a path from the current point back to the starting point
 //     The closePath() method creates a path from the current point back to the starting point.
 //     Tip: Use the stroke() method to actually draw the path on the canvas.
 //     Tip: Use the fill() method to fill the drawing (black is default). Use the fillStyle property to fill with
 //     another color/gradient.
-func (el *Draw) ClosePath(x, y iotmaker_types.Coordinate) {
-	el.Canvas.Browser.ClosePath(x.Int(), y.Int())
+func (el *Draw) ClosePath(x, y Coordinate) {
+	el.Canvas.ClosePath(x.Int(), y.Int())
 }
