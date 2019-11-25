@@ -1,5 +1,7 @@
 package iotmaker_platform
 
+import "image/color"
+
 type ICanvas interface {
 	BeginPath()
 	MoveTo(x, y int)
@@ -8,4 +10,8 @@ type ICanvas interface {
 	ClosePath(x, y int)
 	Stroke()
 	LineWidth(value int)
+	ShadowBlur(value int)
+	ShadowColor(value color.RGBA)
+	ShadowOffsetX(value int)
+	ShadowOffsetY(value int)
 }

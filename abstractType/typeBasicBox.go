@@ -3,51 +3,81 @@ package abstractType
 import (
 	"github.com/helmutkemper/iotmaker.platform"
 	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.coordinate"
+	"image/color"
+	"reflect"
 )
 
-func NewBasicBox(platform iotmaker_platform.ICanvas, id string, density float64, x, y, width, height, border, lineWidth int) BasicBox {
+type Shadow struct {
+	Color   color.RGBA
+	Blur    int
+	OffsetX int
+	OffsetY int
+}
 
-	coordinateX := iotmaker_platform_coordinate.Coordinate{}
-	coordinateX.SetDensityFactor(density)
-	coordinateX.Set(x)
-
-	coordinateY := iotmaker_platform_coordinate.Coordinate{}
-	coordinateY.SetDensityFactor(density)
-	coordinateY.Set(y)
-
-	coordinateWidth := iotmaker_platform_coordinate.Coordinate{}
-	coordinateWidth.SetDensityFactor(density)
-	coordinateWidth.Set(width)
-
-	coordinateHeight := iotmaker_platform_coordinate.Coordinate{}
-	coordinateHeight.SetDensityFactor(density)
-	coordinateHeight.Set(height)
-
-	coordinateBorder := iotmaker_platform_coordinate.Coordinate{}
-	coordinateBorder.SetDensityFactor(density)
-	coordinateBorder.Set(border)
-
-	coordinateLineWidth := iotmaker_platform_coordinate.Coordinate{}
-	coordinateLineWidth.SetDensityFactor(density)
-	coordinateLineWidth.Set(lineWidth)
-
-	bb := BasicBox{
-		Platform:  platform,
-		Density:   density,
-		Id:        id,
-		X:         coordinateX,
-		Y:         coordinateY,
-		Width:     coordinateWidth,
-		Height:    coordinateHeight,
-		Border:    coordinateBorder,
-		LineWidth: coordinateLineWidth,
-	}
-	bb.Create()
-
-	return bb
+type DimensionsBasicBox struct {
+	Density   float64
+	X         int
+	Y         int
+	Width     int
+	Height    int
+	Border    int
+	LineWidth int
 }
 
 type BasicBox struct {
+	Platform   iotmaker_platform.ICanvas
+	Id         string
+	Dimensions DimensionsBasicBox
+	Shadow     Shadow
+	Gradient   Gradient
+}
+
+type CoordinateBox struct {
+	X0 int
+	Y0 int
+	X1 int
+	Y1 int
+}
+
+type Gradient struct {
+	Type       int
+	Coordinate CoordinateBox
+	ColorList  []ColorStop
+}
+
+type ColorStop struct {
+	Stop  float64
+	Color color.RGBA
+}
+
+func NewBasicBox(config BasicBox) BasicBox {
+
+	coordinate := iotmaker_platform_coordinate.Coordinate{}
+	coordinate.SetDensityFactor(config.Dimensions.Density)
+	coordinate.Set(config.Dimensions.X)
+	config.Dimensions.X = coordinate.Int()
+
+	coordinate.Set(config.Dimensions.Y)
+	config.Dimensions.Y = coordinate.Int()
+
+	coordinate.Set(config.Dimensions.Width)
+	config.Dimensions.Width = coordinate.Int()
+
+	coordinate.Set(config.Dimensions.Height)
+	config.Dimensions.Height = coordinate.Int()
+
+	coordinate.Set(config.Dimensions.Border)
+	config.Dimensions.Border = coordinate.Int()
+
+	coordinate.Set(config.Dimensions.LineWidth)
+	config.Dimensions.LineWidth = coordinate.Int()
+
+	config.Create()
+
+	return config
+}
+
+type _BasicBox struct {
 	Platform  iotmaker_platform.ICanvas
 	Density   float64
 	Id        string
@@ -80,45 +110,60 @@ func (el *BasicBox) Create() {
 	var y1, y2, y3, y4 iotmaker_platform_coordinate.Coordinate
 
 	// set screen density of pixels
-	x1.SetDensityFactor(el.Density)
-	x2.SetDensityFactor(el.Density)
-	x3.SetDensityFactor(el.Density)
-	x4.SetDensityFactor(el.Density)
+	x1.SetDensityFactor(el.Dimensions.Density)
+	x2.SetDensityFactor(el.Dimensions.Density)
+	x3.SetDensityFactor(el.Dimensions.Density)
+	x4.SetDensityFactor(el.Dimensions.Density)
 
-	y1.SetDensityFactor(el.Density)
-	y2.SetDensityFactor(el.Density)
-	y3.SetDensityFactor(el.Density)
-	y4.SetDensityFactor(el.Density)
+	y1.SetDensityFactor(el.Dimensions.Density)
+	y2.SetDensityFactor(el.Dimensions.Density)
+	y3.SetDensityFactor(el.Dimensions.Density)
+	y4.SetDensityFactor(el.Dimensions.Density)
 
 	// correct the line width size
-	el.X.Add(el.LineWidth.Int() / 2)
-	el.Y.Add(el.LineWidth.Int() / 2)
-	el.Width.Sub(el.LineWidth.Int() / 2)
-	el.Height.Sub(el.LineWidth.Int() / 2)
+	el.Dimensions.X += el.Dimensions.LineWidth / 2
+	el.Dimensions.Y += el.Dimensions.LineWidth / 2
+	el.Dimensions.Width -= el.Dimensions.LineWidth / 2
+	el.Dimensions.Height -= el.Dimensions.LineWidth / 2
 
 	// set coordinates from de box in draw_1
-	x1.Set(el.X.Int())
-	x2.Set(x1.Int() + el.Border.Int())
-	x3.Set(x2.Int() + el.Width.Int() - 2*el.Border.Int())
-	x4.Set(x3.Int() + el.Border.Int())
+	x1.Set(el.Dimensions.X)
+	x2.Set(x1.Int() + el.Dimensions.Border)
+	x3.Set(x2.Int() + el.Dimensions.Width - 2*el.Dimensions.Border)
+	x4.Set(x3.Int() + el.Dimensions.Border)
 
-	y1.Set(el.Y.Int())
-	y2.Set(y1.Int() + el.Border.Int())
-	y3.Set(y2.Int() + el.Height.Int() - 2*el.Border.Int())
-	y4.Set(y3.Int() + el.Border.Int())
+	y1.Set(el.Dimensions.Y)
+	y2.Set(y1.Int() + el.Dimensions.Border)
+	y3.Set(y2.Int() + el.Dimensions.Height - 2*el.Dimensions.Border)
+	y4.Set(y3.Int() + el.Dimensions.Border)
 
-	el.Platform.LineWidth(el.LineWidth.Int())
+	el.Platform.LineWidth(el.Dimensions.LineWidth)
 
 	el.Platform.BeginPath()
-	el.Platform.MoveTo(x2.Int(), y1.Int())                                     // a
-	el.Platform.LineTo(x3.Int(), y1.Int())                                     // a->b
-	el.Platform.ArcTo(x4.Int(), y1.Int(), x4.Int(), y2.Int(), el.Border.Int()) // c->d
-	el.Platform.LineTo(x4.Int(), y3.Int())                                     // d->e
-	el.Platform.ArcTo(x4.Int(), y4.Int(), x3.Int(), y4.Int(), el.Border.Int()) // f->g
-	el.Platform.LineTo(x2.Int(), y4.Int())                                     // g->h
-	el.Platform.ArcTo(x1.Int(), y4.Int(), x1.Int(), y3.Int(), el.Border.Int()) // i->j
-	el.Platform.LineTo(x1.Int(), y2.Int())                                     // j->k
-	el.Platform.ArcTo(x1.Int(), y1.Int(), x2.Int(), y1.Int(), el.Border.Int()) // i->j
-	el.Platform.ClosePath(x2.Int(), y1.Int())                                  // a
+
+	if !reflect.DeepEqual(el.Gradient, Gradient{}) {
+		//todo: continua aqui
+	}
+
+	if !reflect.DeepEqual(el.Shadow, Shadow{}) {
+		el.Platform.ShadowBlur(el.Shadow.Blur)
+		el.Platform.ShadowColor(el.Shadow.Color)
+		el.Platform.ShadowOffsetX(el.Shadow.OffsetX)
+		el.Platform.ShadowOffsetY(el.Shadow.OffsetY)
+	}
+
+	el.Platform.MoveTo(x2.Int(), y1.Int())                                          // a
+	el.Platform.LineTo(x3.Int(), y1.Int())                                          // a->b
+	el.Platform.ArcTo(x4.Int(), y1.Int(), x4.Int(), y2.Int(), el.Dimensions.Border) // c->d
+	el.Platform.LineTo(x4.Int(), y3.Int())                                          // d->e
+	el.Platform.ArcTo(x4.Int(), y4.Int(), x3.Int(), y4.Int(), el.Dimensions.Border) // f->g
+	el.Platform.LineTo(x2.Int(), y4.Int())                                          // g->h
+	el.Platform.ArcTo(x1.Int(), y4.Int(), x1.Int(), y3.Int(), el.Dimensions.Border) // i->j
+	el.Platform.LineTo(x1.Int(), y2.Int())                                          // j->k
+	el.Platform.ArcTo(x1.Int(), y1.Int(), x2.Int(), y1.Int(), el.Dimensions.Border) // i->j
+	el.Platform.ClosePath(x2.Int(), y1.Int())                                       // a
+
+	// pegar dados da imagem aqui
+
 	el.Platform.Stroke()
 }
