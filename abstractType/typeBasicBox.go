@@ -107,9 +107,6 @@ func (el *BasicBox) Create() {
 	y3.Set(y2.Int() + el.Height.Int() - 2*el.Border.Int())
 	y4.Set(y3.Int() + el.Border.Int())
 
-	// draw image
-	//el.SelfElement = pwb.NewCanvasWith2DContext(input.Id, input.Width, input.Height)
-
 	el.Platform.LineWidth(el.LineWidth.Int())
 
 	el.Platform.BeginPath()
