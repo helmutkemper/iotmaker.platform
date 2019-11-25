@@ -7,4 +7,5 @@ type ICanvas interface {
 	LineTo(x, y int)
 	ClosePath(x, y int)
 	Stroke()
+	LineWidth(value int)
 }

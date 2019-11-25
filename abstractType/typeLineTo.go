@@ -5,7 +5,7 @@ import (
 	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.coordinate"
 )
 
-func NewLineTo(platform iotmaker_platform.ICanvas, id string, density float64, x1, y1, x2, y2 int) LineTo {
+func NewLineTo(platform iotmaker_platform.ICanvas, id string, density float64, x1, y1, x2, y2, lineWidth int) LineTo {
 
 	coordinateX1 := iotmaker_platform_coordinate.Coordinate{}
 	coordinateX1.SetDensityFactor(density)
@@ -23,14 +23,19 @@ func NewLineTo(platform iotmaker_platform.ICanvas, id string, density float64, x
 	coordinateY2.SetDensityFactor(density)
 	coordinateY2.Set(y2)
 
+	coordinateLineWidth := iotmaker_platform_coordinate.Coordinate{}
+	coordinateLineWidth.SetDensityFactor(density)
+	coordinateLineWidth.Set(lineWidth)
+
 	lt := LineTo{
-		Id:       id,
-		Platform: platform,
-		Density:  density,
-		X1:       coordinateX1,
-		X2:       coordinateX2,
-		Y1:       coordinateY1,
-		Y2:       coordinateY2,
+		Id:        id,
+		Platform:  platform,
+		Density:   density,
+		X1:        coordinateX1,
+		X2:        coordinateX2,
+		Y1:        coordinateY1,
+		Y2:        coordinateY2,
+		LineWidth: coordinateLineWidth,
 	}
 	lt.Create()
 
@@ -38,13 +43,14 @@ func NewLineTo(platform iotmaker_platform.ICanvas, id string, density float64, x
 }
 
 type LineTo struct {
-	Platform iotmaker_platform.ICanvas
-	Density  float64
-	Id       string
-	X1       iotmaker_platform_coordinate.Coordinate
-	Y1       iotmaker_platform_coordinate.Coordinate
-	X2       iotmaker_platform_coordinate.Coordinate
-	Y2       iotmaker_platform_coordinate.Coordinate
+	Platform  iotmaker_platform.ICanvas
+	Density   float64
+	Id        string
+	X1        iotmaker_platform_coordinate.Coordinate
+	Y1        iotmaker_platform_coordinate.Coordinate
+	X2        iotmaker_platform_coordinate.Coordinate
+	Y2        iotmaker_platform_coordinate.Coordinate
+	LineWidth iotmaker_platform_coordinate.Coordinate
 }
 
 func (el *LineTo) Create() {
@@ -58,6 +64,7 @@ func (el *LineTo) Create() {
 	//el.SelfContext.LineWidth(input.LineWidth)
 
 	el.Platform.BeginPath()
+	el.Platform.LineWidth(el.LineWidth.Int())
 	el.Platform.MoveTo(el.X1.Int(), el.Y1.Int()) // a
 	el.Platform.LineTo(el.X2.Int(), el.Y2.Int()) // a->b
 	el.Platform.Stroke()

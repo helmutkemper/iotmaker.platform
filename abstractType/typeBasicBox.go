@@ -91,10 +91,10 @@ func (el *BasicBox) Create() {
 	y4.SetDensityFactor(el.Density)
 
 	// correct the line width size
-	//el.X.Add(el.LineWidth.Int() / 2)
-	//el.Y.Add(el.LineWidth.Int() / 2)
-	//el.Width.Sub(el.LineWidth.Int() / 2)
-	//el.Height.Sub(el.LineWidth.Int() / 2)
+	el.X.Add(el.LineWidth.Int() / 2)
+	el.Y.Add(el.LineWidth.Int() / 2)
+	el.Width.Sub(el.LineWidth.Int() / 2)
+	el.Height.Sub(el.LineWidth.Int() / 2)
 
 	// set coordinates from de box in draw_1
 	x1.Set(el.X.Int())
@@ -110,7 +110,7 @@ func (el *BasicBox) Create() {
 	// draw image
 	//el.SelfElement = pwb.NewCanvasWith2DContext(input.Id, input.Width, input.Height)
 
-	//el.SelfContext.LineWidth(input.LineWidth)
+	el.Platform.LineWidth(el.LineWidth.Int())
 
 	el.Platform.BeginPath()
 	el.Platform.MoveTo(x2.Int(), y1.Int())                                     // a
