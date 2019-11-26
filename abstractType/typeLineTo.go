@@ -1,11 +1,11 @@
 package abstractType
 
 import (
-	iotmaker_platform "github.com/helmutkemper/iotmaker.platform"
+	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
 	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.coordinate"
 )
 
-func NewLineTo(platform iotmaker_platform.ICanvas, id string, density float64, x1, y1, x2, y2, lineWidth int) LineTo {
+func NewLineTo(platform iotmaker_platform_IDraw.IDraw, id string, density float64, x1, y1, x2, y2, lineWidth int) LineTo {
 
 	coordinateX1 := iotmaker_platform_coordinate.Coordinate{}
 	coordinateX1.SetDensityFactor(density)
@@ -43,7 +43,7 @@ func NewLineTo(platform iotmaker_platform.ICanvas, id string, density float64, x
 }
 
 type LineTo struct {
-	Platform  iotmaker_platform.ICanvas
+	Platform  iotmaker_platform_IDraw.IDraw
 	Density   float64
 	Id        string
 	X1        iotmaker_platform_coordinate.Coordinate
