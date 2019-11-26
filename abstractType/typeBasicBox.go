@@ -1,7 +1,7 @@
 package abstractType
 
 import (
-	"github.com/helmutkemper/iotmaker.platform"
+	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
 	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.coordinate"
 	"image/color"
 	"reflect"
@@ -25,7 +25,7 @@ type DimensionsBasicBox struct {
 }
 
 type BasicBox struct {
-	Platform   iotmaker_platform.ICanvas
+	Platform   iotmaker_platform_IDraw.IDraw
 	Id         string
 	Dimensions DimensionsBasicBox
 	Shadow     Shadow
@@ -78,7 +78,7 @@ func NewBasicBox(config BasicBox) BasicBox {
 }
 
 type _BasicBox struct {
-	Platform  iotmaker_platform.ICanvas
+	Platform  iotmaker_platform_IDraw.IDraw
 	Density   float64
 	Id        string
 	X         iotmaker_platform_coordinate.Coordinate
