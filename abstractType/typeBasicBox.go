@@ -8,50 +8,14 @@ import (
 )
 
 type Shadow struct {
-	Color                 color.RGBA
-	colorHasInitialized   bool
-	Blur                  int
-	blurHasInitialized    bool
-	OffsetX               int
-	offsetXHasInitialized bool
-	OffsetY               int
-	offsetYHasInitialized bool
-}
-
-func (el *Shadow) SetColor(color color.RGBA) {
-	el.Color = color
-	el.colorHasInitialized = true
-}
-
-func (el *Shadow) ClearColor() {
-	el.colorHasInitialized = false
-}
-
-func (el *Shadow) SetBlur(blur int) {
-	el.Blur = blur
-	el.blurHasInitialized = true
-}
-
-func (el *Shadow) ClearBlur() {
-	el.blurHasInitialized = false
-}
-
-func (el *Shadow) SetOffsetX(x int) {
-	el.OffsetX = x
-	el.offsetXHasInitialized = true
-}
-
-func (el *Shadow) ClearOffsetX() {
-	el.offsetXHasInitialized = false
-}
-
-func (el *Shadow) SetOffsetY(y int) {
-	el.OffsetY = y
-	el.offsetYHasInitialized = true
-}
-
-func (el *Shadow) ClearOffsetY() {
-	el.offsetYHasInitialized = false
+	Color         color.RGBA
+	ColorEnable   bool
+	Blur          int
+	BlurEnable    bool
+	OffsetX       int
+	OffsetXEnable bool
+	OffsetY       int
+	OffsetYEnable bool
 }
 
 type DimensionsBasicBox struct {
@@ -149,27 +113,42 @@ func (el *BasicBox) prepareGradientMountColorListFilter() {
 		//FIXME: mudar para radial
 		gradient = el.Platform.CreateLinearGradient(x0, y0, x1, y1)
 	}
+
+	for _, value := range el.Gradient.ColorList {
+		el.Platform.AddColorStop(gradient, value.Stop, value.Color)
+	}
+
+	el.Platform.FillStyle(gradient)
+	el.Platform.StrokeStyle(gradient)
 }
 
 func (el *BasicBox) prepareGradientFilter() {
 
+	if reflect.DeepEqual(el.Gradient, Gradient{}) {
+		return
+	}
+
 	el.prepareGradientCoordinateFilter()
+	el.prepareGradientMountColorListFilter()
 }
 
 func (el *BasicBox) prepareShadowFilter() {
-	if el.Shadow.colorHasInitialized == true {
-		el.Platform.ShadowColor(el.Shadow.Color)
+	// the feature of the javascript itself
+	if el.Shadow.ColorEnable == false {
+		return
 	}
 
-	if el.Shadow.blurHasInitialized == true {
+	el.Platform.ShadowColor(el.Shadow.Color)
+
+	if el.Shadow.BlurEnable == true {
 		el.Platform.ShadowBlur(el.Shadow.Blur)
 	}
 
-	if el.Shadow.offsetXHasInitialized == true {
+	if el.Shadow.OffsetXEnable == true {
 		el.Platform.ShadowOffsetX(el.Shadow.OffsetX)
 	}
 
-	if el.Shadow.offsetYHasInitialized == true {
+	if el.Shadow.OffsetYEnable == true {
 		el.Platform.ShadowOffsetY(el.Shadow.OffsetY)
 	}
 }
@@ -298,25 +277,8 @@ func (el *BasicBox) Create() {
 
 	el.Platform.BeginPath()
 
-	if !reflect.DeepEqual(el.Gradient, Gradient{}) {
-		//todo: continua aqui
-	}
-
-	if el.Shadow.colorHasInitialized == true {
-		el.Platform.ShadowColor(el.Shadow.Color)
-	}
-
-	if el.Shadow.blurHasInitialized == true {
-		el.Platform.ShadowBlur(el.Shadow.Blur)
-	}
-
-	if el.Shadow.offsetXHasInitialized == true {
-		el.Platform.ShadowOffsetX(el.Shadow.OffsetX)
-	}
-
-	if el.Shadow.offsetYHasInitialized == true {
-		el.Platform.ShadowOffsetY(el.Shadow.OffsetY)
-	}
+	el.prepareGradientFilter()
+	el.prepareShadowFilter()
 
 	el.Platform.MoveTo(x2.Int(), y1.Int())                                          // a
 	el.Platform.LineTo(x3.Int(), y1.Int())                                          // a->b
