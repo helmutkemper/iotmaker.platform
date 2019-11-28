@@ -1,8 +1,8 @@
 package gradient
 
-func NewGradientLinear(coordinate Coordinate, colorList []ColorStop) Gradient {
+func NewFillGradientLinear(coordinate Coordinate, colorList []ColorStop) Gradient {
 	return Gradient{
-		Type:       0,
+		Type:       KLinearGradientFill,
 		Coordinate: coordinate,
 		ColorList:  colorList,
 	}
