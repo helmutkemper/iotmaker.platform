@@ -51,51 +51,23 @@ func NewBasicBox(config BasicBox) BasicBox {
 	coordinate.Set(config.Dimensions.LineWidth)
 	config.Dimensions.LineWidth = coordinate.Int()
 
-	config.Shadow.Platform = config.Platform
-	config.Gradient.Platform = config.Platform
+	config.configShadowPlatformAndFilter()
+	config.configGradientPlatformAndFilter()
 
-	config.SetShadowFilter(config.Shadow.PrepareShadowFilter)
-	config.SetGradientFilter(config.Gradient.PrepareGradientAndMountColorListFilter)
 	config.Create()
 
 	return config
 }
 
-/*
-func (el *BasicBox) prepareGradientMountColorListFilter() {
-	x0 := el.Gradient.Coordinate.X
-	x1 := el.Gradient.Coordinate.X + el.Gradient.Coordinate.Width
-
-	y0 := el.Gradient.Coordinate.Y
-	y1 := el.Gradient.Coordinate.Y + el.Gradient.Coordinate.Height
-
-	var gradient interface{}
-
-	//TODO: radial gradient
-	if el.Gradient.Type == 0 {
-		gradient = el.Platform.CreateLinearGradient(x0, y0, x1, y1)
-	} else {
-		//FIXME: mudar para radial
-		gradient = el.Platform.CreateLinearGradient(x0, y0, x1, y1)
-	}
-
-	for _, value := range el.Gradient.ColorList {
-		el.Platform.AddColorStop(gradient, value.Stop, value.Color)
-	}
-
-	el.Platform.FillStyle(gradient)
-	el.Platform.StrokeStyle(gradient)
+func (el *BasicBox) configShadowPlatformAndFilter() {
+	el.Shadow.Platform = el.Platform
+	el.SetShadowFilter(el.Shadow.PrepareShadowFilter)
 }
-*/
 
-/*func (el *BasicBox) prepareGradientFilter() {
-
-	if reflect.DeepEqual(el.Gradient, gradient.Gradient{}) {
-		return
-	}
-
-	el.prepareGradientMountColorListFilter()
-}*/
+func (el *BasicBox) configGradientPlatformAndFilter() {
+	el.Gradient.Platform = el.Platform
+	el.SetGradientFilter(el.Gradient.PrepareGradientAndMountColorListFilter)
+}
 
 func (el *BasicBox) SetGradientFilter(f func()) {
 	el.prepareGradientFilter = f
@@ -104,27 +76,6 @@ func (el *BasicBox) SetGradientFilter(f func()) {
 func (el *BasicBox) SetShadowFilter(f func()) {
 	el.prepareShadowFilter = f
 }
-
-/*func (el *BasicBox) PrepareShadowFilter() {
-	// the feature of the javascript itself
-	if el.Shadow.ColorEnable == false {
-		return
-	}
-
-	el.Platform.ShadowColor(el.Shadow.Color)
-
-	if el.Shadow.BlurEnable == true {
-		el.Platform.ShadowBlur(el.Shadow.Blur)
-	}
-
-	if el.Shadow.OffsetXEnable == true {
-		el.Platform.ShadowOffsetX(el.Shadow.OffsetX)
-	}
-
-	if el.Shadow.OffsetYEnable == true {
-		el.Platform.ShadowOffsetY(el.Shadow.OffsetY)
-	}
-}*/
 
 func (el *BasicBox) prepareToDrawCanvas() {
 	//  draw_1:
