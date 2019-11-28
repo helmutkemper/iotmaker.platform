@@ -3,8 +3,8 @@ package abstractType
 import (
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
 	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.coordinate"
+	"github.com/helmutkemper/iotmaker.platform/abstractType/gradient"
 	"github.com/helmutkemper/iotmaker.platform/abstractType/shadow"
-	"image/color"
 	"reflect"
 )
 
@@ -23,27 +23,10 @@ type BasicBox struct {
 	Id         string
 	Dimensions DimensionsBasicBox
 	Shadow     shadow.Shadow
-	Gradient   Gradient
+	Gradient   gradient.Gradient
 
-	prepareShadowFilter func()
-}
-
-type CoordinateBox struct {
-	X0 int
-	Y0 int
-	X1 int
-	Y1 int
-}
-
-type Gradient struct {
-	Type       int
-	Coordinate CoordinateBox
-	ColorList  []ColorStop
-}
-
-type ColorStop struct {
-	Stop  float64
-	Color color.RGBA
+	prepareShadowFilter   func()
+	prepareGradientFilter func()
 }
 
 func NewBasicBox(config BasicBox) BasicBox {
@@ -69,35 +52,22 @@ func NewBasicBox(config BasicBox) BasicBox {
 	config.Dimensions.LineWidth = coordinate.Int()
 
 	config.Shadow.Platform = config.Platform
+	config.Gradient.Platform = config.Platform
 
-	config.SetPrepareShadowFilter(config.Shadow.PrepareShadowFilter)
+	config.SetShadowFilter(config.Shadow.PrepareShadowFilter)
+	config.SetGradientFilter(config.Gradient.PrepareGradientAndMountColorListFilter)
 	config.Create()
 
 	return config
 }
 
-func (el *BasicBox) prepareGradientCoordinateFilter() {
-	x0 := el.Gradient.Coordinate.X0
-	x1 := el.Gradient.Coordinate.X1
-
-	y0 := el.Gradient.Coordinate.Y0
-	y1 := el.Gradient.Coordinate.Y1
-
-	if x0 == 0 && x1 == 0 && y0 == 0 && y1 == 0 {
-		el.Gradient.Coordinate.X0 = el.Dimensions.X
-		el.Gradient.Coordinate.X1 = x0 + el.Dimensions.Width
-
-		el.Gradient.Coordinate.Y0 = el.Dimensions.Y
-		el.Gradient.Coordinate.Y1 = y0 + el.Dimensions.Height
-	}
-}
-
+/*
 func (el *BasicBox) prepareGradientMountColorListFilter() {
-	x0 := el.Gradient.Coordinate.X0
-	x1 := el.Gradient.Coordinate.X1
+	x0 := el.Gradient.Coordinate.X
+	x1 := el.Gradient.Coordinate.X + el.Gradient.Coordinate.Width
 
-	y0 := el.Gradient.Coordinate.Y0
-	y1 := el.Gradient.Coordinate.Y1
+	y0 := el.Gradient.Coordinate.Y
+	y1 := el.Gradient.Coordinate.Y + el.Gradient.Coordinate.Height
 
 	var gradient interface{}
 
@@ -116,18 +86,22 @@ func (el *BasicBox) prepareGradientMountColorListFilter() {
 	el.Platform.FillStyle(gradient)
 	el.Platform.StrokeStyle(gradient)
 }
+*/
 
-func (el *BasicBox) prepareGradientFilter() {
+/*func (el *BasicBox) prepareGradientFilter() {
 
-	if reflect.DeepEqual(el.Gradient, Gradient{}) {
+	if reflect.DeepEqual(el.Gradient, gradient.Gradient{}) {
 		return
 	}
 
-	el.prepareGradientCoordinateFilter()
 	el.prepareGradientMountColorListFilter()
+}*/
+
+func (el *BasicBox) SetGradientFilter(f func()) {
+	el.prepareGradientFilter = f
 }
 
-func (el *BasicBox) SetPrepareShadowFilter(f func()) {
+func (el *BasicBox) SetShadowFilter(f func()) {
 	el.prepareShadowFilter = f
 }
 
@@ -204,7 +178,7 @@ func (el *BasicBox) prepareToDrawCanvas() {
 
 	el.Platform.BeginPath()
 
-	if !reflect.DeepEqual(el.Gradient, Gradient{}) {
+	if !reflect.DeepEqual(el.Gradient, gradient.Gradient{}) {
 		//todo: continua aqui
 	}
 
