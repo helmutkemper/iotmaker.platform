@@ -3,20 +3,10 @@ package abstractType
 import (
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
 	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.coordinate"
+	"github.com/helmutkemper/iotmaker.platform/abstractType/shadow"
 	"image/color"
 	"reflect"
 )
-
-type Shadow struct {
-	Color         color.RGBA
-	ColorEnable   bool
-	Blur          int
-	BlurEnable    bool
-	OffsetX       int
-	OffsetXEnable bool
-	OffsetY       int
-	OffsetYEnable bool
-}
 
 type DimensionsBasicBox struct {
 	Density   float64
@@ -32,8 +22,10 @@ type BasicBox struct {
 	Platform   iotmaker_platform_IDraw.IDraw
 	Id         string
 	Dimensions DimensionsBasicBox
-	Shadow     Shadow
+	Shadow     shadow.Shadow
 	Gradient   Gradient
+
+	prepareShadowFilter func()
 }
 
 type CoordinateBox struct {
@@ -76,6 +68,9 @@ func NewBasicBox(config BasicBox) BasicBox {
 	coordinate.Set(config.Dimensions.LineWidth)
 	config.Dimensions.LineWidth = coordinate.Int()
 
+	config.Shadow.Platform = config.Platform
+
+	config.SetPrepareShadowFilter(config.Shadow.PrepareShadowFilter)
 	config.Create()
 
 	return config
@@ -132,7 +127,11 @@ func (el *BasicBox) prepareGradientFilter() {
 	el.prepareGradientMountColorListFilter()
 }
 
-func (el *BasicBox) prepareShadowFilter() {
+func (el *BasicBox) SetPrepareShadowFilter(f func()) {
+	el.prepareShadowFilter = f
+}
+
+/*func (el *BasicBox) PrepareShadowFilter() {
 	// the feature of the javascript itself
 	if el.Shadow.ColorEnable == false {
 		return
@@ -151,7 +150,7 @@ func (el *BasicBox) prepareShadowFilter() {
 	if el.Shadow.OffsetYEnable == true {
 		el.Platform.ShadowOffsetY(el.Shadow.OffsetY)
 	}
-}
+}*/
 
 func (el *BasicBox) prepareToDrawCanvas() {
 	//  draw_1:
@@ -278,7 +277,10 @@ func (el *BasicBox) Create() {
 	el.Platform.BeginPath()
 
 	el.prepareGradientFilter()
-	el.prepareShadowFilter()
+
+	if el.prepareShadowFilter != nil {
+		el.prepareShadowFilter()
+	}
 
 	el.Platform.MoveTo(x2.Int(), y1.Int())                                          // a
 	el.Platform.LineTo(x3.Int(), y1.Int())                                          // a->b
