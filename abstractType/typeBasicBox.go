@@ -5,7 +5,6 @@ import (
 	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.coordinate"
 	"github.com/helmutkemper/iotmaker.platform/abstractType/gradient"
 	"github.com/helmutkemper/iotmaker.platform/abstractType/shadow"
-	"reflect"
 )
 
 type DimensionsBasicBox struct {
@@ -129,10 +128,6 @@ func (el *BasicBox) prepareToDrawCanvas() {
 
 	el.Platform.BeginPath()
 
-	if !reflect.DeepEqual(el.Gradient, gradient.Gradient{}) {
-		//todo: continua aqui
-	}
-
 	el.Platform.MoveTo(x2.Int(), y1.Int())                                          // a
 	el.Platform.LineTo(x3.Int(), y1.Int())                                          // a->b
 	el.Platform.ArcTo(x4.Int(), y1.Int(), x4.Int(), y2.Int(), el.Dimensions.Border) // c->d
@@ -203,9 +198,7 @@ func (el *BasicBox) Create() {
 
 	el.prepareGradientFilter()
 
-	if el.prepareShadowFilter != nil {
-		el.prepareShadowFilter()
-	}
+	el.prepareShadowFilter()
 
 	el.Platform.MoveTo(x2.Int(), y1.Int())                                          // a
 	el.Platform.LineTo(x3.Int(), y1.Int())                                          // a->b
