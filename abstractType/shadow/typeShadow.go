@@ -5,8 +5,11 @@ import (
 	"image/color"
 )
 
+// en: Please, usa a  function shadow.NewShadowFilter() to make a new filter
+//
+// pt_br: Por favor, use a função shadow.NewShadowFilter() para montar um novo filtro
 type Shadow struct {
-	Platform      iotmaker_platform_IDraw.IShadow
+	Platform      iotmaker_platform_IDraw.ICanvasShadow
 	Color         color.RGBA
 	ColorEnable   bool
 	Blur          int
@@ -17,7 +20,15 @@ type Shadow struct {
 	OffsetYEnable bool
 }
 
-func (el *Shadow) PrepareShadowFilter() {
+// en: Please, usa a  function shadow.NewShadowFilter() to make a new filter.
+// receive a canvas specific platform draw shadow functions.
+//
+// pt_br: Por favor, use a função shadow.NewShadowFilter() para montar um novo filtro
+// recebe as funções de desenho específicas do elemento canvas da plataforma
+func (el *Shadow) PrepareFilter(platform iotmaker_platform_IDraw.ICanvasShadow) {
+
+	el.Platform = platform
+
 	// the feature of the javascript itself
 	if el.ColorEnable == false || el.Platform == nil {
 		return

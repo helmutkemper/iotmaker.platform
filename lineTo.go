@@ -8,6 +8,6 @@ import iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.c
 //     x:   The x-coordinate of where to create the line to
 //     y:   The y-coordinate of where to create the line to
 //     Tip: Use the stroke() method to actually draw the path on the canvas.
-func (el *Draw) LineTo(x, y iotmaker_platform_coordinate.Coordinate) {
+func (el *Draw) LineTo(x, y iotmaker_platform_coordinate.Density) {
 	el.Canvas.LineTo(x.Int(), y.Int())
 }

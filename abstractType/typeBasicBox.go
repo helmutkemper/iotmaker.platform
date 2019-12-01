@@ -3,8 +3,6 @@ package abstractType
 import (
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
 	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.coordinate"
-	"github.com/helmutkemper/iotmaker.platform/abstractType/gradient"
-	"github.com/helmutkemper/iotmaker.platform/abstractType/shadow"
 )
 
 type DimensionsBasicBox struct {
@@ -21,16 +19,28 @@ type BasicBox struct {
 	Platform   iotmaker_platform_IDraw.IDraw
 	Id         string
 	Dimensions DimensionsBasicBox
-	Shadow     shadow.Shadow
-	Gradient   gradient.Gradient
+	Shadow     iotmaker_platform_IDraw.IFilterShadowInterface
+	Gradient   iotmaker_platform_IDraw.IFilterGradientInterface
 
-	prepareShadowFilter   func()
-	prepareGradientFilter func()
+	prepareShadowFilter   func(iotmaker_platform_IDraw.ICanvasShadow)
+	prepareGradientFilter func(iotmaker_platform_IDraw.ICanvasGradient)
+}
+
+func (el *BasicBox) PrepareShadowFilter() {
+	if el.prepareShadowFilter != nil {
+		el.prepareShadowFilter(el.Platform)
+	}
+}
+
+func (el *BasicBox) PrepareGradientFilter() {
+	if el.prepareGradientFilter != nil {
+		el.prepareGradientFilter(el.Platform)
+	}
 }
 
 func NewBasicBox(config BasicBox) BasicBox {
 
-	coordinate := iotmaker_platform_coordinate.Coordinate{}
+	coordinate := iotmaker_platform_coordinate.Density{}
 	coordinate.SetDensityFactor(config.Dimensions.Density)
 	coordinate.Set(config.Dimensions.X)
 	config.Dimensions.X = coordinate.Int()
@@ -59,20 +69,27 @@ func NewBasicBox(config BasicBox) BasicBox {
 }
 
 func (el *BasicBox) configShadowPlatformAndFilter() {
-	el.Shadow.Platform = el.Platform
-	el.SetShadowFilter(el.Shadow.PrepareShadowFilter)
+	if el.Shadow == nil {
+		return
+	}
+
+	el.SetShadowFilter(el.Shadow.PrepareFilter)
+
 }
 
 func (el *BasicBox) configGradientPlatformAndFilter() {
-	el.Gradient.Platform = el.Platform
-	el.SetGradientFilter(el.Gradient.PrepareGradientAndMountColorListFilter)
+	if el.Gradient == nil {
+		return
+	}
+
+	el.SetGradientAndMountColorListFilter(el.Gradient.PrepareFilter)
 }
 
-func (el *BasicBox) SetGradientFilter(f func()) {
+func (el *BasicBox) SetGradientAndMountColorListFilter(f func(iotmaker_platform_IDraw.ICanvasGradient)) {
 	el.prepareGradientFilter = f
 }
 
-func (el *BasicBox) SetShadowFilter(f func()) {
+func (el *BasicBox) SetShadowFilter(f func(iotmaker_platform_IDraw.ICanvasShadow)) {
 	el.prepareShadowFilter = f
 }
 
@@ -93,8 +110,8 @@ func (el *BasicBox) prepareToDrawCanvas() {
 	//             x1  x2         x3 x4
 	//              border        border
 
-	var x1, x2, x3, x4 iotmaker_platform_coordinate.Coordinate
-	var y1, y2, y3, y4 iotmaker_platform_coordinate.Coordinate
+	var x1, x2, x3, x4 iotmaker_platform_coordinate.Density
+	var y1, y2, y3, y4 iotmaker_platform_coordinate.Density
 
 	// set screen density of pixels
 	x1.SetDensityFactor(el.Dimensions.Density)
@@ -161,8 +178,8 @@ func (el *BasicBox) Create() {
 	//             x1  x2         x3 x4
 	//              border        border
 
-	var x1, x2, x3, x4 iotmaker_platform_coordinate.Coordinate
-	var y1, y2, y3, y4 iotmaker_platform_coordinate.Coordinate
+	var x1, x2, x3, x4 iotmaker_platform_coordinate.Density
+	var y1, y2, y3, y4 iotmaker_platform_coordinate.Density
 
 	// set screen density of pixels
 	x1.SetDensityFactor(el.Dimensions.Density)
@@ -196,9 +213,8 @@ func (el *BasicBox) Create() {
 
 	el.Platform.BeginPath()
 
-	el.prepareGradientFilter()
-
-	el.prepareShadowFilter()
+	el.PrepareGradientFilter()
+	el.PrepareShadowFilter()
 
 	el.Platform.MoveTo(x2.Int(), y1.Int())                                          // a
 	el.Platform.LineTo(x3.Int(), y1.Int())                                          // a->b

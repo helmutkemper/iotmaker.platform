@@ -2,8 +2,6 @@ package colornames
 
 import "image/color"
 
-// todo: based on golang.org/x/image/colornames
-
 var (
 	Aliceblue            = color.RGBA{0xf0, 0xf8, 0xff, 0xff} // rgb(240, 248, 255)
 	Antiquewhite         = color.RGBA{0xfa, 0xeb, 0xd7, 0xff} // rgb(250, 235, 215)

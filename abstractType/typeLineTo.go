@@ -7,23 +7,23 @@ import (
 
 func NewLineTo(platform iotmaker_platform_IDraw.IDraw, id string, density float64, x1, y1, x2, y2, lineWidth int) LineTo {
 
-	coordinateX1 := iotmaker_platform_coordinate.Coordinate{}
+	coordinateX1 := iotmaker_platform_coordinate.Density{}
 	coordinateX1.SetDensityFactor(density)
 	coordinateX1.Set(x1)
 
-	coordinateX2 := iotmaker_platform_coordinate.Coordinate{}
+	coordinateX2 := iotmaker_platform_coordinate.Density{}
 	coordinateX2.SetDensityFactor(density)
 	coordinateX2.Set(x2)
 
-	coordinateY1 := iotmaker_platform_coordinate.Coordinate{}
+	coordinateY1 := iotmaker_platform_coordinate.Density{}
 	coordinateY1.SetDensityFactor(density)
 	coordinateY1.Set(y1)
 
-	coordinateY2 := iotmaker_platform_coordinate.Coordinate{}
+	coordinateY2 := iotmaker_platform_coordinate.Density{}
 	coordinateY2.SetDensityFactor(density)
 	coordinateY2.Set(y2)
 
-	coordinateLineWidth := iotmaker_platform_coordinate.Coordinate{}
+	coordinateLineWidth := iotmaker_platform_coordinate.Density{}
 	coordinateLineWidth.SetDensityFactor(density)
 	coordinateLineWidth.Set(lineWidth)
 
@@ -46,11 +46,11 @@ type LineTo struct {
 	Platform  iotmaker_platform_IDraw.IDraw
 	Density   float64
 	Id        string
-	X1        iotmaker_platform_coordinate.Coordinate
-	Y1        iotmaker_platform_coordinate.Coordinate
-	X2        iotmaker_platform_coordinate.Coordinate
-	Y2        iotmaker_platform_coordinate.Coordinate
-	LineWidth iotmaker_platform_coordinate.Coordinate
+	X1        iotmaker_platform_coordinate.Density
+	Y1        iotmaker_platform_coordinate.Density
+	X2        iotmaker_platform_coordinate.Density
+	Y2        iotmaker_platform_coordinate.Density
+	LineWidth iotmaker_platform_coordinate.Density
 }
 
 func (el *LineTo) Create() {

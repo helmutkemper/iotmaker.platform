@@ -8,6 +8,6 @@ import iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.c
 //     radius:        The arc's radius. Must be positive.
 //     startAngle:    The angle at which the arc starts in radians, measured from the positive x-axis.
 //     endAngle:      The angle at which the arc ends in radians, measured from the positive x-axis.
-func (el *Draw) ArcTo(x, y, radius, startAngle, endAngle iotmaker_platform_coordinate.Coordinate) {
+func (el *Draw) ArcTo(x, y, radius, startAngle, endAngle iotmaker_platform_coordinate.Density) {
 	el.Canvas.ArcTo(x.Int(), y.Int(), radius.Int(), startAngle.Int(), endAngle.Int())
 }

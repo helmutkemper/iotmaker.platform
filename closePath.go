@@ -7,6 +7,6 @@ import iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.c
 //     Tip: Use the stroke() method to actually draw the path on the canvas.
 //     Tip: Use the fill() method to fill the drawing (black is default). Use the fillStyle property to fill with
 //     another color/gradient.
-func (el *Draw) ClosePath(x, y iotmaker_platform_coordinate.Coordinate) {
+func (el *Draw) ClosePath(x, y iotmaker_platform_coordinate.Density) {
 	el.Canvas.ClosePath(x.Int(), y.Int())
 }

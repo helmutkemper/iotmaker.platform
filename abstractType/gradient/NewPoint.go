@@ -1,0 +1,26 @@
+package gradient
+
+import iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.coordinate"
+
+// en: Creates a set of coordinates, taking into account the size of the screen.
+//
+// pt_br: Cria um par de coordenadas levando em consideração a densidade da tela.
+//   x:        horizontal point of the screen.
+//   y:        vertical point of the screen.
+//   density:  density factor of the screen.
+//   iDensity: density interface
+func NewPoint(x, y int, density float64, iDensity iotmaker_platform_coordinate.IDensity) Point {
+
+	densityX := iDensity
+	densityX.Set(x)
+	densityX.SetDensityFactor(density)
+
+	densityY := iDensity
+	densityY.Set(y)
+	densityY.SetDensityFactor(density)
+
+	return Point{
+		X: densityX.Int(),
+		Y: densityY.Int(),
+	}
+}
