@@ -3,7 +3,7 @@ package basicBox
 import (
 	"fmt"
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
-	iotmaker_platform_IShadow "github.com/helmutkemper/iotmaker.platform.IShadow"
+	iotmaker_threadsafe "github.com/helmutkemper/iotmaker.threadsafe"
 	"image/color"
 )
 
@@ -152,7 +152,7 @@ func (el *BasicBox) drawInvisible(platform iotmaker_platform_IDraw.IDraw) {
 
 func (el *BasicBox) prepareImageData() {
 
-	iotmaker_platform_IShadow.ScratchPadThreadSafe(el.ScratchPad, el.drawInvisible, el.getImageData, el.clearRectangle)
+	iotmaker_threadsafe.ScratchPadThreadSafe(el.ScratchPad, el.drawInvisible, el.getImageData, el.clearRectangle)
 
 	/*el.drawInvisible(el.ScratchPadThreadSafe)
 	  el.ScratchPadThreadSafe.Stroke()
