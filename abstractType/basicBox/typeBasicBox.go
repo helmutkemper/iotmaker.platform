@@ -38,9 +38,9 @@ func (el *BasicBox) PrepareShadowFilter() {
 	}
 }
 
-func (el *BasicBox) PrepareGradientFilter() {
+func (el *BasicBox) PrepareGradientFilter(platform iotmaker_platform_IDraw.IDraw) {
 	if el.prepareGradientFilter != nil {
-		el.prepareGradientFilter(el.Platform)
+		el.prepareGradientFilter(platform)
 	}
 }
 
@@ -104,7 +104,12 @@ func (el *BasicBox) calculateCoordinates() {
 }
 
 func (el *BasicBox) getImageData(platform iotmaker_platform_IDraw.IDraw) {
-	el.imageData = platform.GetImageData(el.Dimensions.X, el.Dimensions.Y, el.Dimensions.Width, el.Dimensions.Height)
+	x := el.Dimensions.X - el.Ink.LineWidth/2
+	y := el.Dimensions.Y - el.Ink.LineWidth/2
+	width := el.Dimensions.Width + el.Ink.LineWidth
+	height := el.Dimensions.Height + el.Ink.LineWidth
+
+	el.imageData = platform.GetImageData(x, y, width, height)
 
 	el.imageDataX = len(el.imageData) - 1
 
@@ -134,8 +139,8 @@ func (el *BasicBox) GetAlphaChannel(x, y int) {
 		return
 	}
 
-	x -= el.Dimensions.X
-	y -= el.Dimensions.Y
+	x -= el.Dimensions.X - el.Ink.LineWidth/2
+	y -= el.Dimensions.Y - el.Ink.LineWidth/2
 	//fmt.Printf("x: %v, y: %v\n", x, y)
 	//fmt.Printf("ix: %v, iy: %v\n", el.imageDataX, el.imageDataY)
 
@@ -157,6 +162,17 @@ func (el *BasicBox) clearRectangle(platform iotmaker_platform_IDraw.IDraw) {
 	height := el.Dimensions.Height + el.Ink.LineWidth
 
 	platform.ClearRect(x, y, width, height)
+
+	el.Platform.BeginPath()
+	el.Platform.LineWidth(1)
+	el.Platform.StrokeStyle("#ff0000")
+	el.Platform.MoveTo(x, y)
+	el.Platform.LineTo(x, y+height)
+	el.Platform.LineTo(x+width, y+height)
+	el.Platform.LineTo(x+width, y)
+	el.Platform.ClosePath(x, y)
+	el.Platform.Stroke()
+
 }
 
 func (el *BasicBox) drawInvisible(platform iotmaker_platform_IDraw.IDraw) {
@@ -177,6 +193,7 @@ func (el *BasicBox) drawInvisible(platform iotmaker_platform_IDraw.IDraw) {
 func (el *BasicBox) prepareImageData() {
 	iotmaker_threadsafe.ScratchPad(
 		el.ScratchPad,
+		el.PrepareGradientFilter,
 		el.drawInvisible,
 		el.getImageData,
 		el.clearRectangle,
@@ -185,7 +202,7 @@ func (el *BasicBox) prepareImageData() {
 
 func (el *BasicBox) drawVisible() {
 	el.drawInvisible(el.Platform)
-	el.PrepareGradientFilter()
+	el.PrepareGradientFilter(el.Platform)
 	el.PrepareShadowFilter()
 	el.Platform.Stroke()
 }
