@@ -14,7 +14,9 @@ type BasicBox struct {
 	Dimensions Dimensions
 	Ink        Ink
 
-	imageData [][]color.RGBA
+	imageData  [][]color.RGBA
+	imageDataX int
+	imageDataY int
 
 	prepareShadowFilter   func(iotmaker_platform_IDraw.ICanvasShadow)
 	prepareGradientFilter func(iotmaker_platform_IDraw.ICanvasGradient)
@@ -103,27 +105,49 @@ func (el *BasicBox) calculateCoordinates() {
 
 func (el *BasicBox) getImageData(platform iotmaker_platform_IDraw.IDraw) {
 	el.imageData = platform.GetImageData(el.Dimensions.X, el.Dimensions.Y, el.Dimensions.Width, el.Dimensions.Height)
+
+	el.imageDataX = len(el.imageData) - 1
+
+	if el.imageDataX > 0 {
+		el.imageDataY = len(el.imageData[0]) - 1
+	}
 }
 
-func (el *BasicBox) GetAlphaChannel(x, y int) int16 {
-	fmt.Printf("%v\n", el.imageData)
-
+func (el *BasicBox) GetAlphaChannel(x, y int) {
 	if el.Dimensions.X > x {
-		return -1
+		//fmt.Printf("el.Dimensions.X(%v) > x(%v)\n", el.Dimensions.X, x)
+		return
 	}
 
 	if el.Dimensions.Y > y {
-		return -2
+		//fmt.Printf("el.Dimensions.Y(%v) > y(%v)\n", el.Dimensions.Y, y)
+		return
 	}
 
-	if x > el.Dimensions.X+el.Dimensions.Width || y > el.Dimensions.Y+el.Dimensions.Height {
-		return -3
+	if x > el.Dimensions.X+el.Dimensions.Width {
+		//fmt.Printf("x(%v) > el.Dimensions.X+el.Dimensions.Width(%v)\n", x, el.Dimensions.X+el.Dimensions.Width)
+		return
+	}
+
+	if y > el.Dimensions.Y+el.Dimensions.Height {
+		//fmt.Printf("y(%v) > el.Dimensions.Y+el.Dimensions.Height(%v)\n", y, el.Dimensions.Y+el.Dimensions.Height)
+		return
 	}
 
 	x -= el.Dimensions.X
 	y -= el.Dimensions.Y
+	//fmt.Printf("x: %v, y: %v\n", x, y)
+	//fmt.Printf("ix: %v, iy: %v\n", el.imageDataX, el.imageDataY)
 
-	return int16(el.imageData[x][y].A)
+	//fmt.Printf("len x: %v\n", len(el.imageData))
+	//fmt.Printf("len y: %v\n", len(el.imageData[0]))
+
+	if x > el.imageDataX || y > el.imageDataY {
+		return
+	}
+	fmt.Printf("alpha: %v\n", int16(el.imageData[x][y].A))
+
+	return
 }
 
 func (el *BasicBox) clearRectangle(platform iotmaker_platform_IDraw.IDraw) {
