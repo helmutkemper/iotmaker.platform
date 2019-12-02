@@ -3,6 +3,7 @@ package basicBox
 import (
 	"fmt"
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
+	iotmaker_platform_IShadow "github.com/helmutkemper/iotmaker.platform.IShadow"
 	"image/color"
 )
 
@@ -100,8 +101,8 @@ func (el *BasicBox) calculateCoordinates() {
 	el.y4 = el.y3 + el.Dimensions.Border
 }
 
-func (el *BasicBox) prepareImageData() {
-	el.imageData = el.Platform.GetImageData(el.Dimensions.X, el.Dimensions.Y, el.Dimensions.Width, el.Dimensions.Height)
+func (el *BasicBox) getImageData(platform iotmaker_platform_IDraw.IDraw) {
+	el.imageData = platform.GetImageData(el.Dimensions.X, el.Dimensions.Y, el.Dimensions.Width, el.Dimensions.Height)
 }
 
 func (el *BasicBox) GetAlphaChannel(x, y int) int16 {
@@ -125,13 +126,13 @@ func (el *BasicBox) GetAlphaChannel(x, y int) int16 {
 	return int16(el.imageData[x][y].A)
 }
 
-func (el *BasicBox) clearRectangle() {
+func (el *BasicBox) clearRectangle(platform iotmaker_platform_IDraw.IDraw) {
 	x := el.Dimensions.X - el.Ink.LineWidth/2
 	y := el.Dimensions.Y - el.Ink.LineWidth/2
 	width := el.Dimensions.Width + el.Ink.LineWidth
 	height := el.Dimensions.Height + el.Ink.LineWidth
 
-	el.Platform.ClearRect(x, y, width, height)
+	platform.ClearRect(x, y, width, height)
 }
 
 func (el *BasicBox) drawInvisible(platform iotmaker_platform_IDraw.IDraw) {
@@ -149,22 +150,27 @@ func (el *BasicBox) drawInvisible(platform iotmaker_platform_IDraw.IDraw) {
 	platform.ClosePath(el.x2, el.y1)                                 // a
 }
 
-func (el *BasicBox) Create() {
-	el.calculateCoordinates()
+func (el *BasicBox) prepareImageData() {
 
-	//platform := new(iotmaker_platform_IDraw.IDraw)
-	//platform := iotmaker_platform_webbrowser.Stage{}
-	//platform := iotmaker_platform_webbrowser.Canvas{}
+	iotmaker_platform_IShadow.ScratchPadThreadSafe(el.ScratchPad, el.drawInvisible, el.getImageData, el.clearRectangle)
 
-	//el.Tmp.SelfElement = platform.Element.SelfElement
+	/*el.drawInvisible(el.ScratchPadThreadSafe)
+	  el.ScratchPadThreadSafe.Stroke()
+	  el.getImageData(el.ScratchPadThreadSafe)
+	  el.clearRectangle(el.ScratchPadThreadSafe)*/
+}
 
-	el.drawInvisible(el.ScratchPad)
-	el.ScratchPad.Stroke()
-	el.imageData = el.ScratchPad.GetImageData(el.Dimensions.X, el.Dimensions.Y, el.Dimensions.Width, el.Dimensions.Height)
-
+func (el *BasicBox) drawVisible() {
 	el.drawInvisible(el.Platform)
 	el.PrepareGradientFilter()
 	el.PrepareShadowFilter()
-
 	el.Platform.Stroke()
+}
+
+func (el *BasicBox) Create() {
+
+	el.calculateCoordinates()
+	el.prepareImageData()
+
+	el.drawVisible()
 }
