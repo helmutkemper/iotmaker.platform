@@ -151,13 +151,12 @@ func (el *BasicBox) drawInvisible(platform iotmaker_platform_IDraw.IDraw) {
 }
 
 func (el *BasicBox) prepareImageData() {
-
-	iotmaker_threadsafe.ScratchPadThreadSafe(el.ScratchPad, el.drawInvisible, el.getImageData, el.clearRectangle)
-
-	/*el.drawInvisible(el.ScratchPadThreadSafe)
-	  el.ScratchPadThreadSafe.Stroke()
-	  el.getImageData(el.ScratchPadThreadSafe)
-	  el.clearRectangle(el.ScratchPadThreadSafe)*/
+	iotmaker_threadsafe.ScratchPad(
+		el.ScratchPad,
+		el.drawInvisible,
+		el.getImageData,
+		el.clearRectangle,
+	)
 }
 
 func (el *BasicBox) drawVisible() {
@@ -168,9 +167,7 @@ func (el *BasicBox) drawVisible() {
 }
 
 func (el *BasicBox) Create() {
-
 	el.calculateCoordinates()
 	el.prepareImageData()
-
 	el.drawVisible()
 }
