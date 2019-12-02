@@ -8,6 +8,7 @@ import (
 
 type BasicBox struct {
 	Platform   iotmaker_platform_IDraw.IDraw
+	ScratchPad iotmaker_platform_IDraw.IDraw
 	Id         string
 	Dimensions Dimensions
 	Ink        Ink
@@ -46,7 +47,6 @@ func (el *BasicBox) configShadowPlatformAndFilter() {
 	}
 
 	el.SetShadowFilter(el.Ink.Shadow.PrepareFilter)
-
 }
 
 func (el *BasicBox) configGradientPlatformAndFilter() {
@@ -83,10 +83,10 @@ func (el *BasicBox) calculateCoordinates() {
 	//              border        border
 
 	// correct the line width size
-	el.Dimensions.X += el.Ink.LineWidth / 2
-	el.Dimensions.Y += el.Ink.LineWidth / 2
-	el.Dimensions.Width -= el.Ink.LineWidth / 2
-	el.Dimensions.Height -= el.Ink.LineWidth / 2
+	el.Dimensions.X -= el.Ink.LineWidth / 2
+	el.Dimensions.Y -= el.Ink.LineWidth / 2
+	el.Dimensions.Width -= el.Ink.LineWidth
+	el.Dimensions.Height -= el.Ink.LineWidth
 
 	// set coordinates from de box in draw_1
 	el.x1 = el.Dimensions.X
@@ -125,29 +125,44 @@ func (el *BasicBox) GetAlphaChannel(x, y int) int16 {
 	return int16(el.imageData[x][y].A)
 }
 
-func (el *BasicBox) drawInvisible() {
-	el.Platform.LineWidth(el.Ink.LineWidth)
-	el.Platform.BeginPath()
-	el.Platform.MoveTo(el.x2, el.y1)                                    // a
-	el.Platform.LineTo(el.x3, el.y1)                                    // a->b
-	el.Platform.ArcTo(el.x4, el.y1, el.x4, el.y2, el.Dimensions.Border) // c->d
-	el.Platform.LineTo(el.x4, el.y3)                                    // d->e
-	el.Platform.ArcTo(el.x4, el.y4, el.x3, el.y4, el.Dimensions.Border) // f->g
-	el.Platform.LineTo(el.x2, el.y4)                                    // g->h
-	el.Platform.ArcTo(el.x1, el.y4, el.x1, el.y3, el.Dimensions.Border) // i->j
-	el.Platform.LineTo(el.x1, el.y2)                                    // j->k
-	el.Platform.ArcTo(el.x1, el.y1, el.x2, el.y1, el.Dimensions.Border) // i->j
-	el.Platform.ClosePath(el.x2, el.y1)                                 // a
+func (el *BasicBox) clearRectangle() {
+	x := el.Dimensions.X - el.Ink.LineWidth/2
+	y := el.Dimensions.Y - el.Ink.LineWidth/2
+	width := el.Dimensions.Width + el.Ink.LineWidth
+	height := el.Dimensions.Height + el.Ink.LineWidth
+
+	el.Platform.ClearRect(x, y, width, height)
+}
+
+func (el *BasicBox) drawInvisible(platform iotmaker_platform_IDraw.IDraw) {
+	platform.LineWidth(el.Ink.LineWidth)
+	platform.BeginPath()
+	platform.MoveTo(el.x2, el.y1)                                    // a
+	platform.LineTo(el.x3, el.y1)                                    // a->b
+	platform.ArcTo(el.x4, el.y1, el.x4, el.y2, el.Dimensions.Border) // c->d
+	platform.LineTo(el.x4, el.y3)                                    // d->e
+	platform.ArcTo(el.x4, el.y4, el.x3, el.y4, el.Dimensions.Border) // f->g
+	platform.LineTo(el.x2, el.y4)                                    // g->h
+	platform.ArcTo(el.x1, el.y4, el.x1, el.y3, el.Dimensions.Border) // i->j
+	platform.LineTo(el.x1, el.y2)                                    // j->k
+	platform.ArcTo(el.x1, el.y1, el.x2, el.y1, el.Dimensions.Border) // i->j
+	platform.ClosePath(el.x2, el.y1)                                 // a
 }
 
 func (el *BasicBox) Create() {
 	el.calculateCoordinates()
-	el.drawInvisible()
 
-	el.Platform.Stroke()
+	//platform := new(iotmaker_platform_IDraw.IDraw)
+	//platform := iotmaker_platform_webbrowser.Stage{}
+	//platform := iotmaker_platform_webbrowser.Canvas{}
 
-	el.prepareImageData()
+	//el.Tmp.SelfElement = platform.Element.SelfElement
 
+	el.drawInvisible(el.ScratchPad)
+	el.ScratchPad.Stroke()
+	el.imageData = el.ScratchPad.GetImageData(el.Dimensions.X, el.Dimensions.Y, el.Dimensions.Width, el.Dimensions.Height)
+
+	el.drawInvisible(el.Platform)
 	el.PrepareGradientFilter()
 	el.PrepareShadowFilter()
 
