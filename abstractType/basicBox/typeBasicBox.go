@@ -1,7 +1,9 @@
 package basicBox
 
 import (
+	"fmt"
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
+	"image/color"
 )
 
 type BasicBox struct {
@@ -9,6 +11,8 @@ type BasicBox struct {
 	Id         string
 	Dimensions Dimensions
 	Ink        Ink
+
+	imageData [][]color.RGBA
 
 	prepareShadowFilter   func(iotmaker_platform_IDraw.ICanvasShadow)
 	prepareGradientFilter func(iotmaker_platform_IDraw.ICanvasGradient)
@@ -96,6 +100,31 @@ func (el *BasicBox) calculateCoordinates() {
 	el.y4 = el.y3 + el.Dimensions.Border
 }
 
+func (el *BasicBox) prepareImageData() {
+	el.imageData = el.Platform.GetImageData(el.Dimensions.X, el.Dimensions.Y, el.Dimensions.Width, el.Dimensions.Height)
+}
+
+func (el *BasicBox) GetAlphaChannel(x, y int) int16 {
+	fmt.Printf("%v\n", el.imageData)
+
+	if el.Dimensions.X > x {
+		return -1
+	}
+
+	if el.Dimensions.Y > y {
+		return -2
+	}
+
+	if x > el.Dimensions.X+el.Dimensions.Width || y > el.Dimensions.Y+el.Dimensions.Height {
+		return -3
+	}
+
+	x -= el.Dimensions.X
+	y -= el.Dimensions.Y
+
+	return int16(el.imageData[x][y].A)
+}
+
 func (el *BasicBox) drawInvisible() {
 	el.Platform.LineWidth(el.Ink.LineWidth)
 	el.Platform.BeginPath()
@@ -114,6 +143,10 @@ func (el *BasicBox) drawInvisible() {
 func (el *BasicBox) Create() {
 	el.calculateCoordinates()
 	el.drawInvisible()
+
+	el.Platform.Stroke()
+
+	el.prepareImageData()
 
 	el.PrepareGradientFilter()
 	el.PrepareShadowFilter()
