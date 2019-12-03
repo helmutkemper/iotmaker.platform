@@ -2,27 +2,27 @@ package basicBox
 
 import iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.coordinate"
 
-func NewDimensions(x, y, width, height, border int, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) Dimensions {
-
-	dm := Dimensions{}
+func NewDimensions(dm Dimensions, x, y, width, height, border int, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) Dimensions {
 
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 
 	densityCalc.Set(x)
-	dm.X = densityCalc.Int()
+	x = densityCalc.Int()
 
 	densityCalc.Set(y)
-	dm.Y = densityCalc.Int()
+	y = densityCalc.Int()
 
 	densityCalc.Set(width)
-	dm.Width = densityCalc.Int()
+	width = densityCalc.Int()
 
 	densityCalc.Set(height)
-	dm.Height = densityCalc.Int()
+	height = densityCalc.Int()
 
 	densityCalc.Set(border)
-	dm.Border = densityCalc.Int()
+	border = densityCalc.Int()
+
+	dm.Set(x, y, width, height, border)
 
 	return dm
 }
