@@ -1,7 +1,6 @@
 package basicBox
 
 import (
-	"fmt"
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
 	iotmaker_threadsafe "github.com/helmutkemper/iotmaker.threadsafe"
 	"image/color"
@@ -14,9 +13,7 @@ type BasicBox struct {
 	Dimensions Dimensions
 	Ink        Ink
 
-	imageData  [][]color.RGBA
-	imageDataX int
-	imageDataY int
+	imageData map[int]map[int]color.RGBA
 
 	prepareShadowFilter   func(iotmaker_platform_IDraw.ICanvasShadow)
 	prepareGradientFilter func(iotmaker_platform_IDraw.ICanvasGradient)
@@ -109,60 +106,6 @@ func (el *BasicBox) getImageData(platform iotmaker_platform_IDraw.IDraw) {
 	width := el.Dimensions.Width + el.Ink.LineWidth
 	height := el.Dimensions.Height + el.Ink.LineWidth
 
-	el.imageData = platform.GetImageData(x, y, width, height)
-
-	el.imageDataX = len(el.imageData) - 1
-
-	if el.imageDataX > 0 {
-		el.imageDataY = len(el.imageData[0]) - 1
-	}
-}
-
-func (el *BasicBox) GetAlphaChannel(x, y int) {
-	if el.Dimensions.X > x {
-		//fmt.Printf("el.Dimensions.X(%v) > x(%v)\n", el.Dimensions.X, x)
-		return
-	}
-
-	if el.Dimensions.Y > y {
-		//fmt.Printf("el.Dimensions.Y(%v) > y(%v)\n", el.Dimensions.Y, y)
-		return
-	}
-
-	if x > el.Dimensions.X+el.Dimensions.Width {
-		//fmt.Printf("x(%v) > el.Dimensions.X+el.Dimensions.Width(%v)\n", x, el.Dimensions.X+el.Dimensions.Width)
-		return
-	}
-
-	if y > el.Dimensions.Y+el.Dimensions.Height {
-		//fmt.Printf("y(%v) > el.Dimensions.Y+el.Dimensions.Height(%v)\n", y, el.Dimensions.Y+el.Dimensions.Height)
-		return
-	}
-
-	x -= el.Dimensions.X - el.Ink.LineWidth/2
-	y -= el.Dimensions.Y - el.Ink.LineWidth/2
-	//fmt.Printf("x: %v, y: %v\n", x, y)
-	//fmt.Printf("ix: %v, iy: %v\n", el.imageDataX, el.imageDataY)
-
-	//fmt.Printf("len x: %v\n", len(el.imageData))
-	//fmt.Printf("len y: %v\n", len(el.imageData[0]))
-
-	if x > el.imageDataX || y > el.imageDataY {
-		return
-	}
-	fmt.Printf("alpha: %v\n", int16(el.imageData[x][y].A))
-
-	return
-}
-
-func (el *BasicBox) clearRectangle(platform iotmaker_platform_IDraw.IDraw) {
-	x := el.Dimensions.X - el.Ink.LineWidth/2
-	y := el.Dimensions.Y - el.Ink.LineWidth/2
-	width := el.Dimensions.Width + el.Ink.LineWidth
-	height := el.Dimensions.Height + el.Ink.LineWidth
-
-	platform.ClearRect(x, y, width, height)
-
 	el.Platform.BeginPath()
 	el.Platform.LineWidth(1)
 	el.Platform.StrokeStyle("#ff0000")
@@ -173,6 +116,20 @@ func (el *BasicBox) clearRectangle(platform iotmaker_platform_IDraw.IDraw) {
 	el.Platform.ClosePath(x, y)
 	el.Platform.Stroke()
 
+	el.imageData = platform.GetImageData(x, y, width, height)
+}
+
+func (el *BasicBox) GetAlphaChannel(x, y int) uint8 {
+	return el.imageData[x][y].A
+}
+
+func (el *BasicBox) clearRectangle(platform iotmaker_platform_IDraw.IDraw) {
+	x := el.Dimensions.X - el.Ink.LineWidth/2
+	y := el.Dimensions.Y - el.Ink.LineWidth/2
+	width := el.Dimensions.Width + el.Ink.LineWidth
+	height := el.Dimensions.Height + el.Ink.LineWidth
+
+	platform.ClearRect(x, y, width, height)
 }
 
 func (el *BasicBox) drawInvisible(platform iotmaker_platform_IDraw.IDraw) {
