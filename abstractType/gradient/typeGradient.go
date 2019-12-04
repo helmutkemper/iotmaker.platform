@@ -50,7 +50,7 @@ func (el *Gradient) PrepareFilter(platform iotmaker_platform_IDraw.ICanvasGradie
 	}
 
 	for _, value := range el.ColorList {
-		el.Platform.AddColorStop(gradient, value.Stop, value.Color)
+		el.Platform.AddColorStopPosition(gradient, value.Stop, value.Color)
 	}
 
 	if el.Type == KLinearGradientFill || el.Type == KLinearGradientFillAndStroke || el.Type == KRadialGradientFill || el.Type == KRadialGradientFillAndStroke {

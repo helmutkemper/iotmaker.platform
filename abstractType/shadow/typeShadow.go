@@ -34,10 +34,10 @@ func (el *Shadow) PrepareFilter(platform iotmaker_platform_IDraw.ICanvasShadow) 
 		return
 	}
 
-	el.Platform.ShadowColor(el.Color)
+	el.Platform.SetShadowColor(el.Color)
 
 	if el.BlurEnable == true {
-		el.Platform.ShadowBlur(el.Blur)
+		el.Platform.SetShadowBlur(el.Blur)
 	}
 
 	if el.OffsetXEnable == true {
