@@ -178,7 +178,7 @@ func (el *BasicBox) Create() {
 	el.drawVisible()
 
 	if el.alphaChannelSensibility == 0 {
-		el.alphaChannelSensibility = 255 * 0.1
+		el.alphaChannelSensibility = 25 // 10% de 255
 	}
 }
 
