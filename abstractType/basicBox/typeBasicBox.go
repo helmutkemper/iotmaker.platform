@@ -107,7 +107,7 @@ func (el *BasicBox) getImageData(platform iotmaker_platform_IDraw.IDraw) {
 	height := el.Dimensions.Height + el.Ink.LineWidth
 
 	el.Platform.BeginPath()
-	el.Platform.LineWidth(1)
+	el.Platform.SetLineWidth(1)
 	el.Platform.StrokeStyle("#ff0000")
 	el.Platform.MoveTo(x, y)
 	el.Platform.LineTo(x, y+height)
@@ -133,7 +133,7 @@ func (el *BasicBox) clearRectangle(platform iotmaker_platform_IDraw.IDraw) {
 }
 
 func (el *BasicBox) drawInvisible(platform iotmaker_platform_IDraw.IDraw) {
-	platform.LineWidth(el.Ink.LineWidth)
+	platform.SetLineWidth(el.Ink.LineWidth)
 	platform.BeginPath()
 	platform.MoveTo(el.x2, el.y1)                                    // a
 	platform.LineTo(el.x3, el.y1)                                    // a->b

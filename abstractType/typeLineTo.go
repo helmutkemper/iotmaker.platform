@@ -56,15 +56,15 @@ type LineTo struct {
 func (el *LineTo) Create() {
 
 	// correct the line width size
-	//el.X.Add(el.LineWidth.Int() / 2)
-	//el.Y.Add(el.LineWidth.Int() / 2)
-	//el.Width.Sub(el.LineWidth.Int() / 2)
-	//el.Height.Sub(el.LineWidth.Int() / 2)
+	//el.X.Add(el.SetLineWidth.Int() / 2)
+	//el.Y.Add(el.SetLineWidth.Int() / 2)
+	//el.Width.Sub(el.SetLineWidth.Int() / 2)
+	//el.Height.Sub(el.SetLineWidth.Int() / 2)
 
-	//el.SelfContext.LineWidth(input.LineWidth)
+	//el.SelfContext.SetLineWidth(input.SetLineWidth)
 
 	el.Platform.BeginPath()
-	el.Platform.LineWidth(el.LineWidth.Int())
+	el.Platform.SetLineWidth(el.LineWidth.Int())
 	el.Platform.MoveTo(el.X1.Int(), el.Y1.Int()) // a
 	el.Platform.LineTo(el.X2.Int(), el.Y2.Int()) // a->b
 	el.Platform.Stroke()
