@@ -3,6 +3,7 @@ package basicBox
 import (
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
 	"github.com/helmutkemper/iotmaker.platform/abstractType/genericTypes"
+	"github.com/helmutkemper/iotmaker.platform/independentDraw"
 	iotmaker_threadsafe "github.com/helmutkemper/iotmaker.threadsafe"
 	"image/color"
 )
@@ -22,20 +23,6 @@ type BasicBox struct {
 
 	prepareShadowFilterFunctionPointer   func(iotmaker_platform_IDraw.ICanvasShadow)
 	prepareGradientFilterFunctionPointer func(iotmaker_platform_IDraw.ICanvasGradient)
-
-	// see calculateCoordinates() - start
-	x1 int
-	y1 int
-
-	x2 int
-	y2 int
-
-	x3 int
-	y3 int
-
-	x4 int
-	y4 int
-	// see calculateCoordinates() - end
 
 	// see clearRectangle() and getCompleteImageData() - start
 	OutBoxDimensions genericTypes.Dimensions
@@ -104,17 +91,6 @@ func (el *BasicBox) calculateCoordinates() {
 	el.Dimensions.Width -= el.Ink.LineWidth
 	el.Dimensions.Height -= el.Ink.LineWidth
 
-	// set coordinates from de box in draw_1
-	el.x1 = el.Dimensions.X
-	el.x2 = el.x1 + el.Dimensions.Border
-	el.x3 = el.x2 + el.Dimensions.Width - 2*el.Dimensions.Border
-	el.x4 = el.x3 + el.Dimensions.Border
-
-	el.y1 = el.Dimensions.Y
-	el.y2 = el.y1 + el.Dimensions.Border
-	el.y3 = el.y2 + el.Dimensions.Height - 2*el.Dimensions.Border
-	el.y4 = el.y3 + el.Dimensions.Border
-
 	// calculate outline from the box
 	x := el.Dimensions.X - el.Ink.LineWidth/2
 	y := el.Dimensions.Y - el.Ink.LineWidth/2
@@ -141,17 +117,7 @@ func (el *BasicBox) clearRectangle(platform iotmaker_platform_IDraw.IDraw) {
 
 func (el *BasicBox) drawInvisible(platform iotmaker_platform_IDraw.IDraw) {
 	platform.SetLineWidth(el.Ink.LineWidth)
-	platform.BeginPath()
-	platform.MoveTo(el.x2, el.y1)                                    // a
-	platform.LineTo(el.x3, el.y1)                                    // a->b
-	platform.ArcTo(el.x4, el.y1, el.x4, el.y2, el.Dimensions.Border) // c->d
-	platform.LineTo(el.x4, el.y3)                                    // d->e
-	platform.ArcTo(el.x4, el.y4, el.x3, el.y4, el.Dimensions.Border) // f->g
-	platform.LineTo(el.x2, el.y4)                                    // g->h
-	platform.ArcTo(el.x1, el.y4, el.x1, el.y3, el.Dimensions.Border) // i->j
-	platform.LineTo(el.x1, el.y2)                                    // j->k
-	platform.ArcTo(el.x1, el.y1, el.x2, el.y1, el.Dimensions.Border) // i->j
-	platform.ClosePath(el.x2, el.y1)                                 // a
+	independentDraw.DrawBoxWithRoundedCornersIntoThePath(el.Platform, el.Dimensions.X, el.Dimensions.Y, el.Dimensions.Width, el.Dimensions.Height, el.Dimensions.Border)
 }
 
 func (el *BasicBox) drawVisible() {
