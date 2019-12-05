@@ -2,26 +2,19 @@ package basicBox
 
 import (
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
+	"github.com/helmutkemper/iotmaker.platform/abstractType/genericTypes"
 	iotmaker_threadsafe "github.com/helmutkemper/iotmaker.threadsafe"
 	"image/color"
-)
-
-type ImageDataCaptureMethod uint8
-
-const (
-	KImageDataCaptureMethodBooleanSensibility ImageDataCaptureMethod = iota
-	KImageDataCaptureMethodCompleteData
-	KImageDataCaptureMethodAlphaChannelOnly
 )
 
 type BasicBox struct {
 	Platform   iotmaker_platform_IDraw.IDraw
 	ScratchPad iotmaker_platform_IDraw.IDraw
 	Id         string
-	Dimensions Dimensions
-	Ink        Ink
+	Dimensions genericTypes.Dimensions
+	Ink        genericTypes.Ink
 
-	imageDataMethod           ImageDataCaptureMethod
+	imageDataMethod           genericTypes.ImageDataCaptureMethod
 	imageDataComplete         map[int]map[int]color.RGBA
 	imageDataAlphaChannel     map[int]map[int]uint8
 	imageDataBooleanCollision map[int]map[int]bool
@@ -188,7 +181,7 @@ func (el *BasicBox) Create() {
 func (el *BasicBox) CalculateImageData() {
 
 	switch el.imageDataMethod {
-	case KImageDataCaptureMethodCompleteData:
+	case genericTypes.KImageDataCaptureMethodCompleteData:
 		iotmaker_threadsafe.ScratchPad(
 			el.ScratchPad,
 			el.prepareGradientFilter,
@@ -196,7 +189,7 @@ func (el *BasicBox) CalculateImageData() {
 			el.getCompleteImageData,
 			el.clearRectangle,
 		)
-	case KImageDataCaptureMethodAlphaChannelOnly:
+	case genericTypes.KImageDataCaptureMethodAlphaChannelOnly:
 		iotmaker_threadsafe.ScratchPad(
 			el.ScratchPad,
 			el.prepareGradientFilter,
@@ -204,7 +197,7 @@ func (el *BasicBox) CalculateImageData() {
 			el.getImageDataAlphaChannelOnly,
 			el.clearRectangle,
 		)
-	case KImageDataCaptureMethodBooleanSensibility:
+	case genericTypes.KImageDataCaptureMethodBooleanSensibility:
 		iotmaker_threadsafe.ScratchPad(
 			el.ScratchPad,
 			el.prepareGradientFilter,
@@ -220,7 +213,7 @@ func (el *BasicBox) CalculateImageData() {
 //     KImageDataCaptureMethodCompleteData: Arquiva um mapa de RGBA no formato mapa[x][y]RGBA
 //     KImageDataCaptureMethodAlphaChannelOnly: Arquiva um mapa de uint8 no formato mapa[x][y]uint8
 //     Veja também SetAlphaChannelSensibility() e SetEnableDataImageCalculate()
-func (el *BasicBox) SetImageDataCalculateMethod(value ImageDataCaptureMethod) {
+func (el *BasicBox) SetImageDataCalculateMethod(value genericTypes.ImageDataCaptureMethod) {
 	el.imageDataMethod = value
 }
 

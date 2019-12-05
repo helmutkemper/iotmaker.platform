@@ -1,4 +1,4 @@
-package basicBox
+package genericTypes
 
 type Dimensions struct {
 	X                     int

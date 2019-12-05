@@ -1,4 +1,4 @@
-package basicBox
+package genericTypes
 
 import iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.coordinate"
 
