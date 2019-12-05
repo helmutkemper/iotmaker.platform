@@ -12,7 +12,8 @@ type BasicBox struct {
 	ScratchPad iotmaker_platform_IDraw.IDraw
 	Id         string
 	Dimensions genericTypes.Dimensions
-	Ink        genericTypes.Ink
+
+	Ink genericTypes.Ink
 
 	imageDataMethod           genericTypes.ImageDataCaptureMethod
 	imageDataComplete         map[int]map[int]color.RGBA
@@ -37,10 +38,7 @@ type BasicBox struct {
 	// see calculateCoordinates() - end
 
 	// see clearRectangle() and getCompleteImageData() - start
-	x      int
-	y      int
-	width  int
-	height int
+	OutBoxDimensions genericTypes.Dimensions
 	// see clearRectangle() and getCompleteImageData() - end
 
 	alphaChannelSensibility  uint8
@@ -118,25 +116,27 @@ func (el *BasicBox) calculateCoordinates() {
 	el.y4 = el.y3 + el.Dimensions.Border
 
 	// calculate outline from the box
-	el.x = el.Dimensions.X - el.Ink.LineWidth/2
-	el.y = el.Dimensions.Y - el.Ink.LineWidth/2
-	el.width = el.Dimensions.Width + el.Ink.LineWidth
-	el.height = el.Dimensions.Height + el.Ink.LineWidth
+	x := el.Dimensions.X - el.Ink.LineWidth/2
+	y := el.Dimensions.Y - el.Ink.LineWidth/2
+	width := el.Dimensions.Width + el.Ink.LineWidth
+	height := el.Dimensions.Height + el.Ink.LineWidth
+
+	el.OutBoxDimensions.Set(x, y, width, height, 0)
 }
 
 func (el *BasicBox) getCompleteImageData(platform iotmaker_platform_IDraw.IDraw) {
-	el.imageDataComplete = platform.GetImageData(el.x, el.y, el.width, el.height)
+	el.imageDataComplete = platform.GetImageData(el.OutBoxDimensions.X, el.OutBoxDimensions.Y, el.OutBoxDimensions.Width, el.OutBoxDimensions.Height)
 }
 
 func (el *BasicBox) getImageDataAlphaChannelOnly(platform iotmaker_platform_IDraw.IDraw) {
-	el.imageDataAlphaChannel = platform.GetImageDataAlphaChannelOnly(el.x, el.y, el.width, el.height)
+	el.imageDataAlphaChannel = platform.GetImageDataAlphaChannelOnly(el.OutBoxDimensions.X, el.OutBoxDimensions.Y, el.OutBoxDimensions.Width, el.OutBoxDimensions.Height)
 }
 func (el *BasicBox) getImageDataCollisionByAlphaChannelValue(platform iotmaker_platform_IDraw.IDraw) {
-	el.imageDataBooleanCollision = platform.GetImageDataCollisionByAlphaChannelValue(el.x, el.y, el.width, el.height, el.alphaChannelSensibility)
+	el.imageDataBooleanCollision = platform.GetImageDataCollisionByAlphaChannelValue(el.OutBoxDimensions.X, el.OutBoxDimensions.Y, el.OutBoxDimensions.Width, el.OutBoxDimensions.Height, el.alphaChannelSensibility)
 }
 
 func (el *BasicBox) clearRectangle(platform iotmaker_platform_IDraw.IDraw) {
-	platform.ClearRect(el.x, el.y, el.width, el.height)
+	platform.ClearRect(el.OutBoxDimensions.X, el.OutBoxDimensions.Y, el.OutBoxDimensions.Width, el.OutBoxDimensions.Height)
 }
 
 func (el *BasicBox) drawInvisible(platform iotmaker_platform_IDraw.IDraw) {
@@ -230,7 +230,7 @@ func (el *BasicBox) GetCollisionByAlphaChannel(x, y int) bool {
 }
 
 func (el *BasicBox) GetCollisionBySimpleBox(x, y int) bool {
-	return el.x <= x && el.x+el.width >= x && el.y <= y && el.y+el.height >= y
+	return el.OutBoxDimensions.X <= x && el.OutBoxDimensions.X+el.OutBoxDimensions.Width >= x && el.OutBoxDimensions.Y <= y && el.OutBoxDimensions.Y+el.OutBoxDimensions.Height >= y
 }
 
 func (el *BasicBox) GetPixelAlphaChannel(x, y int) uint8 {
@@ -247,4 +247,24 @@ func (el *BasicBox) GetPixelColor(x, y int) color.RGBA {
 	}
 
 	return el.imageDataComplete[x][y]
+}
+
+func (el *BasicBox) GetPlatform() iotmaker_platform_IDraw.IDraw {
+	return el.Platform
+}
+
+func (el *BasicBox) GetScratchPad() iotmaker_platform_IDraw.IDraw {
+	return el.ScratchPad
+}
+
+func (el *BasicBox) GetId() string {
+	return el.Id
+}
+
+func (el *BasicBox) GetDimensions() genericTypes.Dimensions {
+	return el.Dimensions
+}
+
+func (el *BasicBox) GetInk() genericTypes.Ink {
+	return el.Ink
 }
