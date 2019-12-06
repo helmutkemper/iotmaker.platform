@@ -54,19 +54,21 @@ func (el *Gradient) PrepareFilter(platform iotmaker_platform_IDraw.ICanvasGradie
 	}
 
 	if el.Type == KLinearGradientFill || el.Type == KLinearGradientFillAndStroke || el.Type == KRadialGradientFill || el.Type == KRadialGradientFillAndStroke {
-		el.Platform.FillStyle(gradient)
+		el.Platform.SetFillStyle(gradient)
+		el.Platform.Fill()
 	}
 
 	if el.Type == KLinearGradientStroke || el.Type == KLinearGradientFillAndStroke || el.Type == KRadialGradientStroke || el.Type == KRadialGradientFillAndStroke {
-		el.Platform.StrokeStyle(gradient)
+		el.Platform.SetStrokeStyle(gradient)
+		el.Platform.Stroke()
 	}
 
 }
 
 func (el *Gradient) Fill(gradient interface{}) {
-	el.Platform.FillStyle(gradient)
+	el.Platform.SetFillStyle(gradient)
 }
 
 func (el *Gradient) Stroke(gradient interface{}) {
-	el.Platform.StrokeStyle(gradient)
+	el.Platform.SetStrokeStyle(gradient)
 }
