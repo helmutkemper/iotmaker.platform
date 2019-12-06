@@ -1,0 +1,3 @@
+package mouse
+
+type PointerComplexFunction func(ritFunction PointerCollisionFunction, positiveEventFunction PointerEventFunction)

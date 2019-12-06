@@ -73,30 +73,44 @@ func (el *ResizeBoxes) Create() {
 
 	el.Platform.SetLineWidth(1)
 	el.createCornerB()
+	el.Platform.FillStyle("#00FFFF")
+	el.Platform.Fill()
 	el.Platform.Stroke()
 
 	el.Platform.SetLineWidth(1)
 	el.createCornerC()
+	el.Platform.FillStyle("#00FFFF")
+	el.Platform.Fill()
 	el.Platform.Stroke()
 
 	el.Platform.SetLineWidth(1)
 	el.createCornerD()
+	el.Platform.FillStyle("#00FFFF")
+	el.Platform.Fill()
 	el.Platform.Stroke()
 
 	el.Platform.SetLineWidth(1)
 	el.createCornerE()
+	el.Platform.FillStyle("#00FFFF")
+	el.Platform.Fill()
 	el.Platform.Stroke()
 
 	el.Platform.SetLineWidth(1)
 	el.createCornerF()
+	el.Platform.FillStyle("#00FFFF")
+	el.Platform.Fill()
 	el.Platform.Stroke()
 
 	el.Platform.SetLineWidth(1)
 	el.createCornerG()
+	el.Platform.FillStyle("#00FFFF")
+	el.Platform.Fill()
 	el.Platform.Stroke()
 
 	el.Platform.SetLineWidth(1)
 	el.createCornerH()
+	el.Platform.FillStyle("#00FFFF")
+	el.Platform.Fill()
 	el.Platform.Stroke()
 
 	el.Platform.SetLineWidth(1)

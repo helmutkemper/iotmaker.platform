@@ -4,6 +4,7 @@ import (
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
 	"github.com/helmutkemper/iotmaker.platform/abstractType/genericTypes"
 	"github.com/helmutkemper/iotmaker.platform/independentDraw"
+	"github.com/helmutkemper/iotmaker.platform/mouse"
 	iotmaker_threadsafe "github.com/helmutkemper/iotmaker.threadsafe"
 	"image/color"
 )
@@ -195,8 +196,22 @@ func (el *BasicBox) GetCollisionByAlphaChannel(x, y int) bool {
 	return el.imageDataBooleanCollision[x][y]
 }
 
-func (el *BasicBox) GetCollisionBySimpleBox(x, y int) bool {
-	return el.OutBoxDimensions.X <= x && el.OutBoxDimensions.X+el.OutBoxDimensions.Width >= x && el.OutBoxDimensions.Y <= y && el.OutBoxDimensions.Y+el.OutBoxDimensions.Height >= y
+func (el *BasicBox) GetCollisionBySimpleBox(xEvent, yEvent int) bool {
+	return el.OutBoxDimensions.X <= xEvent && el.OutBoxDimensions.X+el.OutBoxDimensions.Width >= xEvent &&
+		el.OutBoxDimensions.Y <= yEvent && el.OutBoxDimensions.Y+el.OutBoxDimensions.Height >= yEvent
+}
+
+func (el *BasicBox) GetMouseOverFunctionsList() map[string][]mouse.PointerCollisionFunction {
+	ret := make(map[string][]mouse.PointerCollisionFunction)
+	ret[el.Id] = []mouse.PointerCollisionFunction{
+		el.GetCollisionBySimpleBox,
+	}
+
+	return ret
+}
+
+func (el *BasicBox) GetOutBoxDimensions() genericTypes.Dimensions {
+	return el.OutBoxDimensions
 }
 
 func (el *BasicBox) GetPixelAlphaChannel(x, y int) uint8 {
