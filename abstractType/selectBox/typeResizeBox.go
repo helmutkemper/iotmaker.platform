@@ -61,9 +61,9 @@ func (el *ResizeBoxes) Create() {
 	//     |_|-----|_|-----|_|
 	//   g                     e
 
-	el.Platform.SetLineWidth(1)
-	independentDraw.DrawBoxWithRoundedCornersIntoThePath(el.Platform, el.FatherOutBoxDimensions.X, el.FatherOutBoxDimensions.Y, el.FatherOutBoxDimensions.Width, el.FatherOutBoxDimensions.Height, 0)
-	el.Platform.Stroke()
+	//el.Platform.SetLineWidth(1)
+	//independentDraw.DrawBoxWithRoundedCornersIntoThePath(el.Platform, el.FatherOutBoxDimensions.X, el.FatherOutBoxDimensions.Y, el.FatherOutBoxDimensions.Width, el.FatherOutBoxDimensions.Height, 0)
+	//el.Platform.Stroke()
 
 	el.Platform.SetLineWidth(1)
 	el.createCornerA()
@@ -97,19 +97,50 @@ func (el *ResizeBoxes) Create() {
 	el.createCornerH()
 	el.Platform.Stroke()
 
+	el.Platform.SetLineWidth(1)
+	el.lineFromCornerAToCornerB()
+	el.Platform.Stroke()
+
+	el.Platform.SetLineWidth(1)
+	el.lineFromCornerBToCornerC()
+	el.Platform.Stroke()
+
+	el.Platform.SetLineWidth(1)
+	el.lineFromCornerCToCornerD()
+	el.Platform.Stroke()
+
+	el.Platform.SetLineWidth(1)
+	el.lineFromCornerDToCornerE()
+	el.Platform.Stroke()
+
+	el.Platform.SetLineWidth(1)
+	el.lineFromCornerEToCornerF()
+	el.Platform.Stroke()
+
+	el.Platform.SetLineWidth(1)
+	el.lineFromCornerFToCornerG()
+	el.Platform.Stroke()
+
+	el.Platform.SetLineWidth(1)
+	el.lineFromCornerGToCornerH()
+	el.Platform.Stroke()
+
+	el.Platform.SetLineWidth(1)
+	el.lineFromCornerHToCornerA()
+	el.Platform.Stroke()
 }
 
 func (el *ResizeBoxes) createCornerA() {
 	// a corner
-	x := el.FatherOutBoxDimensions.X - el.Dimensions.Width
-	y := el.FatherOutBoxDimensions.Y - el.Dimensions.Height
+	el.boxAX = el.FatherOutBoxDimensions.X - el.Dimensions.Width
+	el.boxAY = el.FatherOutBoxDimensions.Y - el.Dimensions.Height
 
 	// a corner space
-	x -= el.Dimensions.X
-	y -= el.Dimensions.Y
+	el.boxAX -= el.Dimensions.X
+	el.boxAY -= el.Dimensions.Y
 
 	// a corner create
-	independentDraw.DrawBoxWithRoundedCornersIntoThePath(el.Platform, x, y, el.Dimensions.Width, el.Dimensions.Height, el.Dimensions.Border)
+	independentDraw.DrawBoxWithRoundedCornersIntoThePath(el.Platform, el.boxAX, el.boxAY, el.Dimensions.Width, el.Dimensions.Height, el.Dimensions.Border)
 }
 
 func (el *ResizeBoxes) createCornerB() {
@@ -197,4 +228,68 @@ func (el *ResizeBoxes) createCornerH() {
 
 	// h corner create
 	independentDraw.DrawBoxWithRoundedCornersIntoThePath(el.Platform, el.boxHX, el.boxHY, el.Dimensions.Width, el.Dimensions.Height, el.Dimensions.Border)
+}
+
+func (el *ResizeBoxes) lineFromCornerAToCornerB() {
+	x0 := el.boxAX + el.Dimensions.Width
+	y0 := el.boxAY + el.Dimensions.Height/2
+
+	x1 := el.boxBX
+	independentDraw.DrawSimpleLineIntoThePath(el.Platform, x0, y0, x1, y0)
+}
+
+func (el *ResizeBoxes) lineFromCornerBToCornerC() {
+	x0 := el.boxBX + el.Dimensions.Width
+	y0 := el.boxBY + el.Dimensions.Height/2
+
+	x1 := el.boxCX
+	independentDraw.DrawSimpleLineIntoThePath(el.Platform, x0, y0, x1, y0)
+}
+
+func (el *ResizeBoxes) lineFromCornerCToCornerD() {
+	x0 := el.boxCX + el.Dimensions.Width/2
+	y0 := el.boxCY + el.Dimensions.Height
+
+	y1 := el.boxDY
+	independentDraw.DrawSimpleLineIntoThePath(el.Platform, x0, y0, x0, y1)
+}
+
+func (el *ResizeBoxes) lineFromCornerDToCornerE() {
+	x0 := el.boxDX + el.Dimensions.Width/2
+	y0 := el.boxDY + el.Dimensions.Height
+
+	y1 := el.boxEY
+	independentDraw.DrawSimpleLineIntoThePath(el.Platform, x0, y0, x0, y1)
+}
+
+func (el *ResizeBoxes) lineFromCornerEToCornerF() {
+	x0 := el.boxEX
+	y0 := el.boxEY + el.Dimensions.Height/2
+
+	x1 := el.boxFX + el.Dimensions.Width
+	independentDraw.DrawSimpleLineIntoThePath(el.Platform, x0, y0, x1, y0)
+}
+
+func (el *ResizeBoxes) lineFromCornerFToCornerG() {
+	x0 := el.boxFX
+	y0 := el.boxFY + el.Dimensions.Height/2
+
+	x1 := el.boxGX + el.Dimensions.Width
+	independentDraw.DrawSimpleLineIntoThePath(el.Platform, x0, y0, x1, y0)
+}
+
+func (el *ResizeBoxes) lineFromCornerGToCornerH() {
+	x0 := el.boxGX + el.Dimensions.Width/2
+	y0 := el.boxGY
+
+	y1 := el.boxHY + el.Dimensions.Width
+	independentDraw.DrawSimpleLineIntoThePath(el.Platform, x0, y0, x0, y1)
+}
+
+func (el *ResizeBoxes) lineFromCornerHToCornerA() {
+	x0 := el.boxHX + el.Dimensions.Width/2
+	y0 := el.boxHY
+
+	y1 := el.boxAY + el.Dimensions.Width
+	independentDraw.DrawSimpleLineIntoThePath(el.Platform, x0, y0, x0, y1)
 }
