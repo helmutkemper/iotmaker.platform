@@ -67,6 +67,8 @@ func (el *ResizeBoxes) Create() {
 
 	el.Platform.SetLineWidth(1)
 	el.createCornerA()
+	el.Platform.FillStyle("#00FFFF")
+	el.Platform.Fill()
 	el.Platform.Stroke()
 
 	el.Platform.SetLineWidth(1)
