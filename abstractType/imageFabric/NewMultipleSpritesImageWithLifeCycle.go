@@ -1,12 +1,13 @@
-package image
+package imageFabric
 
 import (
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
 	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.coordinate"
+	"github.com/helmutkemper/iotmaker.platform/abstractType/image"
 	"time"
 )
 
-func NewMultipleSprites(platform iotmaker_platform_IDraw.IDraw, image interface{}, spriteWidth, spriteHeight, spriteFirstElementIndex, spriteLastElementIndex int, spriteChangeInterval time.Duration, xImageOut, yImageOut, widthImageOut, heightImageOut, lifeCycleLimit int, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) *MultipleSprites {
+func NewMultipleSpritesImageWithLifeCycle(platform iotmaker_platform_IDraw.IDraw, img interface{}, spriteWidth, spriteHeight, spriteFirstElementIndex, spriteLastElementIndex int, spriteChangeInterval time.Duration, xImageOut, yImageOut, widthImageOut, heightImageOut, lifeCycleLimit int, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) *image.MultipleSprites {
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 
@@ -22,9 +23,9 @@ func NewMultipleSprites(platform iotmaker_platform_IDraw.IDraw, image interface{
 	densityCalc.Set(heightImageOut)
 	heightImageOut = densityCalc.Int()
 
-	ret := &MultipleSprites{
+	ret := &image.MultipleSprites{
 		Platform:                platform,
-		Img:                     image,
+		Img:                     img,
 		SpriteWidth:             spriteWidth,
 		SpriteHeight:            spriteHeight,
 		SpriteFirstElementIndex: spriteFirstElementIndex,
@@ -34,9 +35,7 @@ func NewMultipleSprites(platform iotmaker_platform_IDraw.IDraw, image interface{
 		Y:                       yImageOut,
 		Width:                   widthImageOut,
 		Height:                  heightImageOut,
-		LifeCycleLimit:          (spriteLastElementIndex - spriteFirstElementIndex) * 1,
-		LifeCycleRepeatInterval: time.Millisecond * 1000,
-		LifeCycleRepeatLimit:    3,
+		LifeCycleLimit:          (spriteLastElementIndex - spriteFirstElementIndex) * lifeCycleLimit,
 	}
 	ret.Crete()
 
