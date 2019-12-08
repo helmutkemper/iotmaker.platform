@@ -34,7 +34,9 @@ func NewMultipleSprites(platform iotmaker_platform_IDraw.IDraw, image interface{
 		Y:                       yImageOut,
 		Width:                   widthImageOut,
 		Height:                  heightImageOut,
-		LifeCycleLimit:          lifeCycleLimit,
+		LifeCycleLimit:          (spriteLastElementIndex - spriteFirstElementIndex) * 1,
+		LifeCycleRepeatInterval: time.Millisecond * 1000,
+		LifeCycleRepeatLimit:    3,
 	}
 	ret.Crete()
 

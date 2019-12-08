@@ -18,8 +18,10 @@ type MultipleSprites struct {
 	Width                   int
 	Height                  int
 	LifeCycleLimit          int
+	LifeCycleRepeatLimit    int
+	LifeCycleRepeatInterval time.Duration
 }
 
 func (el *MultipleSprites) Crete() {
-	el.Platform.DrawImageMultiplesSprites(el.Img, el.SpriteWidth, el.SpriteHeight, el.SpriteFirstElementIndex, el.SpriteLastElementIndex, el.SpriteChangeInterval, el.X, el.Y, el.Width, el.Height, el.LifeCycleLimit)
+	el.Platform.DrawImageMultiplesSprites(el.Img, el.SpriteWidth, el.SpriteHeight, el.SpriteFirstElementIndex, el.SpriteLastElementIndex, el.SpriteChangeInterval, el.X, el.Y, el.Width, el.Height, el.LifeCycleLimit, el.LifeCycleRepeatLimit, el.LifeCycleRepeatInterval)
 }
