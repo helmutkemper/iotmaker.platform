@@ -42,15 +42,6 @@ func NewLineTo(platform iotmaker_platform_IDraw.IDraw, id string, density float6
 	return lt
 }
 
-type Image struct {
-	Platform iotmaker_platform_IDraw.IDraw
-	Img      interface{}
-}
-
-func (el *Image) Crete() {
-	el.Platform.DrawImageMultiplesSprites(el.Img, 48, 60)
-}
-
 type LineTo struct {
 	Platform  iotmaker_platform_IDraw.IDraw
 	Density   float64
