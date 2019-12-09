@@ -1,4 +1,4 @@
-package gradient
+package point
 
 type Point struct {
 	X int

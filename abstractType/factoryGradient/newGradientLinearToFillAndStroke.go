@@ -1,6 +1,10 @@
-package gradient
+package factoryGradient
 
-import iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
+import (
+	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
+	"github.com/helmutkemper/iotmaker.platform/abstractType/gradient"
+	"github.com/helmutkemper/iotmaker.platform/abstractType/point"
+)
 
 // en: Make a new filter linear gradient with fill for use with the canvas elements.
 //
@@ -15,9 +19,9 @@ import iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
 //    coordinateP1: Coordinate of the end point of the gradient. Please, use a NewPoint() function to set a point.
 //    colorList:    Color position list. Please, use a NewColorPosition() and NewColorList() functions to set a color
 //                  list. Example: NewColorList(NewColorPosition(), NewColorPosition(), ...)
-func NewGradientLinearToFill(coordinateP0, coordinateP1 Point, colorList []ColorStop) iotmaker_platform_IDraw.IFilterGradientInterface {
-	return &Gradient{
-		Type:         KLinearGradientFill,
+func NewGradientLinearToFillAndStroke(coordinateP0, coordinateP1 point.Point, colorList []gradient.ColorStop) iotmaker_platform_IDraw.IFilterGradientInterface {
+	return &gradient.Gradient{
+		Type:         gradient.KLinearFillAndStroke,
 		CoordinateP0: coordinateP0,
 		CoordinateP1: coordinateP1,
 		ColorList:    colorList,

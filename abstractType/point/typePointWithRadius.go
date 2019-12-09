@@ -1,4 +1,4 @@
-package gradient
+package point
 
 type PointWithRadius struct {
 	X      int
