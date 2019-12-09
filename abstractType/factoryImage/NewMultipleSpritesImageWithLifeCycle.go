@@ -1,4 +1,4 @@
-package imageFabric
+package factoryImage
 
 import (
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
@@ -35,7 +35,7 @@ func NewMultipleSpritesImageWithLifeCycle(platform iotmaker_platform_IDraw.IDraw
 		Y:                       yImageOut,
 		Width:                   widthImageOut,
 		Height:                  heightImageOut,
-		LifeCycleLimit:          (spriteLastElementIndex - spriteFirstElementIndex) * lifeCycleLimit,
+		LifeCycleLimit:          lifeCycleLimit,
 	}
 	ret.Crete()
 

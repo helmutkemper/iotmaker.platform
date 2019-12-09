@@ -1,4 +1,4 @@
-package imageFabric
+package factoryImage
 
 import (
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func NewMultipleSpritesImageWithLifeCycleRepeat(platform iotmaker_platform_IDraw.IDraw, img interface{}, spriteWidth, spriteHeight, spriteFirstElementIndex, spriteLastElementIndex int, spriteChangeInterval time.Duration, xImageOut, yImageOut, widthImageOut, heightImageOut, lifeCycleLimit int, lifeCycleRepeatInterval time.Duration, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) *image.MultipleSprites {
+func NewMultipleSpritesImage(platform iotmaker_platform_IDraw.IDraw, img interface{}, spriteWidth, spriteHeight, spriteFirstElementIndex, spriteLastElementIndex int, spriteChangeInterval time.Duration, xImageOut, yImageOut, widthImageOut, heightImageOut int, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) *image.MultipleSprites {
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 
@@ -35,8 +35,6 @@ func NewMultipleSpritesImageWithLifeCycleRepeat(platform iotmaker_platform_IDraw
 		Y:                       yImageOut,
 		Width:                   widthImageOut,
 		Height:                  heightImageOut,
-		LifeCycleLimit:          (spriteLastElementIndex - spriteFirstElementIndex) * lifeCycleLimit,
-		LifeCycleRepeatInterval: lifeCycleRepeatInterval,
 	}
 	ret.Crete()
 
