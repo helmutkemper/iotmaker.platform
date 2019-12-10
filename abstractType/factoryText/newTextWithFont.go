@@ -6,7 +6,7 @@ import (
 	"github.com/helmutkemper/iotmaker.platform.webbrowser/font"
 )
 
-func NewText(platform iotmaker_platform_IDraw.IDraw, text string, font font.Font, x, y int, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) {
+func NewTextWithFont(platform iotmaker_platform_IDraw.IDraw, text string, font font.Font, x, y int, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) {
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 
