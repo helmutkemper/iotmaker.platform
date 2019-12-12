@@ -45,7 +45,7 @@ func (el *BasicBox) prepareGradientFilter(platform iotmaker_platform_IDraw.IDraw
 	}
 }
 
-func (el *BasicBox) configShadowPlatformAndFilter() {
+func (el *BasicBox) ConfigShadowPlatformAndFilter() {
 	if el.Ink.Shadow == nil {
 		return
 	}
@@ -53,7 +53,7 @@ func (el *BasicBox) configShadowPlatformAndFilter() {
 	el.setShadowFilter(el.Ink.Shadow.PrepareFilter)
 }
 
-func (el *BasicBox) configGradientPlatformAndFilter() {
+func (el *BasicBox) ConfigGradientPlatformAndFilter() {
 	if el.Ink.Gradient == nil {
 		return
 	}
@@ -140,6 +140,10 @@ func (el *BasicBox) Create() {
 	if el.alphaChannelSensibility == 0 {
 		el.alphaChannelSensibility = 25 // 10% de 255
 	}
+
+	el.Platform.ResetStrokeStyle()
+	el.Platform.ResetFillStyle()
+	el.Platform.ShadowReset()
 }
 
 // see SetEnableDataImageCalculate()
@@ -173,6 +177,10 @@ func (el *BasicBox) CalculateImageData() {
 			el.clearRectangle,
 		)
 	}
+
+	el.ScratchPad.ResetStrokeStyle()
+	el.ScratchPad.ResetFillStyle()
+	el.ScratchPad.ShadowReset()
 }
 
 // pt_br: Define o método usado para calcular os dados da imagem usado para detectar colisão
