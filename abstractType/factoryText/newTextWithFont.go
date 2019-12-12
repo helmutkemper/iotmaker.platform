@@ -4,9 +4,11 @@ import (
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
 	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.coordinate"
 	"github.com/helmutkemper/iotmaker.platform.webbrowser/font"
+	"github.com/helmutkemper/iotmaker.platform/abstractType/genericTypes"
+	"github.com/helmutkemper/iotmaker.platform/abstractType/text"
 )
 
-func NewTextWithFont(platform iotmaker_platform_IDraw.IDraw, text string, font font.Font, x, y int, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) {
+func NewTextWithFont(platform iotmaker_platform_IDraw.IDraw, shadow iotmaker_platform_IDraw.IFilterShadowInterface, gradient iotmaker_platform_IDraw.IFilterGradientInterface, labelFont font.Font, label string, x, y int, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) text.Text {
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 
@@ -16,6 +18,22 @@ func NewTextWithFont(platform iotmaker_platform_IDraw.IDraw, text string, font f
 	densityCalc.Set(y)
 	y = densityCalc.Int()
 
-	platform.Font(font)
-	platform.FillText(text, x, y)
+	ik := genericTypes.Ink{}
+	ik = genericTypes.NewInc(ik, 0, shadow, gradient, density, iDensity)
+
+	tx := text.Text{
+		Platform: platform,
+		Ink:      ik,
+		Label:    label,
+		Font:     labelFont,
+		Fill:     true,
+		X:        x,
+		Y:        y,
+	}
+
+	tx.ConfigShadowPlatformAndFilter()
+	tx.ConfigGradientPlatformAndFilter()
+	tx.Create()
+
+	return tx
 }

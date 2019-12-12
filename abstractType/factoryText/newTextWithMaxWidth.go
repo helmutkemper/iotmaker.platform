@@ -3,9 +3,11 @@ package factoryText
 import (
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
 	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.coordinate"
+	"github.com/helmutkemper/iotmaker.platform/abstractType/genericTypes"
+	"github.com/helmutkemper/iotmaker.platform/abstractType/text"
 )
 
-func NewTextWithMaxWidth(platform iotmaker_platform_IDraw.IDraw, text string, x, y, masWidth int, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) {
+func NewTextWithMaxWidth(platform iotmaker_platform_IDraw.IDraw, shadow iotmaker_platform_IDraw.IFilterShadowInterface, gradient iotmaker_platform_IDraw.IFilterGradientInterface, label string, x, y, maxWidth int, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) text.Text {
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 
@@ -15,5 +17,22 @@ func NewTextWithMaxWidth(platform iotmaker_platform_IDraw.IDraw, text string, x,
 	densityCalc.Set(y)
 	y = densityCalc.Int()
 
-	platform.FillText(text, x, y, masWidth)
+	ik := genericTypes.Ink{}
+	ik = genericTypes.NewInc(ik, 0, shadow, gradient, density, iDensity)
+
+	tx := text.Text{
+		Platform: platform,
+		Ink:      ik,
+		Label:    label,
+		Fill:     true,
+		X:        x,
+		Y:        y,
+		MaxWidth: maxWidth,
+	}
+
+	tx.ConfigShadowPlatformAndFilter()
+	tx.ConfigGradientPlatformAndFilter()
+	tx.Create()
+
+	return tx
 }

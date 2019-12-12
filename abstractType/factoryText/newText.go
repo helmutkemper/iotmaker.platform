@@ -7,14 +7,7 @@ import (
 	"github.com/helmutkemper/iotmaker.platform/abstractType/text"
 )
 
-func NewText(
-	platform iotmaker_platform_IDraw.IDraw,
-	shadow iotmaker_platform_IDraw.IFilterShadowInterface,
-	gradient iotmaker_platform_IDraw.IFilterGradientInterface,
-	label string,
-	x,
-	y int,
-	density interface{}, iDensity iotmaker_platform_coordinate.IDensity) text.Text {
+func NewText(platform iotmaker_platform_IDraw.IDraw, shadow iotmaker_platform_IDraw.IFilterShadowInterface, gradient iotmaker_platform_IDraw.IFilterGradientInterface, label string, x, y int, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) text.Text {
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 
@@ -24,15 +17,14 @@ func NewText(
 	densityCalc.Set(y)
 	y = densityCalc.Int()
 
-	lineWidth := 1 //fixme!
 	ik := genericTypes.Ink{}
-	ik = genericTypes.NewInc(ik, lineWidth, shadow, gradient, density, iDensity)
+	ik = genericTypes.NewInc(ik, 0, shadow, gradient, density, iDensity)
 
 	tx := text.Text{
 		Platform: platform,
 		Ink:      ik,
 		Label:    label,
-		Stroke:   true,
+		Fill:     true,
 		X:        x,
 		Y:        y,
 	}
