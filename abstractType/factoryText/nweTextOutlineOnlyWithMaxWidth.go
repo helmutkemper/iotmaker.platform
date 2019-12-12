@@ -7,7 +7,7 @@ import (
 	"github.com/helmutkemper/iotmaker.platform/abstractType/text"
 )
 
-func NewTextOutlineOnlyWithMaxWidth(platform iotmaker_platform_IDraw.IDraw, shadow iotmaker_platform_IDraw.IFilterShadowInterface, color interface{}, gradient iotmaker_platform_IDraw.IFilterGradientInterface, label string, x, y, maxWidth int, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) text.Text {
+func NewTextOutlineOnlyWithMaxWidth(platform iotmaker_platform_IDraw.IDraw, shadow iotmaker_platform_IDraw.IFilterShadowInterface, gradient iotmaker_platform_IDraw.IFilterGradientInterface, color interface{}, label string, x, y, maxWidth int, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) text.Text {
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 
