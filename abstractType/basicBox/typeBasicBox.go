@@ -7,6 +7,7 @@ import (
 	"github.com/helmutkemper/iotmaker.platform/mouse"
 	iotmaker_threadsafe "github.com/helmutkemper/iotmaker.threadsafe"
 	"image/color"
+	"reflect"
 )
 
 type BasicBox struct {
@@ -40,6 +41,10 @@ func (el *BasicBox) prepareShadowFilter() {
 }
 
 func (el *BasicBox) prepareGradientFilter(platform iotmaker_platform_IDraw.IDraw) {
+	if reflect.DeepEqual(el.Ink.Color, color.RGBA{}) != true {
+		platform.SetFillStyle(el.Ink.Color)
+	}
+
 	if el.prepareGradientFilterFunctionPointer != nil {
 		el.prepareGradientFilterFunctionPointer(platform)
 	}
@@ -143,7 +148,7 @@ func (el *BasicBox) Create() {
 
 	el.Platform.ResetStrokeStyle()
 	el.Platform.ResetFillStyle()
-	el.Platform.ShadowReset()
+	el.Platform.ResetShadow()
 }
 
 // see SetEnableDataImageCalculate()
@@ -180,7 +185,7 @@ func (el *BasicBox) CalculateImageData() {
 
 	el.ScratchPad.ResetStrokeStyle()
 	el.ScratchPad.ResetFillStyle()
-	el.ScratchPad.ShadowReset()
+	el.ScratchPad.ResetShadow()
 }
 
 // pt_br: Define o método usado para calcular os dados da imagem usado para detectar colisão

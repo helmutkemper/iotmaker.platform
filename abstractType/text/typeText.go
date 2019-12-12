@@ -4,6 +4,7 @@ import (
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
 	"github.com/helmutkemper/iotmaker.platform.webbrowser/font"
 	"github.com/helmutkemper/iotmaker.platform/abstractType/genericTypes"
+	"image/color"
 	"reflect"
 )
 
@@ -30,6 +31,11 @@ func (el *Text) prepareShadowFilter() {
 }
 
 func (el *Text) prepareGradientFilter(platform iotmaker_platform_IDraw.IDraw) {
+
+	if reflect.DeepEqual(el.Ink.Color, color.RGBA{}) != true {
+		platform.SetFillStyle(el.Ink.Color)
+	}
+
 	if el.prepareGradientFilterFunctionPointer != nil {
 		el.prepareGradientFilterFunctionPointer(platform)
 	}
@@ -80,5 +86,9 @@ func (el *Text) Create() {
 			el.Platform.StrokeText(el.Label, el.X, el.Y)
 		}
 	}
+
+	el.Platform.ResetStrokeStyle()
+	el.Platform.ResetFillStyle()
+	el.Platform.ResetShadow()
 
 }
