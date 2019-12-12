@@ -13,6 +13,10 @@ type Gradient struct {
 	ColorList    []ColorStop
 }
 
+func (el *Gradient) SetGlobal(platform iotmaker_platform_IDraw.ICanvasGradient) {
+	el.PrepareFilter(platform)
+}
+
 func (el *Gradient) PrepareFilter(platform iotmaker_platform_IDraw.ICanvasGradient) {
 	el.Platform = platform
 

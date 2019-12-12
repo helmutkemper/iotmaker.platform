@@ -5,6 +5,6 @@ import (
 	"github.com/helmutkemper/iotmaker.platform.webbrowser/font"
 )
 
-func SetFontGlobal(platform iotmaker_platform_IDraw.IDraw, font font.Font) {
+func SetGlobal(platform iotmaker_platform_IDraw.IDraw, font font.Font) {
 	platform.Font(font)
 }

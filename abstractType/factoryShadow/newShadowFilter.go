@@ -1,8 +1,9 @@
-package shadow
+package factoryShadow
 
 import (
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
 	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.coordinate"
+	"github.com/helmutkemper/iotmaker.platform/abstractType/shadow"
 	"image/color"
 	"reflect"
 )
@@ -22,7 +23,7 @@ import (
 func NewShadowFilter(color color.RGBA, blur, offsetX, offsetY int, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) iotmaker_platform_IDraw.IFilterShadowInterface {
 
 	if reflect.DeepEqual(color, color.RGBA) {
-		return &Shadow{}
+		return &shadow.Shadow{}
 	}
 
 	densityOffsetX := iDensity
@@ -33,7 +34,7 @@ func NewShadowFilter(color color.RGBA, blur, offsetX, offsetY int, density inter
 	densityOffsetY.Set(offsetY)
 	densityOffsetY.SetDensityFactor(density)
 
-	sd := &Shadow{
+	sd := &shadow.Shadow{
 		Color:   color,
 		Blur:    blur,
 		OffsetX: densityOffsetX.Int(),
