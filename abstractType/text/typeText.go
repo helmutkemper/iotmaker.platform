@@ -31,7 +31,6 @@ func (el *Text) prepareShadowFilter() {
 }
 
 func (el *Text) prepareGradientFilter(platform iotmaker_platform_IDraw.IDraw) {
-
 	if reflect.DeepEqual(el.Ink.Color, color.RGBA{}) != true {
 		platform.SetFillStyle(el.Ink.Color)
 	}
