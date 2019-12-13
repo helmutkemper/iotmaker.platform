@@ -215,7 +215,7 @@ func (el *BasicBox) GetCollisionByAlphaChannel(x, y int) bool {
 	return el.imageDataBooleanCollision[x][y]
 }
 
-func (el *BasicBox) GetCollisionBySimpleBox(xEvent, yEvent int) bool {
+func (el *BasicBox) GetCollisionBox(xEvent, yEvent int) bool {
 	return el.OutBoxDimensions.X <= xEvent && el.OutBoxDimensions.X+el.OutBoxDimensions.Width >= xEvent &&
 		el.OutBoxDimensions.Y <= yEvent && el.OutBoxDimensions.Y+el.OutBoxDimensions.Height >= yEvent
 }
@@ -223,7 +223,7 @@ func (el *BasicBox) GetCollisionBySimpleBox(xEvent, yEvent int) bool {
 func (el *BasicBox) GetMouseOverFunctionsList() map[string][]mouse.PointerCollisionFunction {
 	ret := make(map[string][]mouse.PointerCollisionFunction)
 	ret[el.Id] = []mouse.PointerCollisionFunction{
-		el.GetCollisionBySimpleBox,
+		el.GetCollisionBox,
 	}
 
 	return ret

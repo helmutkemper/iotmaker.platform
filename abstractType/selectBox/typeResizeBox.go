@@ -2,6 +2,7 @@ package selectBox
 
 import (
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
+	webBrowserMouse "github.com/helmutkemper/iotmaker.platform.webbrowser/mouse"
 	"github.com/helmutkemper/iotmaker.platform/abstractType/genericTypes"
 	"github.com/helmutkemper/iotmaker.platform/independentDraw"
 	"image/color"
@@ -10,9 +11,13 @@ import (
 type ResizeBoxes struct {
 	Platform   iotmaker_platform_IDraw.IDraw
 	ScratchPad iotmaker_platform_IDraw.IDraw
-	Dimensions genericTypes.Dimensions
 
+	Dimensions             genericTypes.Dimensions
 	FatherOutBoxDimensions genericTypes.Dimensions
+	outBoxDimensions       genericTypes.Dimensions
+
+	CornerFillColor interface{}
+	CornerLineWidth int
 
 	imageDataMethod           genericTypes.ImageDataCaptureMethod
 	imageDataComplete         map[int]map[int]color.RGBA
@@ -21,6 +26,17 @@ type ResizeBoxes struct {
 
 	prepareShadowFilterFunctionPointer   func(iotmaker_platform_IDraw.ICanvasShadow)
 	prepareGradientFilterFunctionPointer func(iotmaker_platform_IDraw.ICanvasGradient)
+
+	//MouseFunc     mouse.SetCursorFunc
+	MouseGeneric webBrowserMouse.CursorType
+	MouseCornerA webBrowserMouse.CursorType
+	MouseCornerB webBrowserMouse.CursorType
+	MouseCornerC webBrowserMouse.CursorType
+	MouseCornerD webBrowserMouse.CursorType
+	MouseCornerE webBrowserMouse.CursorType
+	MouseCornerF webBrowserMouse.CursorType
+	MouseCornerG webBrowserMouse.CursorType
+	MouseCornerH webBrowserMouse.CursorType
 
 	boxAX int
 	boxAY int
@@ -65,58 +81,19 @@ func (el *ResizeBoxes) Create() {
 	//independentDraw.DrawBoxWithRoundedCornersIntoThePath(el.Platform, el.FatherOutBoxDimensions.X, el.FatherOutBoxDimensions.Y, el.FatherOutBoxDimensions.Width, el.FatherOutBoxDimensions.Height, 0)
 	//el.Platform.Stroke()
 
+	el.CornerFillColor = color.RGBA{R: 0x00, G: 0x90, B: 0x90, A: 0xFF}
+	el.CornerLineWidth = 0
+
 	lineWidth := 1
-	fillColor := "#9F00FF"
 
-	el.Platform.SetLineWidth(lineWidth)
 	el.createCornerA()
-	el.Platform.SetFillStyle(fillColor)
-	el.Platform.Fill()
-	el.Platform.Stroke()
-
-	el.Platform.SetLineWidth(lineWidth)
 	el.createCornerB()
-	el.Platform.SetFillStyle(fillColor)
-	el.Platform.Fill()
-	el.Platform.Stroke()
-
-	el.Platform.SetLineWidth(lineWidth)
 	el.createCornerC()
-	el.Platform.SetFillStyle(fillColor)
-	el.Platform.Fill()
-	el.Platform.Stroke()
-
-	el.Platform.SetLineWidth(lineWidth)
 	el.createCornerD()
-	el.Platform.SetFillStyle(fillColor)
-	el.Platform.Fill()
-	el.Platform.Stroke()
-
-	el.Platform.SetLineWidth(lineWidth)
 	el.createCornerE()
-	el.Platform.SetFillStyle(fillColor)
-	el.Platform.Fill()
-	el.Platform.Stroke()
-
-	el.Platform.SetLineWidth(lineWidth)
 	el.createCornerF()
-	el.Platform.SetFillStyle(fillColor)
-	el.Platform.Fill()
-	el.Platform.Stroke()
-
-	el.Platform.SetLineWidth(lineWidth)
 	el.createCornerG()
-	el.Platform.SetFillStyle(fillColor)
-	el.Platform.Fill()
-	el.Platform.Stroke()
-
-	el.Platform.SetLineWidth(lineWidth)
 	el.createCornerH()
-	el.Platform.SetFillStyle(fillColor)
-	el.Platform.Fill()
-	el.Platform.Stroke()
-
-	lineWidth = 4
 
 	el.Platform.SetLineWidth(lineWidth)
 	el.lineFromCornerAToCornerB()
@@ -149,6 +126,23 @@ func (el *ResizeBoxes) Create() {
 	el.Platform.SetLineWidth(lineWidth)
 	el.lineFromCornerHToCornerA()
 	el.Platform.Stroke()
+
+	el.calculateOutBoxDimensions()
+}
+
+func (el *ResizeBoxes) calculateOutBoxDimensions() {
+	el.outBoxDimensions.X = el.boxAX - el.CornerLineWidth/2
+	el.outBoxDimensions.Y = el.boxAY - el.CornerLineWidth/2
+	el.outBoxDimensions.Width = el.boxEX + el.Dimensions.Width - el.boxAX + el.CornerLineWidth
+	el.outBoxDimensions.Height = el.boxEY + el.Dimensions.Height - el.boxAY + el.CornerLineWidth
+
+	/*el.Platform.SetLineWidth(1)
+	  el.Platform.MoveTo( el.outBoxDimensions.X, el.outBoxDimensions.Y )
+	  el.Platform.LineTo( el.outBoxDimensions.X, el.outBoxDimensions.Y+el.outBoxDimensions.Height )
+	  el.Platform.LineTo( el.outBoxDimensions.X+el.outBoxDimensions.Width, el.outBoxDimensions.Y+el.outBoxDimensions.Height )
+	  el.Platform.LineTo( el.outBoxDimensions.X+el.outBoxDimensions.Width, el.outBoxDimensions.Y )
+	  el.Platform.LineTo( el.outBoxDimensions.X, el.outBoxDimensions.Y )
+	  el.Platform.Stroke()*/
 }
 
 func (el *ResizeBoxes) createCornerA() {
@@ -161,7 +155,17 @@ func (el *ResizeBoxes) createCornerA() {
 	el.boxAY -= el.Dimensions.Y
 
 	// a corner create
+	el.Platform.SetLineWidth(el.CornerLineWidth)
 	independentDraw.DrawBoxWithRoundedCornersIntoThePath(el.Platform, el.boxAX, el.boxAY, el.Dimensions.Width, el.Dimensions.Height, el.Dimensions.Border)
+	el.Platform.SetFillStyle(el.CornerFillColor)
+
+	if el.CornerFillColor != nil {
+		el.Platform.Fill()
+	}
+
+	if el.CornerLineWidth != 0 {
+		el.Platform.Stroke()
+	}
 }
 
 func (el *ResizeBoxes) createCornerB() {
@@ -173,7 +177,17 @@ func (el *ResizeBoxes) createCornerB() {
 	el.boxBY -= el.Dimensions.Y
 
 	// b corner create
+	el.Platform.SetLineWidth(el.CornerLineWidth)
 	independentDraw.DrawBoxWithRoundedCornersIntoThePath(el.Platform, el.boxBX, el.boxBY, el.Dimensions.Width, el.Dimensions.Height, el.Dimensions.Border)
+	el.Platform.SetFillStyle(el.CornerFillColor)
+
+	if el.CornerFillColor != nil {
+		el.Platform.Fill()
+	}
+
+	if el.CornerLineWidth != 0 {
+		el.Platform.Stroke()
+	}
 }
 
 func (el *ResizeBoxes) createCornerC() {
@@ -186,7 +200,17 @@ func (el *ResizeBoxes) createCornerC() {
 	el.boxCY -= el.Dimensions.Y
 
 	// c corner create
+	el.Platform.SetLineWidth(el.CornerLineWidth)
 	independentDraw.DrawBoxWithRoundedCornersIntoThePath(el.Platform, el.boxCX, el.boxCY, el.Dimensions.Width, el.Dimensions.Height, el.Dimensions.Border)
+	el.Platform.SetFillStyle(el.CornerFillColor)
+
+	if el.CornerFillColor != nil {
+		el.Platform.Fill()
+	}
+
+	if el.CornerLineWidth != 0 {
+		el.Platform.Stroke()
+	}
 }
 
 func (el *ResizeBoxes) createCornerD() {
@@ -198,7 +222,17 @@ func (el *ResizeBoxes) createCornerD() {
 	el.boxDX += el.Dimensions.X
 
 	// d corner create
+	el.Platform.SetLineWidth(el.CornerLineWidth)
 	independentDraw.DrawBoxWithRoundedCornersIntoThePath(el.Platform, el.boxDX, el.boxDY, el.Dimensions.Width, el.Dimensions.Height, el.Dimensions.Border)
+	el.Platform.SetFillStyle(el.CornerFillColor)
+
+	if el.CornerFillColor != nil {
+		el.Platform.Fill()
+	}
+
+	if el.CornerLineWidth != 0 {
+		el.Platform.Stroke()
+	}
 }
 
 func (el *ResizeBoxes) createCornerE() {
@@ -211,7 +245,17 @@ func (el *ResizeBoxes) createCornerE() {
 	el.boxEY += el.Dimensions.Y
 
 	// e corner create
+	el.Platform.SetLineWidth(el.CornerLineWidth)
 	independentDraw.DrawBoxWithRoundedCornersIntoThePath(el.Platform, el.boxEX, el.boxEY, el.Dimensions.Width, el.Dimensions.Height, el.Dimensions.Border)
+	el.Platform.SetFillStyle(el.CornerFillColor)
+
+	if el.CornerFillColor != nil {
+		el.Platform.Fill()
+	}
+
+	if el.CornerLineWidth != 0 {
+		el.Platform.Stroke()
+	}
 }
 
 func (el *ResizeBoxes) createCornerF() {
@@ -223,7 +267,17 @@ func (el *ResizeBoxes) createCornerF() {
 	el.boxFY += el.Dimensions.Y
 
 	// f corner create
+	el.Platform.SetLineWidth(el.CornerLineWidth)
 	independentDraw.DrawBoxWithRoundedCornersIntoThePath(el.Platform, el.boxFX, el.boxFY, el.Dimensions.Width, el.Dimensions.Height, el.Dimensions.Border)
+	el.Platform.SetFillStyle(el.CornerFillColor)
+
+	if el.CornerFillColor != nil {
+		el.Platform.Fill()
+	}
+
+	if el.CornerLineWidth != 0 {
+		el.Platform.Stroke()
+	}
 }
 
 func (el *ResizeBoxes) createCornerG() {
@@ -236,7 +290,17 @@ func (el *ResizeBoxes) createCornerG() {
 	el.boxGY += el.Dimensions.Y
 
 	// g corner create
+	el.Platform.SetLineWidth(el.CornerLineWidth)
 	independentDraw.DrawBoxWithRoundedCornersIntoThePath(el.Platform, el.boxGX, el.boxGY, el.Dimensions.Width, el.Dimensions.Height, el.Dimensions.Border)
+	el.Platform.SetFillStyle(el.CornerFillColor)
+
+	if el.CornerFillColor != nil {
+		el.Platform.Fill()
+	}
+
+	if el.CornerLineWidth != 0 {
+		el.Platform.Stroke()
+	}
 }
 
 func (el *ResizeBoxes) createCornerH() {
@@ -248,7 +312,17 @@ func (el *ResizeBoxes) createCornerH() {
 	el.boxHX -= el.Dimensions.X
 
 	// h corner create
+	el.Platform.SetLineWidth(el.CornerLineWidth)
 	independentDraw.DrawBoxWithRoundedCornersIntoThePath(el.Platform, el.boxHX, el.boxHY, el.Dimensions.Width, el.Dimensions.Height, el.Dimensions.Border)
+	el.Platform.SetFillStyle(el.CornerFillColor)
+
+	if el.CornerFillColor != nil {
+		el.Platform.Fill()
+	}
+
+	if el.CornerLineWidth != 0 {
+		el.Platform.Stroke()
+	}
 }
 
 func (el *ResizeBoxes) lineFromCornerAToCornerB() {
@@ -313,4 +387,43 @@ func (el *ResizeBoxes) lineFromCornerHToCornerA() {
 
 	y1 := el.boxAY + el.Dimensions.Width
 	independentDraw.DrawSimpleLineIntoThePath(el.Platform, x0, y0, x0, y1)
+}
+
+func (el *ResizeBoxes) getEventOverCorner(boxX, boxY, x, y int) bool {
+	if x < boxX || x > boxX+el.Dimensions.Width {
+		return false
+	}
+
+	if y < boxY || y > boxY+el.Dimensions.Height {
+		return false
+	}
+
+	return true
+}
+
+func (el *ResizeBoxes) GetCollisionBox(xEvent, yEvent int) bool {
+	return el.outBoxDimensions.X <= xEvent && el.outBoxDimensions.X+el.outBoxDimensions.Width >= xEvent &&
+		el.outBoxDimensions.Y <= yEvent && el.outBoxDimensions.Y+el.outBoxDimensions.Height >= yEvent
+}
+
+func (el *ResizeBoxes) ProcessMousePosition(x, y int, collision bool) {
+	if el.getEventOverCorner(el.boxAX, el.boxAY, x, y) {
+		el.Platform.SetMouseCursor(el.MouseCornerA)
+	} else if el.getEventOverCorner(el.boxBX, el.boxBY, x, y) {
+		el.Platform.SetMouseCursor(el.MouseCornerB)
+	} else if el.getEventOverCorner(el.boxCX, el.boxCY, x, y) {
+		el.Platform.SetMouseCursor(el.MouseCornerC)
+	} else if el.getEventOverCorner(el.boxDX, el.boxDY, x, y) {
+		el.Platform.SetMouseCursor(el.MouseCornerD)
+	} else if el.getEventOverCorner(el.boxEX, el.boxEY, x, y) {
+		el.Platform.SetMouseCursor(el.MouseCornerE)
+	} else if el.getEventOverCorner(el.boxFX, el.boxFY, x, y) {
+		el.Platform.SetMouseCursor(el.MouseCornerF)
+	} else if el.getEventOverCorner(el.boxGX, el.boxGY, x, y) {
+		el.Platform.SetMouseCursor(el.MouseCornerG)
+	} else if el.getEventOverCorner(el.boxHX, el.boxHY, x, y) {
+		el.Platform.SetMouseCursor(el.MouseCornerH)
+	} else {
+		el.Platform.SetMouseCursor(el.MouseGeneric)
+	}
 }
