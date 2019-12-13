@@ -155,6 +155,7 @@ func (el *BasicBox) Create() {
 	el.Platform.ResetStrokeStyle()
 	el.Platform.ResetFillStyle()
 	el.Platform.ResetShadow()
+	el.Platform.ResetLineWidth()
 }
 
 // see SetEnableDataImageCalculate()
