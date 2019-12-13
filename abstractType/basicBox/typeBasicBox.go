@@ -1,6 +1,7 @@
 package basicBox
 
 import (
+	"fmt"
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
 	"github.com/helmutkemper/iotmaker.platform/abstractType/genericTypes"
 	"github.com/helmutkemper/iotmaker.platform/independentDraw"
@@ -19,7 +20,7 @@ type BasicBox struct {
 	Ink genericTypes.Ink
 
 	imageDataMethod           genericTypes.ImageDataCaptureMethod
-	imageDataComplete         map[int]map[int]color.RGBA
+	imageDataComplete         interface{}
 	imageDataAlphaChannel     map[int]map[int]uint8
 	imageDataBooleanCollision map[int]map[int]bool
 
@@ -107,6 +108,7 @@ func (el *BasicBox) calculateCoordinates() {
 }
 
 func (el *BasicBox) getCompleteImageData(platform iotmaker_platform_IDraw.IDraw) {
+	fmt.Println("entrou")
 	el.imageDataComplete = platform.GetImageData(el.OutBoxDimensions.X, el.OutBoxDimensions.Y, el.OutBoxDimensions.Width, el.OutBoxDimensions.Height)
 }
 
@@ -123,7 +125,8 @@ func (el *BasicBox) clearRectangle(platform iotmaker_platform_IDraw.IDraw) {
 
 func (el *BasicBox) drawInvisible(platform iotmaker_platform_IDraw.IDraw) {
 	platform.SetLineWidth(el.Ink.LineWidth)
-	independentDraw.DrawBoxWithRoundedCornersIntoThePath(el.Platform, el.Dimensions.X, el.Dimensions.Y, el.Dimensions.Width, el.Dimensions.Height, el.Dimensions.Border)
+	el.prepareGradientFilter(el.Platform)
+	independentDraw.DrawBoxWithRoundedCornersIntoThePath(platform, el.Dimensions.X, el.Dimensions.Y, el.Dimensions.Width, el.Dimensions.Height, el.Dimensions.Border)
 }
 
 func (el *BasicBox) drawVisible() {
@@ -134,6 +137,9 @@ func (el *BasicBox) drawVisible() {
 }
 
 func (el *BasicBox) Create() {
+	el.enableDataImageCalculate = true
+	el.imageDataMethod = genericTypes.KImageDataCaptureMethodCompleteData
+
 	el.calculateCoordinates()
 
 	if el.enableDataImageCalculate == true {
@@ -155,7 +161,6 @@ func (el *BasicBox) Create() {
 // see SetAlphaChannelSensibility()
 // see SetImageDataCalculateMethod()
 func (el *BasicBox) CalculateImageData() {
-
 	switch el.imageDataMethod {
 	case genericTypes.KImageDataCaptureMethodCompleteData:
 		iotmaker_threadsafe.ScratchPad(
@@ -232,7 +237,15 @@ func (el *BasicBox) GetPixelAlphaChannel(x, y int) uint8 {
 		return 0
 	}
 
-	return el.imageDataComplete[x][y].A
+	if x < el.OutBoxDimensions.X || x > el.OutBoxDimensions.X+el.OutBoxDimensions.Width {
+		return 0
+	}
+
+	if y < el.OutBoxDimensions.Y || y > el.OutBoxDimensions.Y+el.OutBoxDimensions.Height {
+		return 0
+	}
+
+	return el.Platform.GetImageDataAlphaChannelByCoordinate(el.imageDataComplete, x-el.OutBoxDimensions.X, y-el.OutBoxDimensions.Y, el.OutBoxDimensions.Width)
 }
 
 func (el *BasicBox) GetPixelColor(x, y int) color.RGBA {
@@ -240,7 +253,15 @@ func (el *BasicBox) GetPixelColor(x, y int) color.RGBA {
 		return color.RGBA{}
 	}
 
-	return el.imageDataComplete[x][y]
+	if x < el.OutBoxDimensions.X || x > el.OutBoxDimensions.X+el.OutBoxDimensions.Width {
+		return color.RGBA{}
+	}
+
+	if y < el.OutBoxDimensions.Y || y > el.OutBoxDimensions.Y+el.OutBoxDimensions.Height {
+		return color.RGBA{}
+	}
+
+	return el.Platform.GetImageDataPixelByCoordinate(el.imageDataComplete, x-el.OutBoxDimensions.X, y-el.OutBoxDimensions.Y, el.OutBoxDimensions.Width)
 }
 
 func (el *BasicBox) GetPlatform() iotmaker_platform_IDraw.IDraw {

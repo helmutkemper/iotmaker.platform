@@ -49,4 +49,5 @@ func DrawBoxWithRoundedCornersIntoThePath(platform iotmaker_platform_IDraw.IDraw
 	platform.LineTo(x1, y2)                // j->k
 	platform.ArcTo(x1, y1, x2, y1, border) // i->j
 	platform.ClosePath(x2, y1)             // a
+
 }
