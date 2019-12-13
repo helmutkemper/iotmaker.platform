@@ -45,14 +45,14 @@ var cursorTypesWebBrowser = [...]string{
 	"cursor:se-resize",
 	"cursor:sw-resize",
 	"cursor:text",
-	"cursor:URL",
+	//"cursor:URL",
 	"cursor:vertical-text",
 	"cursor:w-resize",
 	"cursor:wait",
 	"cursor:zoom-in",
 	"cursor:zoom-out",
-	"cursor:initial",
-	"cursor:inherit",
+	//"cursor:initial",
+	//"cursor:inherit",
 }
 
 const (
