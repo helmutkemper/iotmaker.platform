@@ -16,8 +16,10 @@ type ResizeBoxes struct {
 	FatherOutBoxDimensions genericTypes.Dimensions
 	outBoxDimensions       genericTypes.Dimensions
 
-	CornerFillColor interface{}
-	CornerLineWidth int
+	CornerFillColor  interface{}
+	CornerLineWidth  int
+	ContourLineWidth int
+	ContourColor     color.RGBA
 
 	imageDataMethod           genericTypes.ImageDataCaptureMethod
 	imageDataComplete         map[int]map[int]color.RGBA
@@ -81,11 +83,6 @@ func (el *ResizeBoxes) Create() {
 	//independentDraw.DrawBoxWithRoundedCornersIntoThePath(el.Platform, el.FatherOutBoxDimensions.X, el.FatherOutBoxDimensions.Y, el.FatherOutBoxDimensions.Width, el.FatherOutBoxDimensions.Height, 0)
 	//el.Platform.Stroke()
 
-	el.CornerFillColor = color.RGBA{R: 0x00, G: 0x90, B: 0x90, A: 0xFF}
-	el.CornerLineWidth = 0
-
-	lineWidth := 1
-
 	el.createCornerA()
 	el.createCornerB()
 	el.createCornerC()
@@ -95,37 +92,14 @@ func (el *ResizeBoxes) Create() {
 	el.createCornerG()
 	el.createCornerH()
 
-	el.Platform.SetLineWidth(lineWidth)
 	el.lineFromCornerAToCornerB()
-	el.Platform.Stroke()
-
-	el.Platform.SetLineWidth(lineWidth)
 	el.lineFromCornerBToCornerC()
-	el.Platform.Stroke()
-
-	el.Platform.SetLineWidth(lineWidth)
 	el.lineFromCornerCToCornerD()
-	el.Platform.Stroke()
-
-	el.Platform.SetLineWidth(lineWidth)
 	el.lineFromCornerDToCornerE()
-	el.Platform.Stroke()
-
-	el.Platform.SetLineWidth(lineWidth)
 	el.lineFromCornerEToCornerF()
-	el.Platform.Stroke()
-
-	el.Platform.SetLineWidth(lineWidth)
 	el.lineFromCornerFToCornerG()
-	el.Platform.Stroke()
-
-	el.Platform.SetLineWidth(lineWidth)
 	el.lineFromCornerGToCornerH()
-	el.Platform.Stroke()
-
-	el.Platform.SetLineWidth(lineWidth)
 	el.lineFromCornerHToCornerA()
-	el.Platform.Stroke()
 
 	el.calculateOutBoxDimensions()
 }
@@ -330,7 +304,11 @@ func (el *ResizeBoxes) lineFromCornerAToCornerB() {
 	y0 := el.boxAY + el.Dimensions.Height/2
 
 	x1 := el.boxBX
+
+	el.Platform.SetLineWidth(el.ContourLineWidth)
+	el.Platform.SetStrokeStyle(el.ContourColor)
 	independentDraw.DrawSimpleLineIntoThePath(el.Platform, x0, y0, x1, y0)
+	el.Platform.Stroke()
 }
 
 func (el *ResizeBoxes) lineFromCornerBToCornerC() {
@@ -338,7 +316,11 @@ func (el *ResizeBoxes) lineFromCornerBToCornerC() {
 	y0 := el.boxBY + el.Dimensions.Height/2
 
 	x1 := el.boxCX
+
+	el.Platform.SetLineWidth(el.ContourLineWidth)
+	el.Platform.SetStrokeStyle(el.ContourColor)
 	independentDraw.DrawSimpleLineIntoThePath(el.Platform, x0, y0, x1, y0)
+	el.Platform.Stroke()
 }
 
 func (el *ResizeBoxes) lineFromCornerCToCornerD() {
@@ -346,7 +328,11 @@ func (el *ResizeBoxes) lineFromCornerCToCornerD() {
 	y0 := el.boxCY + el.Dimensions.Height
 
 	y1 := el.boxDY
+
+	el.Platform.SetLineWidth(el.ContourLineWidth)
+	el.Platform.SetStrokeStyle(el.ContourColor)
 	independentDraw.DrawSimpleLineIntoThePath(el.Platform, x0, y0, x0, y1)
+	el.Platform.Stroke()
 }
 
 func (el *ResizeBoxes) lineFromCornerDToCornerE() {
@@ -354,7 +340,11 @@ func (el *ResizeBoxes) lineFromCornerDToCornerE() {
 	y0 := el.boxDY + el.Dimensions.Height
 
 	y1 := el.boxEY
+
+	el.Platform.SetLineWidth(el.ContourLineWidth)
+	el.Platform.SetStrokeStyle(el.ContourColor)
 	independentDraw.DrawSimpleLineIntoThePath(el.Platform, x0, y0, x0, y1)
+	el.Platform.Stroke()
 }
 
 func (el *ResizeBoxes) lineFromCornerEToCornerF() {
@@ -362,7 +352,11 @@ func (el *ResizeBoxes) lineFromCornerEToCornerF() {
 	y0 := el.boxEY + el.Dimensions.Height/2
 
 	x1 := el.boxFX + el.Dimensions.Width
+
+	el.Platform.SetLineWidth(el.ContourLineWidth)
+	el.Platform.SetStrokeStyle(el.ContourColor)
 	independentDraw.DrawSimpleLineIntoThePath(el.Platform, x0, y0, x1, y0)
+	el.Platform.Stroke()
 }
 
 func (el *ResizeBoxes) lineFromCornerFToCornerG() {
@@ -370,7 +364,11 @@ func (el *ResizeBoxes) lineFromCornerFToCornerG() {
 	y0 := el.boxFY + el.Dimensions.Height/2
 
 	x1 := el.boxGX + el.Dimensions.Width
+
+	el.Platform.SetLineWidth(el.ContourLineWidth)
+	el.Platform.SetStrokeStyle(el.ContourColor)
 	independentDraw.DrawSimpleLineIntoThePath(el.Platform, x0, y0, x1, y0)
+	el.Platform.Stroke()
 }
 
 func (el *ResizeBoxes) lineFromCornerGToCornerH() {
@@ -378,7 +376,11 @@ func (el *ResizeBoxes) lineFromCornerGToCornerH() {
 	y0 := el.boxGY
 
 	y1 := el.boxHY + el.Dimensions.Width
+
+	el.Platform.SetLineWidth(el.ContourLineWidth)
+	el.Platform.SetStrokeStyle(el.ContourColor)
 	independentDraw.DrawSimpleLineIntoThePath(el.Platform, x0, y0, x0, y1)
+	el.Platform.Stroke()
 }
 
 func (el *ResizeBoxes) lineFromCornerHToCornerA() {
@@ -386,7 +388,11 @@ func (el *ResizeBoxes) lineFromCornerHToCornerA() {
 	y0 := el.boxHY
 
 	y1 := el.boxAY + el.Dimensions.Width
+
+	el.Platform.SetLineWidth(el.ContourLineWidth)
+	el.Platform.SetStrokeStyle(el.ContourColor)
 	independentDraw.DrawSimpleLineIntoThePath(el.Platform, x0, y0, x0, y1)
+	el.Platform.Stroke()
 }
 
 func (el *ResizeBoxes) getEventOverCorner(boxX, boxY, x, y int) bool {
