@@ -13,11 +13,6 @@ const (
 	KPlatformWebBrowser platformCursorPointer = iota
 )
 
-// Example: mouse.SetPlatform( mouse.KPlatformCursorWebBrowser )
-func SetPlatform(value platformCursorPointer) {
-	platform = value
-}
-
 func ManagerMouseMove(x, y int) {
 	var isOver bool
 
