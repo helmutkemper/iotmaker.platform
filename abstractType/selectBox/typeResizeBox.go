@@ -116,7 +116,7 @@ func (el *ResizeBoxes) Create() {
 	el.Platform.Fill()
 	el.Platform.Stroke()
 
-	lineWidth = 1
+	lineWidth = 4
 
 	el.Platform.SetLineWidth(lineWidth)
 	el.lineFromCornerAToCornerB()
