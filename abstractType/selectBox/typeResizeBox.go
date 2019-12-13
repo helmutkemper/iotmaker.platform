@@ -65,58 +65,58 @@ func (el *ResizeBoxes) Create() {
 	//independentDraw.DrawBoxWithRoundedCornersIntoThePath(el.Platform, el.FatherOutBoxDimensions.X, el.FatherOutBoxDimensions.Y, el.FatherOutBoxDimensions.Width, el.FatherOutBoxDimensions.Height, 0)
 	//el.Platform.Stroke()
 
-	lineWidth := 0
+	lineWidth := 1
 	fillColor := "#9F00FF"
 
 	el.Platform.SetLineWidth(lineWidth)
 	el.createCornerA()
 	el.Platform.SetFillStyle(fillColor)
 	el.Platform.Fill()
-	//el.Platform.Stroke()
+	el.Platform.Stroke()
 
 	el.Platform.SetLineWidth(lineWidth)
 	el.createCornerB()
 	el.Platform.SetFillStyle(fillColor)
 	el.Platform.Fill()
-	//el.Platform.Stroke()
+	el.Platform.Stroke()
 
 	el.Platform.SetLineWidth(lineWidth)
 	el.createCornerC()
 	el.Platform.SetFillStyle(fillColor)
 	el.Platform.Fill()
-	//el.Platform.Stroke()
+	el.Platform.Stroke()
 
 	el.Platform.SetLineWidth(lineWidth)
 	el.createCornerD()
 	el.Platform.SetFillStyle(fillColor)
 	el.Platform.Fill()
-	//el.Platform.Stroke()
+	el.Platform.Stroke()
 
 	el.Platform.SetLineWidth(lineWidth)
 	el.createCornerE()
 	el.Platform.SetFillStyle(fillColor)
 	el.Platform.Fill()
-	//el.Platform.Stroke()
+	el.Platform.Stroke()
 
 	el.Platform.SetLineWidth(lineWidth)
 	el.createCornerF()
 	el.Platform.SetFillStyle(fillColor)
 	el.Platform.Fill()
-	//el.Platform.Stroke()
+	el.Platform.Stroke()
 
 	el.Platform.SetLineWidth(lineWidth)
 	el.createCornerG()
 	el.Platform.SetFillStyle(fillColor)
 	el.Platform.Fill()
-	//el.Platform.Stroke()
+	el.Platform.Stroke()
 
 	el.Platform.SetLineWidth(lineWidth)
 	el.createCornerH()
 	el.Platform.SetFillStyle(fillColor)
 	el.Platform.Fill()
-	//el.Platform.Stroke()
+	el.Platform.Stroke()
 
-	lineWidth = 2
+	lineWidth = 1
 
 	el.Platform.SetLineWidth(lineWidth)
 	el.lineFromCornerAToCornerB()
