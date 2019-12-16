@@ -1,0 +1,56 @@
+package factoryTween
+
+import (
+	"fmt"
+	"github.com/helmutkemper/util"
+	"sync"
+	"time"
+)
+
+func ExampleTween_NewTweenLinear() {
+	wg := sync.WaitGroup{}
+	wg.Add(1)
+
+	start := time.Now()
+
+	NewTweenLinear(
+		time.Second*2,
+		0,
+		3,
+		func(value float64) {
+			fmt.Printf("value on interaction event: %v\n", util.Round(value, 0.5, 1.0))
+		},
+		func(value float64) {
+			wg.Done()
+			fmt.Printf("value on done event: %v\n", util.Round(value, 0.5, 1.0))
+		},
+	)
+
+	wg.Wait()
+	elapsed := time.Since(start)
+	fmt.Printf("total time: %v", util.Round(elapsed.Seconds(), 0.5, 1.0))
+
+	// output:
+	// value on interaction event: 0.2
+	// value on interaction event: 0.3
+	// value on interaction event: 0.5
+	// value on interaction event: 0.6
+	// value on interaction event: 0.8
+	// value on interaction event: 0.9
+	// value on interaction event: 1.1
+	// value on interaction event: 1.2
+	// value on interaction event: 1.4
+	// value on interaction event: 1.5
+	// value on interaction event: 1.7
+	// value on interaction event: 1.8
+	// value on interaction event: 2
+	// value on interaction event: 2.1
+	// value on interaction event: 2.3
+	// value on interaction event: 2.4
+	// value on interaction event: 2.6
+	// value on interaction event: 2.7
+	// value on interaction event: 2.9
+	// value on interaction event: 3
+	// value on done event: 3
+	// total time: 2
+}
