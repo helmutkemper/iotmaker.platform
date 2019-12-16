@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func ExampleTween_NewTweenLinear() {
+func ExampleTween_NewEaseOutCubic() {
 	wg := sync.WaitGroup{}
 	wg.Add(1)
 
@@ -16,7 +16,7 @@ func ExampleTween_NewTweenLinear() {
 
 	start := time.Now()
 
-	NewTweenLinear(
+	NewEaseOutCubic(
 		time.Second*2,
 		0,
 		3,
@@ -34,11 +34,11 @@ func ExampleTween_NewTweenLinear() {
 	fmt.Printf("total time: %v", util.Round(elapsed.Seconds(), 0.5, 1.0))
 
 	//output:
-	//value on interaction event: 0.5
-	//value on interaction event: 1
-	//value on interaction event: 1.5
-	//value on interaction event: 2
-	//value on interaction event: 2.5
+	//value on interaction event: 1.3
+	//value on interaction event: 2.1
+	//value on interaction event: 2.6
+	//value on interaction event: 2.9
+	//value on interaction event: 3
 	//value on interaction event: 3
 	//value on done event: 3
 	//total time: 2

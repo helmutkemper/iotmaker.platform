@@ -6,7 +6,7 @@ import (
 )
 
 // en: exponential easing out - decelerating to zero velocity
-func EaseOutExponential(duration time.Duration, startValue, endValue float64, interactionFunc, doneFunc func(float64)) *tween.Tween {
+func NewEaseOutExponential(duration time.Duration, startValue, endValue float64, interactionFunc, doneFunc func(float64)) *tween.Tween {
 	t := &tween.Tween{
 		Duration:    duration,
 		StartValue:  startValue,

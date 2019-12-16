@@ -1,6 +1,7 @@
 package tween
 
 import (
+	"github.com/helmutkemper/iotmaker.platform/fps"
 	"time"
 )
 
@@ -18,7 +19,7 @@ type Tween struct {
 
 func (el *Tween) Start() {
 	if el.FramesPerSecond == 0 {
-		el.FramesPerSecond = 10
+		el.FramesPerSecond = fps.Get()
 	}
 
 	el.ticker = time.NewTicker(time.Second / time.Duration(el.FramesPerSecond))
@@ -41,7 +42,7 @@ func (el *Tween) tickerRunner() {
 				el.Interaction(value)
 			}
 
-			if value >= el.EndValue {
+			if elapsed >= el.Duration {
 
 				if el.Done != nil {
 					el.Done(value)

@@ -8,24 +8,24 @@ import (
 	"time"
 )
 
-func ExampleTween_NewTweenLinear() {
+func ExampleTween_NewEaseInOutQuintic() {
 	wg := sync.WaitGroup{}
 	wg.Add(1)
 
-	fps.Set(3)
+	fps.Set(120)
 
 	start := time.Now()
 
-	NewTweenLinear(
+	NewEaseInOutQuintic(
 		time.Second*2,
 		0,
 		3,
 		func(value float64) {
-			fmt.Printf("value on interaction event: %v\n", util.Round(value, 0.5, 1.0))
+			fmt.Printf("value on interaction event: %v\n", util.Round(value, 0.5, 10.0))
 		},
 		func(value float64) {
 			wg.Done()
-			fmt.Printf("value on done event: %v\n", util.Round(value, 0.5, 1.0))
+			fmt.Printf("value on done event: %v\n", util.Round(value, 0.5, 10.0))
 		},
 	)
 
