@@ -1,6 +1,8 @@
 package tween
 
-import "math"
+import (
+	"math"
+)
 
 // en: exponential easing in - accelerating from zero velocity
 var KEaseInExponential = func(currentTime, duration, startValue, changeInValue float64) float64 {
