@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+// en: quadratic easing out - decelerating to zero velocity
 func NewEaseOutQuadratic(duration time.Duration, startValue, endValue float64, interactionFunc, doneFunc func(float64)) *tween.Tween {
 	t := &tween.Tween{
 		Duration:    duration,

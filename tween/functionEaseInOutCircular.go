@@ -2,8 +2,8 @@ package tween
 
 import "math"
 
-// circular easing in/out - acceleration until halfway, then deceleration
-var EaseInOutCircular = func(currentTime, duration, startValue, changeInValue float64) float64 {
+// en: circular easing in/out - acceleration until halfway, then deceleration
+var KEaseInOutCircular = func(currentTime, duration, startValue, changeInValue float64) float64 {
 	currentTime = currentTime / duration / 2
 	if currentTime < 1 {
 		return -1*changeInValue/2*(math.Sqrt(1-currentTime*currentTime)-1) + startValue

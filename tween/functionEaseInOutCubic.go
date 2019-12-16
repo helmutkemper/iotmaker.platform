@@ -1,6 +1,6 @@
 package tween
 
-// cubic easing in/out - acceleration until halfway, then deceleration
+// en: cubic easing in/out - acceleration until halfway, then deceleration
 var KEaseInOutCubic = func(currentTime, duration, startValue, changeInValue float64) float64 {
 	currentTime = currentTime / duration / 2
 	if currentTime < 1 {
