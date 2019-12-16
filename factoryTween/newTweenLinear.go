@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+// en: simple linear tweening - no easing, no acceleration
 func NewTweenLinear(duration time.Duration, startValue, endValue float64, interactionFunc, doneFunc func(float64)) *tween.Tween {
 	t := &tween.Tween{
 		Duration:    duration,
