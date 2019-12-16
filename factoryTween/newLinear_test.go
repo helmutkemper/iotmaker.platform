@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func ExampleNewTweenEaseInQuadratic_1() {
+func ExampleTween_NewTweenLinear_1() {
 	wg := sync.WaitGroup{}
 	wg.Add(1)
 
@@ -16,7 +16,7 @@ func ExampleNewTweenEaseInQuadratic_1() {
 
 	start := time.Now()
 
-	NewTweenEaseInQuadratic(
+	NewLinear(
 		time.Second*2,
 		0,
 		3,
@@ -34,17 +34,17 @@ func ExampleNewTweenEaseInQuadratic_1() {
 	fmt.Printf("total time: %v", util.Round(elapsed.Seconds(), 0.5, 1.0))
 
 	//output:
-	//value on interaction event: 0.1
-	//value on interaction event: 0.3
-	//value on interaction event: 0.8
-	//value on interaction event: 1.3
-	//value on interaction event: 2.1
+	//value on interaction event: 0.5
+	//value on interaction event: 1
+	//value on interaction event: 1.5
+	//value on interaction event: 2
+	//value on interaction event: 2.5
 	//value on interaction event: 3
 	//value on done event: 3
 	//total time: 2
 }
 
-func ExampleNewTweenEaseInQuadratic_2() {
+func ExampleTween_NewTweenLinear_2() {
 	wg := sync.WaitGroup{}
 	wg.Add(1)
 
@@ -52,7 +52,7 @@ func ExampleNewTweenEaseInQuadratic_2() {
 
 	start := time.Now()
 
-	NewTweenEaseInQuadratic(
+	NewLinear(
 		time.Second*2,
 		3,
 		0,
@@ -70,11 +70,11 @@ func ExampleNewTweenEaseInQuadratic_2() {
 	fmt.Printf("total time: %v", util.Round(elapsed.Seconds(), 0.5, 1.0))
 
 	//output:
-	//value on interaction event: 2.9
-	//value on interaction event: 2.7
-	//value on interaction event: 2.2
-	//value on interaction event: 1.7
-	//value on interaction event: 0.9
+	//value on interaction event: 2.5
+	//value on interaction event: 2
+	//value on interaction event: 1.5
+	//value on interaction event: 1
+	//value on interaction event: 0.5
 	//value on interaction event: -0.1
 	//value on done event: -0.1
 	//total time: 2

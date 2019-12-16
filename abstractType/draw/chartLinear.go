@@ -20,10 +20,10 @@ type ChartLinear struct {
 func (el *ChartLinear) Create() {
 
 	// axe x
-	el.lineTo(el.X, el.Y, el.X, el.Y+el.Height, 1)
+	el.lineTo(el.X, el.Y, el.X, el.Y+el.Height, 0.1)
 
 	// axe y
-	el.lineTo(el.X, el.Y+el.Height, el.X+el.Width, el.Y+el.Height, 1)
+	el.lineTo(el.X, el.Y+el.Height, el.X+el.Width, el.Y+el.Height, 0.1)
 
 	for i := el.X; i <= el.X+el.Width; i += 10 {
 		el.lineTo(i, el.Y, i, el.Y+el.Height+4, 0.1)
