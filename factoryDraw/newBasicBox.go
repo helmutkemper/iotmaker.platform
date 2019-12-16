@@ -1,9 +1,9 @@
-package factoryBasicBox
+package factoryDraw
 
 import (
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
 	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.coordinate"
-	"github.com/helmutkemper/iotmaker.platform/abstractType/basicBox"
+	"github.com/helmutkemper/iotmaker.platform/abstractType/draw"
 	"github.com/helmutkemper/iotmaker.platform/abstractType/genericTypes"
 )
 
@@ -22,7 +22,7 @@ func NewBasicBox(
 	gradient iotmaker_platform_IDraw.IFilterGradientInterface,
 	density interface{},
 	iDensity iotmaker_platform_coordinate.IDensity,
-) *basicBox.BasicBox {
+) *draw.BasicBox {
 
 	dm := genericTypes.Dimensions{}
 	dm = genericTypes.NewDimensions(dm, x, y, width, height, border, density, iDensity)
@@ -30,7 +30,7 @@ func NewBasicBox(
 	ik := genericTypes.Ink{}
 	ik = genericTypes.NewInc(ik, lineWidth, color, shadow, gradient, density, iDensity)
 
-	bb := &basicBox.BasicBox{
+	bb := &draw.BasicBox{
 		Platform:   platform,
 		ScratchPad: scratchPad,
 		Id:         id,

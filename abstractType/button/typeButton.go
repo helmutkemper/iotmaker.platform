@@ -6,6 +6,6 @@ import (
 )
 
 type Button struct {
-	BasicBox basicBox.BasicBox
+	BasicBox draw.BasicBox
 	Label    text.Text
 }

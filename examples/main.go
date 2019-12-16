@@ -29,7 +29,7 @@ import (
 var (
 	density                                   = 3.0
 	densityManager coordinateManager.IDensity = &coordinateManager.Density{}
-	bx2                                       = &basicBox.BasicBox{}
+	bx2                                       = &draw.BasicBox{}
 	stage                                     = canvas.Stage{}
 	gradientFilter iotmakerPlatformIDraw.IFilterGradientInterface
 	html           iotmakerPlatformIDraw.IHtml
@@ -102,7 +102,7 @@ func main() {
 	)
 
 	factoryGradient.ResetStylesGlobal(&stage.Canvas)
-	factoryBasicBox.NewBasicBox(
+	factoryDraw.NewBasicBox(
 		&stage.Canvas,
 		&stage.ScratchPad,
 		nil,
@@ -119,7 +119,7 @@ func main() {
 		densityManager,
 	)
 
-	bx2 = factoryBasicBox.NewBasicBox(
+	bx2 = factoryDraw.NewBasicBox(
 		&stage.Canvas,
 		&stage.ScratchPad,
 		nil,

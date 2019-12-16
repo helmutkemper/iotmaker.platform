@@ -1,4 +1,4 @@
-package basicBox
+package draw
 
 import (
 	"fmt"
