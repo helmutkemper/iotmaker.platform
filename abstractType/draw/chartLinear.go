@@ -25,11 +25,11 @@ func (el *ChartLinear) Create() {
 	// axe y
 	el.lineTo(el.X, el.Y+el.Height, el.X+el.Width, el.Y+el.Height, 0.1)
 
-	for i := el.X; i <= el.X+el.Width; i += 10 {
+	for i := el.X; i <= el.X+el.Width; i += 50 {
 		el.lineTo(i, el.Y, i, el.Y+el.Height+4, 0.1)
 	}
 
-	for i := el.Y; i <= el.Y+el.Height; i += 10 {
+	for i := el.Y; i <= el.Y+el.Height; i += 50 {
 		el.lineTo(el.X-4, i, el.X+el.Width, i, 0.1)
 	}
 }
@@ -45,11 +45,12 @@ func (el *ChartLinear) lineTo(x1, y1, x2, y2 int, lineWidth interface{}) {
 
 func (el *ChartLinear) Begin(x, y int) {
 	el.Platform.BeginPath()
-	el.Platform.SetLineWidth(1)
+	el.Platform.SetLineWidth(0.1)
 	el.Platform.MoveTo(x, y)
 }
 
 func (el *ChartLinear) Point(x, y int) {
+	el.Platform.SetLineWidth(0.1)
 	el.Platform.LineTo(x, y)
 	el.Platform.Stroke()
 }

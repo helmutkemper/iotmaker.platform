@@ -9,11 +9,12 @@ type Tween struct {
 	FramesPerSecond int
 	StartValue      float64
 	EndValue        float64
+	Arguments       []interface{}
 	ticker          *time.Ticker
 	startTime       time.Time
 	Duration        time.Duration
 	Func            func(currentTime, duration, startValue, changeInValue float64) float64
-	Interaction     func(value float64)
+	Interaction     func(value, percentToComplete float64, arguments []interface{})
 	Done            func(value float64)
 }
 
@@ -37,9 +38,10 @@ func (el *Tween) tickerRunner() {
 		case <-el.ticker.C:
 			elapsed := time.Since(el.startTime)
 			value := el.Func(elapsed.Seconds(), el.Duration.Seconds(), el.StartValue, el.EndValue-el.StartValue)
+			percent := elapsed.Seconds() / el.Duration.Seconds()
 
 			if el.Interaction != nil {
-				el.Interaction(value)
+				el.Interaction(value, percent, el.Arguments)
 			}
 
 			if elapsed >= el.Duration {
