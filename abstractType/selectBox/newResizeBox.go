@@ -3,7 +3,7 @@ package selectBox
 import (
 	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.coordinate"
 	mouseWebBrowser "github.com/helmutkemper/iotmaker.platform.webbrowser/mouse"
-	"github.com/helmutkemper/iotmaker.platform/abstractType/basicBox"
+	"github.com/helmutkemper/iotmaker.platform/abstractType/draw"
 	"github.com/helmutkemper/iotmaker.platform/abstractType/genericTypes"
 	"image/color"
 )
