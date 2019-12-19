@@ -3,6 +3,7 @@ package draw
 import (
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
 	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.coordinate"
+	"image/color"
 )
 
 type ChartLinear struct {
@@ -13,29 +14,50 @@ type ChartLinear struct {
 	Width  int
 	Height int
 
+	LineColor color.RGBA
+
+	XAxis []int
+	YAxis []int
+
+	XAxisLine  float64
+	YAxisLine  float64
+	XAxisColor color.RGBA
+	YAxisColor color.RGBA
+
+	XSubAxisLine  float64
+	YSubAxisLine  float64
+	XSubAxisColor color.RGBA
+	YSubAxisColor color.RGBA
+
 	Density  interface{}
 	IDensity iotmaker_platform_coordinate.IDensity
 }
 
 func (el *ChartLinear) Create() {
 
-	// axe x
-	el.lineTo(el.X, el.Y, el.X, el.Y+el.Height, 0.1)
+	// axis x
+	el.lineTo(el.X, el.Y, el.X, el.Y+el.Height, el.XAxisLine, el.XAxisColor)
 
-	// axe y
-	el.lineTo(el.X, el.Y+el.Height, el.X+el.Width, el.Y+el.Height, 0.1)
+	// axis y
+	el.lineTo(el.X, el.Y+el.Height, el.X+el.Width, el.Y+el.Height, el.YAxisLine, el.YAxisColor)
 
-	for i := el.X; i <= el.X+el.Width; i += 50 {
-		el.lineTo(i, el.Y, i, el.Y+el.Height+4, 0.1)
+	for _, v := range el.XAxis {
+		el.lineTo(v, el.Y, v, el.Y+el.Height, el.XSubAxisLine, el.XSubAxisColor)
 	}
 
-	for i := el.Y; i <= el.Y+el.Height; i += 50 {
-		el.lineTo(el.X-4, i, el.X+el.Width, i, 0.1)
+	for _, v := range el.YAxis {
+		el.lineTo(el.X, v, el.X+el.Width, v, el.YSubAxisLine, el.YSubAxisColor)
 	}
+
+	el.Platform.ResetLineWidth()
+	el.Platform.ResetFillStyle()
+	el.Platform.ResetStrokeStyle()
+	el.Platform.ResetShadow()
 }
 
-func (el *ChartLinear) lineTo(x1, y1, x2, y2 int, lineWidth interface{}) {
+func (el *ChartLinear) lineTo(x1, y1, x2, y2 int, lineWidth interface{}, color interface{}) {
 	el.Platform.BeginPath()
+	el.Platform.SetStrokeStyle(color)
 	el.Platform.SetLineWidth(lineWidth)
 	el.Platform.MoveTo(x1, y1)
 	el.Platform.LineTo(x2, y2)
@@ -45,12 +67,13 @@ func (el *ChartLinear) lineTo(x1, y1, x2, y2 int, lineWidth interface{}) {
 
 func (el *ChartLinear) Begin(x, y int) {
 	el.Platform.BeginPath()
-	el.Platform.SetLineWidth(0.1)
+	el.Platform.SetLineWidth(0.005)
 	el.Platform.MoveTo(x, y)
 }
 
-func (el *ChartLinear) Point(x, y int) {
-	el.Platform.SetLineWidth(0.1)
+func (el *ChartLinear) Pixel(x, y int) {
+	el.Platform.SetLineWidth(0.01)
+	el.Platform.MoveTo(x-1, y-1)
 	el.Platform.LineTo(x, y)
 	el.Platform.Stroke()
 }
