@@ -15,7 +15,8 @@ type Tween struct {
 	Duration        time.Duration
 	Func            func(currentTime, duration, startValue, changeInValue float64) float64
 	Interaction     func(value, percentToComplete float64, arguments []interface{})
-	Done            func(value float64)
+	OnStart         func(value float64)
+	OnEnd           func(value float64)
 }
 
 func (el *Tween) Start() {
@@ -34,6 +35,10 @@ func (el *Tween) tickerRunner() {
 			return
 		}
 
+		if el.OnStart != nil {
+			el.OnStart(el.StartValue)
+		}
+
 		select {
 		case <-el.ticker.C:
 			elapsed := time.Since(el.startTime)
@@ -46,8 +51,8 @@ func (el *Tween) tickerRunner() {
 
 			if elapsed >= el.Duration {
 
-				if el.Done != nil {
-					el.Done(value)
+				if el.OnEnd != nil {
+					el.OnEnd(value)
 				}
 
 				return
