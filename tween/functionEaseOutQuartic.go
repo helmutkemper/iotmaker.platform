@@ -1,8 +1,8 @@
 package tween
 
 // en: quartic easing out - decelerating to zero velocity
-var KEaseOutQuartic = func(currentTime, duration, startValue, changeInValue float64) float64 {
-	currentTime = currentTime / duration
-	currentTime--
-	return -1*changeInValue*(currentTime*currentTime*currentTime*currentTime-1) + startValue
+var KEaseOutQuartic = func(interactionCurrent, interactionTotal, startValue, delta float64) float64 {
+	interactionCurrent = interactionCurrent / interactionTotal
+	interactionCurrent--
+	return -1*delta*(interactionCurrent*interactionCurrent*interactionCurrent*interactionCurrent-1) + startValue
 }

@@ -1,8 +1,8 @@
 package tween
 
 // en: quintic easing out - decelerating to zero velocity
-var KEaseOutQuintic = func(currentTime, duration, startValue, changeInValue float64) float64 {
-	currentTime /= duration
-	currentTime--
-	return changeInValue*(currentTime*currentTime*currentTime*currentTime*currentTime+1) + startValue
+var KEaseOutQuintic = func(interactionCurrent, interactionTotal, startValue, delta float64) float64 {
+	interactionCurrent /= interactionTotal
+	interactionCurrent--
+	return delta*(interactionCurrent*interactionCurrent*interactionCurrent*interactionCurrent*interactionCurrent+1) + startValue
 }

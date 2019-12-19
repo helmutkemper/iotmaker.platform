@@ -3,6 +3,6 @@ package tween
 import "math"
 
 // en: exponential easing out - decelerating to zero velocity
-var KEaseOutExponential = func(currentTime, duration, startValue, changeInValue float64) float64 {
-	return changeInValue*(-1*math.Pow(2, -10*currentTime/duration)+1) + startValue
+var KEaseOutExponential = func(interactionCurrent, interactionTotal, startValue, delta float64) float64 {
+	return delta*(-1*math.Pow(2, -10*interactionCurrent/interactionTotal)+1) + startValue
 }

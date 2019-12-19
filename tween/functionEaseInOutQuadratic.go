@@ -1,11 +1,11 @@
 package tween
 
 // en: Quadratic easing in/out - acceleration until halfway, then deceleration
-var KEaseInOutQuadratic = func(currentTime, duration, startValue, changeInValue float64) float64 {
-	currentTime /= duration / 2
-	if currentTime < 1 {
-		return changeInValue/2*currentTime*currentTime + startValue
+var KEaseInOutQuadratic = func(interactionCurrent, interactionTotal, startValue, delta float64) float64 {
+	interactionCurrent /= interactionTotal / 2
+	if interactionCurrent < 1 {
+		return delta/2*interactionCurrent*interactionCurrent + startValue
 	}
-	currentTime--
-	return -1*changeInValue/2*(currentTime*(currentTime-2)-1) + startValue
+	interactionCurrent--
+	return -1*delta/2*(interactionCurrent*(interactionCurrent-2)-1) + startValue
 }

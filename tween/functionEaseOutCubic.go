@@ -1,8 +1,8 @@
 package tween
 
 // en: cubic easing out - decelerating to zero velocity
-var KEaseOutCubic = func(currentTime, duration, startValue, changeInValue float64) float64 {
-	currentTime = currentTime / duration
-	currentTime--
-	return changeInValue*(currentTime*currentTime*currentTime+1) + startValue
+var KEaseOutCubic = func(interactionCurrent, interactionTotal, startValue, delta float64) float64 {
+	interactionCurrent = interactionCurrent / interactionTotal
+	interactionCurrent--
+	return delta*(interactionCurrent*interactionCurrent*interactionCurrent+1) + startValue
 }

@@ -20,9 +20,10 @@ func ExampleTween_NewEaseInOutQuintic_1() {
 		time.Second*2,
 		0,
 		3,
-		func(value float64) {
+		func(value float64, percent float64, args []interface{}) {
 			fmt.Printf("value on interaction event: %v\n", util.Round(value, 0.5, 1.0))
 		},
+		nil,
 		func(value float64) {
 			wg.Done()
 			fmt.Printf("value on done event: %v\n", util.Round(value, 0.5, 1.0))
@@ -56,9 +57,10 @@ func ExampleTween_NewEaseInOutQuintic_2() {
 		time.Second*2,
 		3,
 		0,
-		func(value float64) {
+		func(value float64, percent float64, args []interface{}) {
 			fmt.Printf("value on interaction event: %v\n", util.Round(value, 0.5, 1.0))
 		},
+		nil,
 		func(value float64) {
 			wg.Done()
 			fmt.Printf("value on done event: %v\n", util.Round(value, 0.5, 1.0))

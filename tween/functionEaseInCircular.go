@@ -3,7 +3,7 @@ package tween
 import "math"
 
 // en: circular easing in - accelerating from zero velocity
-var KEaseInCircular = func(currentTime, duration, startValue, changeInValue float64) float64 {
-	currentTime = currentTime / duration
-	return -changeInValue*(math.Sqrt(math.Abs(1-currentTime*currentTime))-1) + startValue
+var KEaseInCircular = func(interactionCurrent, interactionTotal, startValue, delta float64) float64 {
+	interactionCurrent = interactionCurrent / interactionTotal
+	return -delta*(math.Sqrt(math.Abs(1-interactionCurrent*interactionCurrent))-1) + startValue
 }

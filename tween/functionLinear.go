@@ -1,6 +1,6 @@
 package tween
 
 // en: simple linear tweening - no easing, no acceleration
-var KLinear = func(currentTime, duration, startValue, changeInValue float64) float64 {
-	return changeInValue*currentTime/duration + startValue
+var KLinear = func(interactionCurrent, interactionTotal, startValue, delta float64) float64 {
+	return delta*interactionCurrent/interactionTotal + startValue
 }

@@ -1,7 +1,7 @@
 package tween
 
 // en: quadratic easing out - decelerating to zero velocity
-var KEaseOutQuadratic = func(currentTime, duration, startValue, changeInValue float64) float64 {
-	currentTime = currentTime / duration
-	return -1*changeInValue*currentTime*(currentTime-2) + startValue
+var KEaseOutQuadratic = func(interactionCurrent, interactionTotal, startValue, delta float64) float64 {
+	interactionCurrent = interactionCurrent / interactionTotal
+	return -1*delta*interactionCurrent*(interactionCurrent-2) + startValue
 }

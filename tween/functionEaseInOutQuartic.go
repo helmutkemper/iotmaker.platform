@@ -1,11 +1,11 @@
 package tween
 
 // en: quartic easing in/out - acceleration until halfway, then deceleration
-var KEaseInOutQuartic = func(currentTime, duration, startValue, changeInValue float64) float64 {
-	currentTime = currentTime / duration * 2
-	if currentTime < 1 {
-		return changeInValue/2*currentTime*currentTime*currentTime*currentTime + startValue
+var KEaseInOutQuartic = func(interactionCurrent, interactionTotal, startValue, delta float64) float64 {
+	interactionCurrent = interactionCurrent / interactionTotal * 2
+	if interactionCurrent < 1 {
+		return delta/2*interactionCurrent*interactionCurrent*interactionCurrent*interactionCurrent + startValue
 	}
-	currentTime -= 2
-	return -1*changeInValue/2*(currentTime*currentTime*currentTime*currentTime-2) + startValue
+	interactionCurrent -= 2
+	return -1*delta/2*(interactionCurrent*interactionCurrent*interactionCurrent*interactionCurrent-2) + startValue
 }

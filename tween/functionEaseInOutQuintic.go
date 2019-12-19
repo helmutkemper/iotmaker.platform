@@ -1,11 +1,11 @@
 package tween
 
 // en: quintic easing in/out - acceleration until halfway, then deceleration
-var KEaseInOutQuintic = func(currentTime, duration, startValue, changeInValue float64) float64 {
-	currentTime = currentTime / duration * 2
-	if currentTime < 1 {
-		return changeInValue/2*currentTime*currentTime*currentTime*currentTime*currentTime + startValue
+var KEaseInOutQuintic = func(interactionCurrent, interactionTotal, startValue, delta float64) float64 {
+	interactionCurrent = interactionCurrent / interactionTotal * 2
+	if interactionCurrent < 1 {
+		return delta/2*interactionCurrent*interactionCurrent*interactionCurrent*interactionCurrent*interactionCurrent + startValue
 	}
-	currentTime -= 2
-	return changeInValue/2*(currentTime*currentTime*currentTime*currentTime*currentTime+2) + startValue
+	interactionCurrent -= 2
+	return delta/2*(interactionCurrent*interactionCurrent*interactionCurrent*interactionCurrent*interactionCurrent+2) + startValue
 }
