@@ -1,7 +1,6 @@
 package draw
 
 import (
-	"fmt"
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
 	"github.com/helmutkemper/iotmaker.platform/abstractType/genericTypes"
 	"github.com/helmutkemper/iotmaker.platform/independentDraw"
@@ -108,8 +107,7 @@ func (el *BasicBox) calculateCoordinates() {
 }
 
 func (el *BasicBox) getCompleteImageData(platform iotmaker_platform_IDraw.IDraw) {
-	fmt.Println("entrou")
-	el.imageDataComplete = platform.GetImageData(el.OutBoxDimensions.X, el.OutBoxDimensions.Y, el.OutBoxDimensions.Width, el.OutBoxDimensions.Height)
+	el.imageDataComplete = platform.GetImageData(el.OutBoxDimensions.X, el.OutBoxDimensions.Y, el.OutBoxDimensions.Width, el.OutBoxDimensions.Height, true)
 }
 
 func (el *BasicBox) getImageDataAlphaChannelOnly(platform iotmaker_platform_IDraw.IDraw) {
@@ -192,6 +190,7 @@ func (el *BasicBox) CalculateImageData() {
 	el.ScratchPad.ResetStrokeStyle()
 	el.ScratchPad.ResetFillStyle()
 	el.ScratchPad.ResetShadow()
+	el.ScratchPad.ClearRect(el.OutBoxDimensions.X, el.OutBoxDimensions.Y, el.OutBoxDimensions.Width, el.OutBoxDimensions.Height)
 }
 
 // pt_br: Define o método usado para calcular os dados da imagem usado para detectar colisão
