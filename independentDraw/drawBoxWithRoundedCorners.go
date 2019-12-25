@@ -7,7 +7,7 @@ import (
 // en: This function create a path of a box with rounded corners into the platform
 //
 // pt_br: Esta função cria o caminho de um quadrado com cantos arredondados na plataforma
-func DrawBoxWithRoundedCornersIntoThePath(platform iotmaker_platform_IDraw.IDraw, x, y, width, height, border int) {
+func DrawBoxWithRoundedCornersIntoThePath(platform iotmaker_platform_IDraw.IDraw, x, y, width, height, border float64) {
 	//  draw_1:
 	//              border        border
 	//             x1  x2         x3 x4

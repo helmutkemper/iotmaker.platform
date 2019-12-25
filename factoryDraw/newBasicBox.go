@@ -17,7 +17,7 @@ func NewBasicBox(
 	width,
 	height,
 	border,
-	lineWidth int,
+	lineWidth float64,
 	shadow iotmaker_platform_IDraw.IFilterShadowInterface,
 	gradient iotmaker_platform_IDraw.IFilterGradientInterface,
 	density interface{},

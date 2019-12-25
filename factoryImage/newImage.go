@@ -6,21 +6,21 @@ import (
 	"github.com/helmutkemper/iotmaker.platform/abstractType/image"
 )
 
-func NewImage(platform, scratchPad iotmaker_platform_IDraw.IDraw, img interface{}, x, y, width, height int, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) *image.Image {
+func NewImage(platform, scratchPad iotmaker_platform_IDraw.IDraw, img interface{}, x, y, width, height float64, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) *image.Image {
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 
 	densityCalc.Set(x)
-	x = densityCalc.Int()
+	x = densityCalc.Float64()
 
 	densityCalc.Set(y)
-	y = densityCalc.Int()
+	y = densityCalc.Float64()
 
 	densityCalc.Set(width)
-	width = densityCalc.Int()
+	width = densityCalc.Float64()
 
 	densityCalc.Set(height)
-	height = densityCalc.Int()
+	height = densityCalc.Float64()
 
 	ret := &image.Image{
 		Platform:   platform,

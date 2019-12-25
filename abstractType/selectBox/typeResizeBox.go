@@ -17,8 +17,8 @@ type ResizeBoxes struct {
 	outBoxDimensions       genericTypes.Dimensions
 
 	CornerFillColor  interface{}
-	CornerLineWidth  int
-	ContourLineWidth int
+	CornerLineWidth  float64
+	ContourLineWidth float64
 	ContourColor     color.RGBA
 
 	imageDataMethod           genericTypes.ImageDataCaptureMethod
@@ -40,29 +40,29 @@ type ResizeBoxes struct {
 	MouseCornerG webBrowserMouse.CursorType
 	MouseCornerH webBrowserMouse.CursorType
 
-	boxAX int
-	boxAY int
+	boxAX float64
+	boxAY float64
 
-	boxBX int
-	boxBY int
+	boxBX float64
+	boxBY float64
 
-	boxCX int
-	boxCY int
+	boxCX float64
+	boxCY float64
 
-	boxDX int
-	boxDY int
+	boxDX float64
+	boxDY float64
 
-	boxEX int
-	boxEY int
+	boxEX float64
+	boxEY float64
 
-	boxFX int
-	boxFY int
+	boxFX float64
+	boxFY float64
 
-	boxGX int
-	boxGY int
+	boxGX float64
+	boxGY float64
 
-	boxHX int
-	boxHY int
+	boxHX float64
+	boxHY float64
 }
 
 func (el *ResizeBoxes) Create() {
@@ -395,7 +395,7 @@ func (el *ResizeBoxes) lineFromCornerHToCornerA() {
 	el.Platform.Stroke()
 }
 
-func (el *ResizeBoxes) getEventOverCorner(boxX, boxY, x, y int) bool {
+func (el *ResizeBoxes) getEventOverCorner(boxX, boxY, x, y float64) bool {
 	if x < boxX || x > boxX+el.Dimensions.Width {
 		return false
 	}
@@ -407,12 +407,12 @@ func (el *ResizeBoxes) getEventOverCorner(boxX, boxY, x, y int) bool {
 	return true
 }
 
-func (el *ResizeBoxes) GetCollisionBox(xEvent, yEvent int) bool {
+func (el *ResizeBoxes) GetCollisionBox(xEvent, yEvent float64) bool {
 	return el.outBoxDimensions.X <= xEvent && el.outBoxDimensions.X+el.outBoxDimensions.Width >= xEvent &&
 		el.outBoxDimensions.Y <= yEvent && el.outBoxDimensions.Y+el.outBoxDimensions.Height >= yEvent
 }
 
-func (el *ResizeBoxes) ProcessMousePosition(x, y int, collision bool) {
+func (el *ResizeBoxes) ProcessMousePosition(x, y float64, collision bool) {
 	if el.getEventOverCorner(el.boxAX, el.boxAY, x, y) {
 		el.Platform.SetMouseCursor(el.MouseCornerA)
 	} else if el.getEventOverCorner(el.boxBX, el.boxBY, x, y) {

@@ -3,7 +3,7 @@ package mouse
 var listTestEventOverFunctions map[string][]PointerCollisionFunction
 var listOnEventFunctions map[string][]PointerEventFunction
 
-type platformCursorPointer int
+type platformCursorPointer float64
 
 func (el *platformCursorPointer) Set(value platformCursorPointer) {
 	*el = value
@@ -13,7 +13,7 @@ const (
 	KPlatformWebBrowser platformCursorPointer = iota
 )
 
-func ManagerMouseMove(x, y int) {
+func ManagerMouseMove(x, y float64) {
 	var isOver bool
 
 	for id, listFuncTestOver := range listTestEventOverFunctions {

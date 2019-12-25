@@ -30,12 +30,12 @@ import (
 //     style: deve ser fontStyle.KItalic ou fontStyle.KOblique
 //     density: Por favor, veja o elemento densidade
 //     iDensity: Por favor, veja o elemento densidade
-func NewFontWithStyle(size int, sizeUnit string, fontColor color.RGBA, family fontFamily.FontFamily, style fontStyle.FontStyle, variant fontVariant.FontVariant, weight fontWeight.FontWeight, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) font.Font {
+func NewFontWithStyle(size float64, sizeUnit string, fontColor color.RGBA, family fontFamily.FontFamily, style fontStyle.FontStyle, variant fontVariant.FontVariant, weight fontWeight.FontWeight, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) font.Font {
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 
 	densityCalc.Set(size)
-	size = densityCalc.Int()
+	size = densityCalc.Float64()
 
 	f := font.Font{
 		Size:     size,

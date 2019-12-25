@@ -7,11 +7,11 @@ import (
 type LineTo struct {
 	Platform  iotmaker_platform_IDraw.IDraw
 	Density   interface{}
-	X1        int
-	Y1        int
-	X2        int
-	Y2        int
-	LineWidth int
+	X1        float64
+	Y1        float64
+	X2        float64
+	Y2        float64
+	LineWidth float64
 }
 
 func (el *LineTo) Create() {

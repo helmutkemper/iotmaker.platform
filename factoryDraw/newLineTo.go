@@ -6,24 +6,24 @@ import (
 	"github.com/helmutkemper/iotmaker.platform/abstractType/draw"
 )
 
-func NewLineTo(platform iotmaker_platform_IDraw.IDraw, x1, y1, x2, y2, lineWidth int, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) draw.LineTo {
+func NewLineTo(platform iotmaker_platform_IDraw.IDraw, x1, y1, x2, y2, lineWidth float64, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) draw.LineTo {
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 
 	densityCalc.Set(x1)
-	x1 = densityCalc.Int()
+	x1 = densityCalc.Float64()
 
 	densityCalc.Set(x2)
-	x2 = densityCalc.Int()
+	x2 = densityCalc.Float64()
 
 	densityCalc.Set(y1)
-	y1 = densityCalc.Int()
+	y1 = densityCalc.Float64()
 
 	densityCalc.Set(y2)
-	y2 = densityCalc.Int()
+	y2 = densityCalc.Float64()
 
 	densityCalc.Set(lineWidth)
-	lineWidth = densityCalc.Int()
+	lineWidth = densityCalc.Float64()
 
 	lt := draw.LineTo{
 		Platform:  platform,

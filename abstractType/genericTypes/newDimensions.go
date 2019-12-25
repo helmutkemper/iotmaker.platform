@@ -2,25 +2,25 @@ package genericTypes
 
 import iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.coordinate"
 
-func NewDimensions(dm Dimensions, x, y, width, height, border int, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) Dimensions {
+func NewDimensions(dm Dimensions, x, y, width, height, border float64, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) Dimensions {
 
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 
 	densityCalc.Set(x)
-	x = densityCalc.Int()
+	x = densityCalc.Float64()
 
 	densityCalc.Set(y)
-	y = densityCalc.Int()
+	y = densityCalc.Float64()
 
 	densityCalc.Set(width)
-	width = densityCalc.Int()
+	width = densityCalc.Float64()
 
 	densityCalc.Set(height)
-	height = densityCalc.Int()
+	height = densityCalc.Float64()
 
 	densityCalc.Set(border)
-	border = densityCalc.Int()
+	border = densityCalc.Float64()
 
 	dm.Set(x, y, width, height, border)
 

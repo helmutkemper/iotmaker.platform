@@ -12,11 +12,11 @@ type Shadow struct {
 	Platform      iotmaker_platform_IDraw.ICanvasShadow
 	Color         color.RGBA
 	ColorEnable   bool
-	Blur          int
+	Blur          float64
 	BlurEnable    bool
-	OffsetX       int
+	OffsetX       float64
 	OffsetXEnable bool
-	OffsetY       int
+	OffsetY       float64
 	OffsetYEnable bool
 }
 

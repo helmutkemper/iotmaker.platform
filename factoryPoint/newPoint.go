@@ -12,7 +12,7 @@ import (
 //   y:        vertical point of the screen.
 //   density:  density factor of the screen.
 //   iDensity: density interface
-func NewPoint(x, y int, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) point.Point {
+func NewPoint(x, y float64, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) point.Point {
 
 	densityX := iDensity
 	densityX.Set(x)

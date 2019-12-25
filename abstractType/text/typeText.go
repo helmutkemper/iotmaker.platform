@@ -19,9 +19,9 @@ type Text struct {
 	Font     font.Font
 	Fill     bool
 	Stroke   bool
-	MaxWidth int
-	X        int
-	Y        int
+	MaxWidth float64
+	X        float64
+	Y        float64
 }
 
 func (el *Text) prepareShadowFilter() {

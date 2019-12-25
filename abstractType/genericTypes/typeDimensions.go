@@ -1,21 +1,21 @@
 package genericTypes
 
 type Dimensions struct {
-	X                     int
-	Y                     int
-	Width                 int
-	Height                int
-	Border                int
-	originalX             int
-	originalY             int
-	originalWidth         int
-	originalHeight        int
-	originalBorder        int
-	lastInteractionX      int
-	lastInteractionY      int
-	lastInteractionWidth  int
-	lastInteractionHeight int
-	lastInteractionBorder int
+	X                     float64
+	Y                     float64
+	Width                 float64
+	Height                float64
+	Border                float64
+	originalX             float64
+	originalY             float64
+	originalWidth         float64
+	originalHeight        float64
+	originalBorder        float64
+	lastInteractionX      float64
+	lastInteractionY      float64
+	lastInteractionWidth  float64
+	lastInteractionHeight float64
+	lastInteractionBorder float64
 	hasModified           bool
 }
 
@@ -41,7 +41,7 @@ func (el *Dimensions) RevertToOriginalValue() {
 	el.hasModified = true
 }
 
-func (el *Dimensions) Set(x, y, width, height, border int) {
+func (el *Dimensions) Set(x, y, width, height, border float64) {
 
 	if el.originalX == 0 && el.originalY == 0 && el.originalWidth == 0 && el.originalHeight == 0 && el.originalBorder == 0 {
 		el.originalX = x

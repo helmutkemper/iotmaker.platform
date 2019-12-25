@@ -7,7 +7,7 @@ import (
 	"image/color"
 )
 
-func NewChartLinear(platform iotmaker_platform_IDraw.IDraw, x, y, width, height int, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) *draw.ChartLinear {
+func NewChartLinear(platform iotmaker_platform_IDraw.IDraw, x, y, width, height float64, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) *draw.ChartLinear {
 	d := &draw.ChartLinear{
 		Platform: platform,
 
@@ -21,8 +21,8 @@ func NewChartLinear(platform iotmaker_platform_IDraw.IDraw, x, y, width, height 
 		XAxisLine:  0.4,
 		XAxisColor: color.RGBA{R: 0x00, G: 0xFF, B: 0x00, A: 0x10},
 
-		XAxis: []int{110, 210, 310, 410, 510},
-		YAxis: []int{110, 210, 310, 410},
+		XAxis: []float64{110, 210, 310, 410, 510},
+		YAxis: []float64{110, 210, 310, 410},
 
 		YAxisLine:  0.4,
 		YAxisColor: color.RGBA{R: 0x00, G: 0xFF, B: 0x00, A: 0x10},

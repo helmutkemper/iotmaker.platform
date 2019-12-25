@@ -24,12 +24,12 @@ import (
 //             Exemplo: 'Verdana' ou fontFamily.KHelvetica
 //     density: Por favor, veja o elemento densidade
 //     iDensity: Por favor, veja o elemento densidade
-func NewFont(size int, sizeUnit string, fontColor color.RGBA, family interface{}, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) font.Font {
+func NewFont(size float64, sizeUnit string, fontColor color.RGBA, family interface{}, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) font.Font {
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 
 	densityCalc.Set(size)
-	size = densityCalc.Int()
+	size = densityCalc.Float64()
 
 	f := font.Font{
 		Size:     size,

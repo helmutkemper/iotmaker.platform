@@ -2,7 +2,7 @@ package independentDraw
 
 import iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
 
-func DrawSimpleLineIntoThePath(platform iotmaker_platform_IDraw.IDraw, x0, y0, x1, y1 int) {
+func DrawSimpleLineIntoThePath(platform iotmaker_platform_IDraw.IDraw, x0, y0, x1, y1 float64) {
 	if platform == nil {
 		return
 	}

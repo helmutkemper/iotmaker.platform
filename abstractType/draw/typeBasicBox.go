@@ -107,14 +107,14 @@ func (el *BasicBox) calculateCoordinates() {
 }
 
 func (el *BasicBox) getCompleteImageData(platform iotmaker_platform_IDraw.IDraw) {
-	el.imageDataComplete = platform.GetImageData(el.OutBoxDimensions.X, el.OutBoxDimensions.Y, el.OutBoxDimensions.Width, el.OutBoxDimensions.Height, true)
+	//el.imageDataComplete = platform.GetImageData(int(el.OutBoxDimensions.X), int(el.OutBoxDimensions.Y), int(el.OutBoxDimensions.Width), int(el.OutBoxDimensions.Height), true)
 }
 
 func (el *BasicBox) getImageDataAlphaChannelOnly(platform iotmaker_platform_IDraw.IDraw) {
-	el.imageDataAlphaChannel = platform.GetImageDataAlphaChannelOnly(el.OutBoxDimensions.X, el.OutBoxDimensions.Y, el.OutBoxDimensions.Width, el.OutBoxDimensions.Height)
+	el.imageDataAlphaChannel = platform.GetImageDataAlphaChannelOnly(int(el.OutBoxDimensions.X), int(el.OutBoxDimensions.Y), int(el.OutBoxDimensions.Width), int(el.OutBoxDimensions.Height))
 }
 func (el *BasicBox) getImageDataCollisionByAlphaChannelValue(platform iotmaker_platform_IDraw.IDraw) {
-	el.imageDataBooleanCollision = platform.GetImageDataCollisionByAlphaChannelValue(el.OutBoxDimensions.X, el.OutBoxDimensions.Y, el.OutBoxDimensions.Width, el.OutBoxDimensions.Height, el.alphaChannelSensibility)
+	el.imageDataBooleanCollision = platform.GetImageDataCollisionByAlphaChannelValue(int(el.OutBoxDimensions.X), int(el.OutBoxDimensions.Y), int(el.OutBoxDimensions.Width), int(el.OutBoxDimensions.Height), el.alphaChannelSensibility)
 }
 
 func (el *BasicBox) clearRectangle(platform iotmaker_platform_IDraw.IDraw) {
@@ -214,7 +214,7 @@ func (el *BasicBox) GetCollisionByAlphaChannel(x, y int) bool {
 	return el.imageDataBooleanCollision[x][y]
 }
 
-func (el *BasicBox) GetCollisionBox(xEvent, yEvent int) bool {
+func (el *BasicBox) GetCollisionBox(xEvent, yEvent float64) bool {
 	return el.OutBoxDimensions.X <= xEvent && el.OutBoxDimensions.X+el.OutBoxDimensions.Width >= xEvent &&
 		el.OutBoxDimensions.Y <= yEvent && el.OutBoxDimensions.Y+el.OutBoxDimensions.Height >= yEvent
 }
@@ -232,7 +232,7 @@ func (el *BasicBox) GetOutBoxDimensions() genericTypes.Dimensions {
 	return el.OutBoxDimensions
 }
 
-func (el *BasicBox) GetPixelAlphaChannel(x, y int) uint8 {
+func (el *BasicBox) GetPixelAlphaChannel(x, y float64) uint8 {
 	if el.enableDataImageCalculate == false {
 		return 0
 	}
@@ -245,10 +245,10 @@ func (el *BasicBox) GetPixelAlphaChannel(x, y int) uint8 {
 		return 0
 	}
 
-	return el.Platform.GetImageDataAlphaChannelByCoordinate(el.imageDataComplete, x-el.OutBoxDimensions.X, y-el.OutBoxDimensions.Y, el.OutBoxDimensions.Width)
+	return el.Platform.GetImageDataAlphaChannelByCoordinate(el.imageDataComplete, int(x-el.OutBoxDimensions.X), int(y-el.OutBoxDimensions.Y), int(el.OutBoxDimensions.Width))
 }
 
-func (el *BasicBox) GetPixelColor(x, y int) color.RGBA {
+func (el *BasicBox) GetPixelColor(x, y float64) color.RGBA {
 	if el.enableDataImageCalculate == false {
 		return color.RGBA{}
 	}
@@ -261,7 +261,7 @@ func (el *BasicBox) GetPixelColor(x, y int) color.RGBA {
 		return color.RGBA{}
 	}
 
-	return el.Platform.GetImageDataPixelByCoordinate(el.imageDataComplete, x-el.OutBoxDimensions.X, y-el.OutBoxDimensions.Y, el.OutBoxDimensions.Width)
+	return el.Platform.GetImageDataPixelByCoordinate(el.imageDataComplete, int(x-el.OutBoxDimensions.X), int(y-el.OutBoxDimensions.Y), int(el.OutBoxDimensions.Width))
 }
 
 func (el *BasicBox) GetPlatform() iotmaker_platform_IDraw.IDraw {

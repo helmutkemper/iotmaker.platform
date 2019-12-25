@@ -8,7 +8,7 @@ import (
 	"image/color"
 )
 
-func NewResizeBoxFromBasicBox(basicBox *draw.BasicBox, offsetX, offsetY, width, height, border int, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) *ResizeBoxes {
+func NewResizeBoxFromBasicBox(basicBox *draw.BasicBox, offsetX, offsetY, width, height, border float64, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) *ResizeBoxes {
 
 	dm := genericTypes.Dimensions{}
 	dm = genericTypes.NewDimensions(dm, offsetX, offsetY, width, height, border, density, iDensity)

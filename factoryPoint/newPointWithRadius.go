@@ -13,7 +13,7 @@ import (
 //   radius:   radius is a width radius, not a degrees angle
 //   density:  density factor of the screen.
 //   iDensity: density interface
-func NewPointWithRadius(x, y, radius int, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) point.PointWithRadius {
+func NewPointWithRadius(x, y, radius float64, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) point.PointWithRadius {
 
 	densityX := iDensity
 	densityX.Set(x)

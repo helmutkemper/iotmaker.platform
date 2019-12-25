@@ -9,15 +9,15 @@ import (
 type ChartLinear struct {
 	Platform iotmaker_platform_IDraw.IDraw
 
-	X      int
-	Y      int
-	Width  int
-	Height int
+	X      float64
+	Y      float64
+	Width  float64
+	Height float64
 
 	LineColor color.RGBA
 
-	XAxis []int
-	YAxis []int
+	XAxis []float64
+	YAxis []float64
 
 	XAxisLine  float64
 	YAxisLine  float64
@@ -55,7 +55,7 @@ func (el *ChartLinear) Create() {
 	el.Platform.ResetShadow()
 }
 
-func (el *ChartLinear) lineTo(x1, y1, x2, y2 int, lineWidth interface{}, color interface{}) {
+func (el *ChartLinear) lineTo(x1, y1, x2, y2 float64, lineWidth interface{}, color interface{}) {
 	el.Platform.BeginPath()
 	el.Platform.SetStrokeStyle(color)
 	el.Platform.SetLineWidth(lineWidth)
@@ -65,13 +65,13 @@ func (el *ChartLinear) lineTo(x1, y1, x2, y2 int, lineWidth interface{}, color i
 	el.Platform.Stroke()
 }
 
-func (el *ChartLinear) Begin(x, y int) {
+func (el *ChartLinear) Begin(x, y float64) {
 	el.Platform.BeginPath()
 	el.Platform.SetLineWidth(0.005)
 	el.Platform.MoveTo(x, y)
 }
 
-func (el *ChartLinear) Pixel(x, y int) {
+func (el *ChartLinear) Pixel(x, y float64) {
 	el.Platform.SetLineWidth(0.01)
 	el.Platform.MoveTo(x-1, y-1)
 	el.Platform.LineTo(x, y)
