@@ -6,30 +6,24 @@ import (
 )
 
 type Tween struct {
-	FramesPerSecond int
-	StartValue      float64
-	EndValue        float64
-	Arguments       []interface{}
-	ticker          *time.Ticker
-	startTime       time.Time
-	Duration        time.Duration
-	Func            func(currentTime, duration, startValue, changeInValue float64) float64
-	Interaction     func(value, percentToComplete float64, arguments []interface{})
-	OnStart         func(value float64)
-	OnEnd           func(value float64)
-	invert          bool
-	Repeat          int
-	fpsUId          string
-	loopStartValue  float64
-	loopEndValue    float64
+	StartValue     float64
+	EndValue       float64
+	Arguments      []interface{}
+	startTime      time.Time
+	Duration       time.Duration
+	Func           func(currentTime, duration, startValue, changeInValue float64) float64
+	Interaction    func(value, percentToComplete float64, arguments []interface{})
+	OnStart        func(value float64)
+	OnEnd          func(value float64)
+	OnInvert       func(value float64)
+	invert         bool
+	Repeat         int
+	fpsUId         string
+	loopStartValue float64
+	loopEndValue   float64
 }
 
 func (el *Tween) Start() {
-	if el.FramesPerSecond == 0 {
-		el.FramesPerSecond = fps.Get()
-	}
-
-	el.ticker = time.NewTicker(time.Second / time.Duration(el.FramesPerSecond))
 	el.startTime = time.Now()
 	el.invert = true
 	go el.tickerRunnerPrepare(el.StartValue, el.EndValue)
@@ -61,14 +55,20 @@ func (el *Tween) tickerRunnerRun() {
 
 	if elapsed >= el.Duration {
 
-		if el.OnEnd != nil {
-			el.OnEnd(value)
+		if el.Repeat == 0 {
+			if el.OnEnd != nil {
+				el.OnEnd(value)
+			}
 		}
 
 		el.tickerRunnerDelete()
 
 		if el.Repeat != 0 {
 			el.startTime = time.Now()
+
+			if el.OnInvert != nil {
+				el.OnInvert(value)
+			}
 
 			if el.invert == true {
 				el.tickerRunnerPrepare(el.EndValue, el.StartValue)
