@@ -1,31 +1,43 @@
 package fps
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 )
 
-var kUIdCharList []string
+type funcRunner struct {
+	Func  func()
+	Async bool
+}
 
 const kUIdSize = 10
 
-var fps = 60
-var done = make(chan struct{}, 0)
+var fps = 120
+var kUIdCharList []string
+
+// en: Warning! stopTicker should be a channel, however, conflict with webassembly <-done channer
+// pt_br: Cuidado! stopTicker deveria ser um channel, porém, deu conflito com o webassembly <-done channer
+var stopTicker bool
 var ticker *time.Ticker
-var funcListToRunner map[string]func()
+var funcListToRunner map[string]funcRunner
 
 func Set(value int) {
 	fps = value
-	<-done
+	stopTicker = true
 }
 
 func Get() int {
 	return fps
 }
 
-func AddRunner(runnerFunc func()) string {
+func AddRunner(runnerFunc func(), async bool) string {
 	UId := getUId()
-	funcListToRunner[UId] = runnerFunc
+	funcListToRunner[UId] = funcRunner{
+		Func:  runnerFunc,
+		Async: async,
+	}
+
 	return UId
 }
 
@@ -39,7 +51,7 @@ func init() {
 		"Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "_", "!", "@",
 		"#", "$", "%", "&", "*", "(", ")", "-", "_", "+", "=", "[", "{", "}", "]", "/", "?", ";", ":", ".", ",", "<", ">",
 		"|"}
-	funcListToRunner = make(map[string]func())
+	funcListToRunner = make(map[string]funcRunner)
 	tickerStart()
 }
 
@@ -61,15 +73,20 @@ func tickerRunner() {
 	for {
 		select {
 		case <-ticker.C:
-			for _, runnerFunc := range funcListToRunner {
-				if runnerFunc != nil {
-					go runnerFunc()
-				}
+			if stopTicker == true {
+				stopTicker = false
+				fmt.Printf("fps done entrou\n")
+				func() { tickerStart() }()
+				return
 			}
 
-		case <-done:
-			go func() { tickerStart() }()
-			return
+			for _, runnerFunc := range funcListToRunner {
+				if runnerFunc.Async == false && runnerFunc.Func != nil {
+					runnerFunc.Func()
+				} else if runnerFunc.Async == true && runnerFunc.Func != nil {
+					go runnerFunc.Func()
+				}
+			}
 		}
 	}
 }
