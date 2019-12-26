@@ -19,6 +19,9 @@ type Tween struct {
 	OnEnd           func(value float64)
 	invert          bool
 	Repeat          int
+	fpsUId          string
+	loopStartValue  float64
+	loopEndValue    float64
 }
 
 func (el *Tween) Start() {
@@ -29,50 +32,56 @@ func (el *Tween) Start() {
 	el.ticker = time.NewTicker(time.Second / time.Duration(el.FramesPerSecond))
 	el.startTime = time.Now()
 	el.invert = true
-	go el.tickerRunner(el.StartValue, el.EndValue)
+	go el.tickerRunnerPrepare(el.StartValue, el.EndValue)
 }
 
-func (el *Tween) tickerRunner(startValue, endValue float64) {
-	for {
-		if el.Func == nil {
-			return
+func (el *Tween) tickerRunnerPrepare(startValue, endValue float64) {
+	if el.Func == nil {
+		return
+	}
+
+	if el.OnStart != nil {
+		el.OnStart(el.StartValue)
+	}
+
+	el.loopStartValue = startValue
+	el.loopEndValue = endValue
+
+	el.fpsUId = fps.AddRunner(el.tickerRunnerRun, true)
+}
+
+func (el *Tween) tickerRunnerRun() {
+	elapsed := time.Since(el.startTime)
+	value := el.Func(elapsed.Seconds(), el.Duration.Seconds(), el.loopStartValue, el.loopEndValue-el.loopStartValue)
+	percent := elapsed.Seconds() / el.Duration.Seconds()
+
+	if el.Interaction != nil {
+		el.Interaction(value, percent, el.Arguments)
+	}
+
+	if elapsed >= el.Duration {
+
+		if el.OnEnd != nil {
+			el.OnEnd(value)
 		}
 
-		if el.OnStart != nil {
-			el.OnStart(el.StartValue)
-		}
+		el.tickerRunnerDelete()
 
-		select {
-		case <-el.ticker.C:
-			elapsed := time.Since(el.startTime)
-			value := el.Func(elapsed.Seconds(), el.Duration.Seconds(), startValue, endValue-startValue)
-			percent := elapsed.Seconds() / el.Duration.Seconds()
+		if el.Repeat != 0 {
+			el.startTime = time.Now()
 
-			if el.Interaction != nil {
-				el.Interaction(value, percent, el.Arguments)
+			if el.invert == true {
+				el.tickerRunnerPrepare(el.EndValue, el.StartValue)
+			} else {
+				el.tickerRunnerPrepare(el.StartValue, el.EndValue)
 			}
 
-			if elapsed >= el.Duration {
-
-				if el.OnEnd != nil {
-					el.OnEnd(value)
-				}
-
-				if el.Repeat != 0 {
-					el.startTime = time.Now()
-
-					if el.invert == true {
-						go el.tickerRunner(el.EndValue, el.StartValue)
-					} else {
-						go el.tickerRunner(el.StartValue, el.EndValue)
-					}
-
-					el.invert = !el.invert
-					el.Repeat -= 1
-				}
-
-				return
-			}
+			el.invert = !el.invert
+			el.Repeat -= 1
 		}
 	}
+}
+
+func (el *Tween) tickerRunnerDelete() {
+	fps.DeleteRunner(el.fpsUId)
 }
