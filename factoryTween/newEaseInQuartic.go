@@ -16,6 +16,7 @@ func NewEaseInQuartic(duration time.Duration, startValue, endValue float64, inte
 		EndValue:    endValue,
 		Func:        tween.KEaseInQuartic,
 		Interaction: interactionFunc,
+		Repeat:      0,
 	}
 	t.Start()
 

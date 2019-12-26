@@ -16,6 +16,7 @@ func NewEaseInQuadratic(duration time.Duration, startValue, endValue float64, in
 		EndValue:    endValue,
 		Func:        tween.KEaseInQuadratic,
 		Interaction: interactionFunc,
+		Repeat:      0,
 	}
 	t.Start()
 

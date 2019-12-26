@@ -16,6 +16,7 @@ func NewEaseInExponential(duration time.Duration, startValue, endValue float64, 
 		EndValue:    endValue,
 		Func:        tween.KEaseInExponential,
 		Interaction: interactionFunc,
+		Repeat:      0,
 	}
 	t.Start()
 

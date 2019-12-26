@@ -16,6 +16,7 @@ func NewEaseInSine(duration time.Duration, startValue, endValue float64, interac
 		EndValue:    endValue,
 		Func:        tween.KEaseInSine,
 		Interaction: interactionFunc,
+		Repeat:      0,
 	}
 	t.Start()
 

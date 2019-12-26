@@ -16,6 +16,7 @@ func NewEaseInQuintic(duration time.Duration, startValue, endValue float64, inte
 		EndValue:    endValue,
 		Func:        tween.KEaseInQuintic,
 		Interaction: interactionFunc,
+		Repeat:      0,
 	}
 	t.Start()
 

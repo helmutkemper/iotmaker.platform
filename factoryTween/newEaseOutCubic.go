@@ -16,6 +16,7 @@ func NewEaseOutCubic(duration time.Duration, startValue, endValue float64, inter
 		EndValue:    endValue,
 		Func:        tween.KEaseOutCubic,
 		Interaction: interactionFunc,
+		Repeat:      0,
 	}
 	t.Start()
 

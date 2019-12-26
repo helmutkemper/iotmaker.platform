@@ -16,6 +16,7 @@ func NewEaseInCircular(duration time.Duration, startValue, endValue float64, int
 		EndValue:    endValue,
 		Func:        tween.KEaseInCircular,
 		Interaction: interactionFunc,
+		Repeat:      0,
 	}
 	t.Start()
 

@@ -16,6 +16,7 @@ func NewLinear(duration time.Duration, startValue, endValue float64, interaction
 		EndValue:    endValue,
 		Func:        tween.KLinear,
 		Interaction: interactionFunc,
+		Repeat:      0,
 	}
 	t.Start()
 

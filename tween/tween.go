@@ -17,6 +17,8 @@ type Tween struct {
 	Interaction     func(value, percentToComplete float64, arguments []interface{})
 	OnStart         func(value float64)
 	OnEnd           func(value float64)
+	invert          bool
+	Repeat          int
 }
 
 func (el *Tween) Start() {
@@ -26,10 +28,11 @@ func (el *Tween) Start() {
 
 	el.ticker = time.NewTicker(time.Second / time.Duration(el.FramesPerSecond))
 	el.startTime = time.Now()
-	go el.tickerRunner()
+	el.invert = true
+	go el.tickerRunner(el.StartValue, el.EndValue)
 }
 
-func (el *Tween) tickerRunner() {
+func (el *Tween) tickerRunner(startValue, endValue float64) {
 	for {
 		if el.Func == nil {
 			return
@@ -42,7 +45,7 @@ func (el *Tween) tickerRunner() {
 		select {
 		case <-el.ticker.C:
 			elapsed := time.Since(el.startTime)
-			value := el.Func(elapsed.Seconds(), el.Duration.Seconds(), el.StartValue, el.EndValue-el.StartValue)
+			value := el.Func(elapsed.Seconds(), el.Duration.Seconds(), startValue, endValue-startValue)
 			percent := elapsed.Seconds() / el.Duration.Seconds()
 
 			if el.Interaction != nil {
@@ -53,6 +56,19 @@ func (el *Tween) tickerRunner() {
 
 				if el.OnEnd != nil {
 					el.OnEnd(value)
+				}
+
+				if el.Repeat != 0 {
+					el.startTime = time.Now()
+
+					if el.invert == true {
+						go el.tickerRunner(el.EndValue, el.StartValue)
+					} else {
+						go el.tickerRunner(el.StartValue, el.EndValue)
+					}
+
+					el.invert = !el.invert
+					el.Repeat -= 1
 				}
 
 				return
