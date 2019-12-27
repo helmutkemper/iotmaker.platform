@@ -3,6 +3,8 @@ package factoryImage
 import (
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
 	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.coordinate"
+	"github.com/helmutkemper/iotmaker.platform.webbrowser/basic"
+	"github.com/helmutkemper/iotmaker.platform/abstractType/genericTypes"
 	"github.com/helmutkemper/iotmaker.platform/abstractType/image"
 )
 
@@ -23,13 +25,17 @@ func NewImage(platform, scratchPad iotmaker_platform_IDraw.IDraw, img interface{
 	height = densityCalc.Float64()
 
 	ret := &image.Image{
-		Platform:   platform,
-		ScratchPad: scratchPad,
-		Img:        img,
-		X:          x,
-		Y:          y,
-		Width:      width,
-		Height:     height,
+		Sprite: basic.Sprite{
+			Platform:   platform,
+			ScratchPad: scratchPad,
+			OutBoxDimensions: genericTypes.Dimensions{
+				X:      x,
+				Y:      y,
+				Width:  width,
+				Height: height,
+			},
+		},
+		Img: img,
 	}
 	ret.Crete()
 
