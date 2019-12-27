@@ -41,7 +41,7 @@ func (el *Tween) tickerRunnerPrepare(startValue, endValue float64) {
 	el.loopStartValue = startValue
 	el.loopEndValue = endValue
 
-	el.fpsUId = fps.AddRunner(el.tickerRunnerRun, true)
+	el.fpsUId = fps.AddToRunnerPriorityFunc(el.tickerRunnerRun, true)
 }
 
 func (el *Tween) tickerRunnerRun() {
@@ -83,5 +83,5 @@ func (el *Tween) tickerRunnerRun() {
 }
 
 func (el *Tween) tickerRunnerDelete() {
-	fps.DeleteRunner(el.fpsUId)
+	fps.DeleteFromRunnerPriorityFunc(el.fpsUId)
 }

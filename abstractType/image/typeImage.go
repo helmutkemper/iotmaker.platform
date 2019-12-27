@@ -16,17 +16,26 @@ type Image struct {
 }
 
 func (el *Image) Crete() {
+	el.Draw()
+}
+
+func (el *Image) Draw() {
 	el.Platform.DrawImage(el.Img, el.X, el.Y, el.Width, el.Height)
 }
 
+func (el *Image) Clear() {
+	el.Platform.ClearRect(el.X, el.Y, el.Width, el.Height)
+}
+
 func (el *Image) SetX(x float64) {
-	el.Platform.DrawImage(el.Img, x, el.Y, el.Width, el.Height)
+	el.X = x
 }
 
 func (el *Image) SetY(y float64) {
-	el.Platform.DrawImage(el.Img, el.X, y, el.Width, el.Height)
+	el.Y = y
 }
 
 func (el *Image) SetXY(x, y float64) {
-	el.Platform.DrawImage(el.Img, x, y, el.Width, el.Height)
+	el.X = x
+	el.Y = y
 }
