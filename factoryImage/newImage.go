@@ -28,6 +28,12 @@ func NewImage(platform, scratchPad iotmaker_platform_IDraw.IDraw, img interface{
 		Sprite: basic.Sprite{
 			Platform:   platform,
 			ScratchPad: scratchPad,
+			Dimensions: genericTypes.Dimensions{
+				X:      x,
+				Y:      y,
+				Width:  width,
+				Height: height,
+			},
 			OutBoxDimensions: genericTypes.Dimensions{
 				X:      x,
 				Y:      y,
