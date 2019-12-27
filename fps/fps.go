@@ -1,7 +1,6 @@
 package fps
 
 import (
-	"fmt"
 	"math/rand"
 	"time"
 )
@@ -21,6 +20,7 @@ var kUIdCharList []string
 var stopTicker bool
 var ticker *time.Ticker
 var funcListToRunner map[string]funcRunner
+var funcListPriorityToRunner map[string]funcRunner
 
 func Set(value int) {
 	fps = value
@@ -31,7 +31,7 @@ func Get() int {
 	return fps
 }
 
-func AddRunner(runnerFunc func(), async bool) string {
+func AddToRunner(runnerFunc func(), async bool) string {
 	UId := getUId()
 	funcListToRunner[UId] = funcRunner{
 		Func:  runnerFunc,
@@ -41,8 +41,22 @@ func AddRunner(runnerFunc func(), async bool) string {
 	return UId
 }
 
-func DeleteRunner(UId string) {
+func DeleteFromRunner(UId string) {
 	delete(funcListToRunner, UId)
+}
+
+func AddToRunnerPriorityFunc(runnerFunc func(), async bool) string {
+	UId := getUId()
+	funcListPriorityToRunner[UId] = funcRunner{
+		Func:  runnerFunc,
+		Async: async,
+	}
+
+	return UId
+}
+
+func DeleteFromRunnerPriorityFunc(UId string) {
+	delete(funcListPriorityToRunner, UId)
 }
 
 func init() {
@@ -52,6 +66,7 @@ func init() {
 		"#", "$", "%", "&", "*", "(", ")", "-", "_", "+", "=", "[", "{", "}", "]", "/", "?", ";", ":", ".", ",", "<", ">",
 		"|"}
 	funcListToRunner = make(map[string]funcRunner)
+	funcListPriorityToRunner = make(map[string]funcRunner)
 	tickerStart()
 }
 
@@ -70,14 +85,22 @@ func tickerStart() {
 }
 
 func tickerRunner() {
+	defer func() { tickerStart() }()
+
 	for {
 		select {
 		case <-ticker.C:
 			if stopTicker == true {
 				stopTicker = false
-				fmt.Printf("fps done entrou\n")
-				func() { tickerStart() }()
 				return
+			}
+
+			for _, runnerFunc := range funcListPriorityToRunner {
+				if runnerFunc.Async == false && runnerFunc.Func != nil {
+					runnerFunc.Func()
+				} else if runnerFunc.Async == true && runnerFunc.Func != nil {
+					go runnerFunc.Func()
+				}
 			}
 
 			for _, runnerFunc := range funcListToRunner {
