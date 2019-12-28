@@ -7,7 +7,7 @@ import (
 
 const kUIdSize = 10
 
-var fps = 60
+var fps = 120
 var fpsCache = 10
 var kUIdCharList []string
 
@@ -19,6 +19,11 @@ var tickerCache *time.Ticker
 var funcListToRunner map[string]func()
 var funcListToCacheRunner map[string]func()
 var funcListPriorityToRunner map[string]func()
+
+// pt_br: impede que o loop ocorra em intervalos muitos próximos e trave o
+// processamento do browser para outras tarefas
+var slipFrame int = 0
+var slipFrameTimeAlarm time.Duration
 
 func Set(value int) {
 	fps = value
@@ -95,6 +100,7 @@ func getUId() string {
 func tickerStart() {
 	tickerCache = time.NewTicker(time.Second / time.Duration(fpsCache))
 	ticker = time.NewTicker(time.Second / time.Duration(fps))
+	slipFrameTimeAlarm = time.Second / time.Duration(fps)
 	go func() { tickerRunner() }()
 }
 
@@ -117,10 +123,18 @@ func tickerRunner() {
 			}
 
 		case <-ticker.C:
+
+			if slipFrame != 0 {
+				slipFrame -= 1
+				continue
+			}
+
 			if stopTicker == true {
 				stopTicker = false
 				return
 			}
+
+			start := time.Now()
 
 			for _, runnerFunc := range funcListPriorityToRunner {
 				if runnerFunc != nil {
@@ -134,6 +148,10 @@ func tickerRunner() {
 				}
 			}
 
+			elapsed := time.Since(start)
+			if elapsed > slipFrameTimeAlarm {
+				slipFrame = 2
+			}
 		}
 	}
 }
