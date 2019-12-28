@@ -12,18 +12,26 @@ type funcRunner struct {
 
 const kUIdSize = 10
 
-var fps = 120
+var fps = 60
+var fpsCache = 10
 var kUIdCharList []string
 
 // en: Warning! stopTicker should be a channel, however, conflict with webassembly <-done channer
 // pt_br: Cuidado! stopTicker deveria ser um channel, porém, deu conflito com o webassembly <-done channer
 var stopTicker bool
 var ticker *time.Ticker
-var funcListToRunner map[string]funcRunner
-var funcListPriorityToRunner map[string]funcRunner
+var tickerCache *time.Ticker
+var funcListToRunner map[string]func()
+var funcListToCacheRunner map[string]func()
+var funcListPriorityToRunner map[string]func()
 
 func Set(value int) {
 	fps = value
+	stopTicker = true
+}
+
+func SetCacheUpdate(value int) {
+	fpsCache = value
 	stopTicker = true
 }
 
@@ -31,12 +39,20 @@ func Get() int {
 	return fps
 }
 
-func AddToRunner(runnerFunc func(), async bool) string {
+func GetCacheUpdate() int {
+	return fpsCache
+}
+
+func AddToRunner(runnerFunc func()) string {
 	UId := getUId()
-	funcListToRunner[UId] = funcRunner{
-		Func:  runnerFunc,
-		Async: async,
-	}
+	funcListToRunner[UId] = runnerFunc
+
+	return UId
+}
+
+func AddToCacheRunner(runnerFunc func()) string {
+	UId := getUId()
+	funcListToCacheRunner[UId] = runnerFunc
 
 	return UId
 }
@@ -45,12 +61,13 @@ func DeleteFromRunner(UId string) {
 	delete(funcListToRunner, UId)
 }
 
-func AddToRunnerPriorityFunc(runnerFunc func(), async bool) string {
+func DeleteFromCacheRunner(UId string) {
+	delete(funcListToCacheRunner, UId)
+}
+
+func AddToRunnerPriorityFunc(runnerFunc func()) string {
 	UId := getUId()
-	funcListPriorityToRunner[UId] = funcRunner{
-		Func:  runnerFunc,
-		Async: async,
-	}
+	funcListPriorityToRunner[UId] = runnerFunc
 
 	return UId
 }
@@ -65,8 +82,9 @@ func init() {
 		"Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "_", "!", "@",
 		"#", "$", "%", "&", "*", "(", ")", "-", "_", "+", "=", "[", "{", "}", "]", "/", "?", ";", ":", ".", ",", "<", ">",
 		"|"}
-	funcListToRunner = make(map[string]funcRunner)
-	funcListPriorityToRunner = make(map[string]funcRunner)
+	funcListToRunner = make(map[string]func())
+	funcListToCacheRunner = make(map[string]func())
+	funcListPriorityToRunner = make(map[string]func())
 	tickerStart()
 }
 
@@ -80,6 +98,7 @@ func getUId() string {
 }
 
 func tickerStart() {
+	tickerCache = time.NewTicker(time.Second / time.Duration(fpsCache))
 	ticker = time.NewTicker(time.Second / time.Duration(fps))
 	go func() { tickerRunner() }()
 }
@@ -89,6 +108,18 @@ func tickerRunner() {
 
 	for {
 		select {
+		case <-tickerCache.C:
+			if stopTicker == true {
+				stopTicker = false
+				return
+			}
+
+			for _, runnerFunc := range funcListToCacheRunner {
+				if runnerFunc != nil {
+					runnerFunc()
+				}
+			}
+
 		case <-ticker.C:
 			if stopTicker == true {
 				stopTicker = false
@@ -96,18 +127,14 @@ func tickerRunner() {
 			}
 
 			for _, runnerFunc := range funcListPriorityToRunner {
-				if runnerFunc.Async == false && runnerFunc.Func != nil {
-					runnerFunc.Func()
-				} else if runnerFunc.Async == true && runnerFunc.Func != nil {
-					runnerFunc.Func()
+				if runnerFunc != nil {
+					runnerFunc()
 				}
 			}
 
 			for _, runnerFunc := range funcListToRunner {
-				if runnerFunc.Async == false && runnerFunc.Func != nil {
-					runnerFunc.Func()
-				} else if runnerFunc.Async == true && runnerFunc.Func != nil {
-					runnerFunc.Func()
+				if runnerFunc != nil {
+					runnerFunc()
 				}
 			}
 		}
