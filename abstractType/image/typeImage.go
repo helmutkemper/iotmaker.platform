@@ -15,9 +15,9 @@ func (el *Image) Crete() {
 }
 
 func (el *Image) Draw() {
-	el.Platform.DrawImage(el.Img, el.Dimensions.X, el.Dimensions.Y, el.Dimensions.Width, el.Dimensions.Height)
+	el.ScratchPad.DrawImage(el.Img, el.Dimensions.X, el.Dimensions.Y, el.Dimensions.Width, el.Dimensions.Height)
 }
 
 func (el *Image) Clear() {
-	el.Platform.ClearRect(el.Dimensions.X, el.Dimensions.Y, el.Dimensions.Width, el.Dimensions.Height)
+	el.ScratchPad.ClearRect(el.Dimensions.X, el.Dimensions.Y, el.Dimensions.Width, el.Dimensions.Height)
 }

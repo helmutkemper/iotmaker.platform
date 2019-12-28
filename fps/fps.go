@@ -99,7 +99,7 @@ func tickerRunner() {
 				if runnerFunc.Async == false && runnerFunc.Func != nil {
 					runnerFunc.Func()
 				} else if runnerFunc.Async == true && runnerFunc.Func != nil {
-					go runnerFunc.Func()
+					runnerFunc.Func()
 				}
 			}
 
@@ -107,7 +107,7 @@ func tickerRunner() {
 				if runnerFunc.Async == false && runnerFunc.Func != nil {
 					runnerFunc.Func()
 				} else if runnerFunc.Async == true && runnerFunc.Func != nil {
-					go runnerFunc.Func()
+					runnerFunc.Func()
 				}
 			}
 		}
