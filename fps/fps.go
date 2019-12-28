@@ -5,19 +5,15 @@ import (
 	"time"
 )
 
-type funcRunner struct {
-	Func  func()
-	Async bool
-}
-
 const kUIdSize = 10
 
-var fps = 60
+var fps = 120
 var fpsCache = 10
 var kUIdCharList []string
 
 // en: Warning! stopTicker should be a channel, however, conflict with webassembly <-done channer
 // pt_br: Cuidado! stopTicker deveria ser um channel, porém, deu conflito com o webassembly <-done channer
+var busy bool
 var stopTicker bool
 var ticker *time.Ticker
 var tickerCache *time.Ticker
@@ -105,10 +101,17 @@ func tickerStart() {
 
 func tickerRunner() {
 	defer func() { tickerStart() }()
+	defer func() { busy = false }()
 
 	for {
 		select {
 		case <-tickerCache.C:
+			if busy == true {
+				//continue
+			}
+
+			busy = true
+
 			if stopTicker == true {
 				stopTicker = false
 				return
@@ -126,6 +129,12 @@ func tickerRunner() {
 				return
 			}
 
+			if busy == true {
+				//continue
+			}
+
+			busy = true
+
 			for _, runnerFunc := range funcListPriorityToRunner {
 				if runnerFunc != nil {
 					runnerFunc()
@@ -137,6 +146,9 @@ func tickerRunner() {
 					runnerFunc()
 				}
 			}
+
 		}
+
+		busy = false
 	}
 }
