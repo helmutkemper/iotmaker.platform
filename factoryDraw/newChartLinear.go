@@ -4,6 +4,7 @@ import (
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
 	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.coordinate"
 	"github.com/helmutkemper/iotmaker.platform/abstractType/draw"
+	"github.com/helmutkemper/iotmaker.platform/fps"
 	"image/color"
 )
 
@@ -34,6 +35,7 @@ func NewChartLinear(platform iotmaker_platform_IDraw.IDraw, x, y, width, height 
 		YSubAxisColor: color.RGBA{R: 0xBF, G: 0xBF, B: 0xFF, A: 0x01},
 	}
 	d.Create()
+	fps.AddToRunner(d.Create)
 
 	return d
 }
