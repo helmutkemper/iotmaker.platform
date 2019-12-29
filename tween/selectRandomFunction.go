@@ -1,0 +1,78 @@
+package tween
+
+import "github.com/helmutkemper/iotmaker.platform/mathUtil"
+
+var i = -1
+
+func SelectRandom() func(interactionCurrent, interactionTotal, startValue, delta float64) float64 {
+	var list = []func(interactionCurrent, interactionTotal, startValue, delta float64) float64{
+		KEaseInOutExponential,
+		KEaseInOutQuadratic,
+		KEaseInOutQuartic,
+		KEaseInOutQuintic,
+		KEaseInOutSine,
+		KEaseInQuadratic,
+		KEaseInQuadraticOutCircular,
+		KEaseInQuadraticOutCubic,
+		KEaseInQuadraticOutExponential,
+		KEaseInQuadraticOutQuartic,
+		KEaseInQuadraticOutQuintic,
+		KEaseInQuadraticOutSine,
+		KEaseInQuartic,
+		KEaseInQuarticOutCircular,
+		KEaseInQuarticOutCubic,
+		KEaseInQuarticOutExponential,
+		KEaseInQuarticOutQuadratic,
+		KEaseInQuarticOutQuintic,
+		KEaseInQuarticOutSine,
+		KEaseInQuintic,
+		KEaseInQuinticOutCircular,
+		KEaseInQuinticOutCubic,
+		KEaseInQuinticOutExponential,
+		KEaseInQuinticOutQuadratic,
+		KEaseInQuinticOutQuartic,
+		KEaseInQuinticOutSine,
+		KEaseInSine,
+		KEaseInSineOutCircular,
+		KEaseInSineOutCubic,
+		KEaseInSineOutExponential,
+		KEaseInSineOutQuadratic,
+		KEaseInSineOutQuartic,
+		KEaseInSineOutQuintic,
+		KEaseOutCircular,
+		KEaseOutCubic,
+		KEaseOutExponential,
+		KEaseOutQuadratic,
+		KEaseOutQuartic,
+		KEaseOutQuintic,
+		KEaseOutSine,
+		KLinear,
+		KEaseInCircular,
+		KEaseInCircularOutCubic,
+		KEaseInCircularOutExponential,
+		KEaseInCircularOutQuadratic,
+		KEaseInCircularOutQuartic,
+		KEaseInCircularOutQuintic,
+		KEaseInCircularOutSine,
+		KEaseInCubic,
+		KEaseInCubicOutCircular,
+		KEaseInCubicOutExponential,
+		KEaseInCubicOutQuadratic,
+		KEaseInCubicOutQuartic,
+		KEaseInCubicOutQuintic,
+		KEaseInCubicOutSine,
+		KEaseInExponential,
+		KEaseInExponentialOutCircular,
+		KEaseInExponentialOutCubic,
+		KEaseInExponentialOutQuadratic,
+		KEaseInExponentialOutQuartic,
+		KEaseInExponentialOutQuintic,
+		KEaseInExponentialOutSine,
+		KEaseInOutCircular,
+		KEaseInOutCubic,
+	}
+
+	i := mathUtil.Int(0, len(list)-1)
+
+	return list[i]
+}
