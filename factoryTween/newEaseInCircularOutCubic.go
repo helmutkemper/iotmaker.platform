@@ -39,7 +39,7 @@ func NewEaseInCircularOutCubic(duration time.Duration, startValue, endValue floa
 		Func:        tween.KEaseInCircularOutCubic,
 		Interaction: onStepFunc,
 		OnInvert:    onInvertFunc,
-		Repeat:      0,
+		Repeat:      loop,
 	}
 	t.Start()
 

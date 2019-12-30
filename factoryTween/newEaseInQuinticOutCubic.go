@@ -39,7 +39,7 @@ func NewEaseInQuinticOutCubic(duration time.Duration, startValue, endValue float
 		Func:        tween.KEaseInQuinticOutCubic,
 		Interaction: onStepFunc,
 		OnInvert:    onInvertFunc,
-		Repeat:      0,
+		Repeat:      loop,
 	}
 	t.Start()
 

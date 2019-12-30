@@ -39,7 +39,7 @@ func NewEaseInExponential(duration time.Duration, startValue, endValue float64, 
 		Func:        tween.KEaseInExponential,
 		Interaction: onStepFunc,
 		OnInvert:    onInvertFunc,
-		Repeat:      0,
+		Repeat:      loop,
 	}
 	t.Start()
 

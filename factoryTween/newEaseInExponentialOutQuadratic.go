@@ -39,7 +39,7 @@ func NewEaseInExponentialOutQuadratic(duration time.Duration, startValue, endVal
 		Func:        tween.KEaseInExponentialOutQuadratic,
 		Interaction: onStepFunc,
 		OnInvert:    onInvertFunc,
-		Repeat:      0,
+		Repeat:      loop,
 	}
 	t.Start()
 

@@ -39,7 +39,7 @@ func NewEaseInExponentialOutQuintic(duration time.Duration, startValue, endValue
 		Func:        tween.KEaseInExponentialOutQuintic,
 		Interaction: onStepFunc,
 		OnInvert:    onInvertFunc,
-		Repeat:      0,
+		Repeat:      loop,
 	}
 	t.Start()
 

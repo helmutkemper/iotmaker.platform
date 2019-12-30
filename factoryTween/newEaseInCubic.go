@@ -39,7 +39,7 @@ func NewEaseInCubic(duration time.Duration, startValue, endValue float64, onStar
 		Func:        tween.KEaseInCubic,
 		Interaction: onStepFunc,
 		OnInvert:    onInvertFunc,
-		Repeat:      0,
+		Repeat:      loop,
 	}
 	t.Start()
 

@@ -39,7 +39,7 @@ func NewEaseInQuadraticOutSine(duration time.Duration, startValue, endValue floa
 		Func:        tween.KEaseInQuadraticOutSine,
 		Interaction: onStepFunc,
 		OnInvert:    onInvertFunc,
-		Repeat:      0,
+		Repeat:      loop,
 	}
 	t.Start()
 

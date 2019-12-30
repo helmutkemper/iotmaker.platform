@@ -39,7 +39,7 @@ func NewEaseInCircularOutExponential(duration time.Duration, startValue, endValu
 		Func:        tween.KEaseInCircularOutExponential,
 		Interaction: onStepFunc,
 		OnInvert:    onInvertFunc,
-		Repeat:      0,
+		Repeat:      loop,
 	}
 	t.Start()
 

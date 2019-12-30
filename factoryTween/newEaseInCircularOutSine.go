@@ -39,7 +39,7 @@ func NewEaseInCircularOutSine(duration time.Duration, startValue, endValue float
 		Func:        tween.KEaseInCircularOutSine,
 		Interaction: onStepFunc,
 		OnInvert:    onInvertFunc,
-		Repeat:      0,
+		Repeat:      loop,
 	}
 	t.Start()
 

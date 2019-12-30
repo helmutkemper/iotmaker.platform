@@ -39,7 +39,7 @@ func NewEaseInCubicOutLinear(duration time.Duration, startValue, endValue float6
 		Func:        tween.KEaseInCubicOutLinear,
 		Interaction: onStepFunc,
 		OnInvert:    onInvertFunc,
-		Repeat:      0,
+		Repeat:      loop,
 	}
 	t.Start()
 

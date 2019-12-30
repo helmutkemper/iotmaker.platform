@@ -39,7 +39,7 @@ func NewEaseOutQuartic(duration time.Duration, startValue, endValue float64, onS
 		Func:        tween.KEaseOutQuartic,
 		Interaction: onStepFunc,
 		OnInvert:    onInvertFunc,
-		Repeat:      0,
+		Repeat:      loop,
 	}
 	t.Start()
 

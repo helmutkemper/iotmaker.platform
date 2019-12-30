@@ -39,7 +39,7 @@ func NewEaseOutCircular(duration time.Duration, startValue, endValue float64, on
 		Func:        tween.KEaseOutCircular,
 		Interaction: onStepFunc,
 		OnInvert:    onInvertFunc,
-		Repeat:      0,
+		Repeat:      loop,
 	}
 	t.Start()
 

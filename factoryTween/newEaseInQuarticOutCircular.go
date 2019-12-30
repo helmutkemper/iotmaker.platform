@@ -39,7 +39,7 @@ func NewEaseInQuarticOutCircular(duration time.Duration, startValue, endValue fl
 		Func:        tween.KEaseInQuarticOutCircular,
 		Interaction: onStepFunc,
 		OnInvert:    onInvertFunc,
-		Repeat:      0,
+		Repeat:      loop,
 	}
 	t.Start()
 

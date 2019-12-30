@@ -39,7 +39,7 @@ func NewSelectRandom(duration time.Duration, startValue, endValue float64, onSta
 		Func:        tween.SelectRandom(),
 		Interaction: onStepFunc,
 		OnInvert:    onInvertFunc,
-		Repeat:      0,
+		Repeat:      loop,
 	}
 	t.Start()
 
