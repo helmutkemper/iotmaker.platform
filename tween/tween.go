@@ -61,7 +61,7 @@ func (el *Tween) tickerRunnerRun() {
 			}
 		}
 
-		el.tickerRunnerDelete()
+		el.Stop()
 
 		if el.Repeat != 0 {
 			el.startTime = time.Now()
@@ -82,6 +82,18 @@ func (el *Tween) tickerRunnerRun() {
 	}
 }
 
-func (el *Tween) tickerRunnerDelete() {
+func (el *Tween) End() {
 	fps.DeleteFromRunnerPriorityFunc(el.fpsUId)
+}
+
+func (el *Tween) Stop() {
+	fps.DeleteFromRunnerPriorityFunc(el.fpsUId)
+	if el.OnEnd != nil {
+		if el.invert == true {
+			el.OnEnd(el.EndValue)
+		} else {
+			el.OnEnd(el.StartValue)
+		}
+
+	}
 }
