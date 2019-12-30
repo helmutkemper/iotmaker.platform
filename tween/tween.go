@@ -94,6 +94,5 @@ func (el *Tween) Stop() {
 		} else {
 			el.OnEnd(el.StartValue)
 		}
-
 	}
 }
