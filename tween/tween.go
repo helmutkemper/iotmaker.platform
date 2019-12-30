@@ -12,10 +12,10 @@ type Tween struct {
 	startTime      time.Time
 	Duration       time.Duration
 	Func           func(currentTime, duration, startValue, changeInValue float64) float64
-	Interaction    func(value, percentToComplete float64, arguments []interface{})
-	OnStart        func(value float64)
-	OnEnd          func(value float64)
-	OnInvert       func(value float64)
+	Interaction    func(value, percentToComplete float64, arguments ...interface{})
+	OnStart        func(value float64, arguments ...interface{})
+	OnEnd          func(value float64, arguments ...interface{})
+	OnInvert       func(value float64, arguments ...interface{})
 	invert         bool
 	Repeat         int
 	fpsUId         string
