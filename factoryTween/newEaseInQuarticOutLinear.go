@@ -28,7 +28,7 @@ import (
 //     loop: número de interações ou -1 para um número infinito de interações
 //     arguments: array de argumentos passados para as funções onStart, onEnd, onInvert e onStep.
 //                Exemplo: ..., [argumentos] x, y) será onStartFunc(value, args...) { args[0]: x; args[1]: y}
-func NewEaseInQuarticOutLinear(duration time.Duration, startValue, endValue float64, interactionFunc func(value, percentToComplete float64, arguments []interface{}), onStartFunc func(value float64), onEndFunc func(value float64), arguments ...interface{}) *tween.Tween {
+func NewEaseInQuarticOutLinear(duration time.Duration, startValue, endValue float64, onStartFunc, onEndFunc, onInvertFunc func(value float64, arguments ...interface{}), onStepFunc func(value, percentToComplete float64, arguments ...interface{}), loop int, arguments ...interface{}) *tween.Tween {
 	t := &tween.Tween{
 		OnStart:     onStartFunc,
 		OnEnd:       onEndFunc,
