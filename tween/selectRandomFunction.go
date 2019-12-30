@@ -70,6 +70,18 @@ func SelectRandom() func(interactionCurrent, interactionTotal, startValue, delta
 		KEaseInExponentialOutSine,
 		KEaseInOutCircular,
 		KEaseInOutCubic,
+		KEaseInLinearOutCircular,
+		KEaseInLinearOutCubic,
+		KEaseInLinearOutExponential,
+		KEaseInLinearOutQuadratic,
+		KEaseInLinearOutQuartic,
+		KEaseInLinearOutQuintic,
+		KEaseInQuinticOutLinear,
+		KEaseInQuarticOutLinear,
+		KEaseInQuadraticOutLinear,
+		KEaseInExponentialOutLinear,
+		KEaseInCubicOutLinear,
+		KEaseInCircularOutLinear,
 	}
 
 	i := mathUtil.Int(0, len(list)-1)
