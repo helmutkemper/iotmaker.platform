@@ -7,7 +7,12 @@ import (
 
 const kUIdSize = 10
 
-var fps = 120
+type funcList struct {
+	id string
+	f  func()
+}
+
+var fps = 60
 var fpsCache = 10
 var kUIdCharList []string
 
@@ -16,9 +21,9 @@ var kUIdCharList []string
 var stopTicker bool
 var ticker *time.Ticker
 var tickerCache *time.Ticker
-var funcListToRunner map[string]func()
-var funcListToCacheRunner map[string]func()
-var funcListPriorityToRunner map[string]func()
+var funcListToRunner []funcList
+var funcListToCacheRunner []funcList
+var funcListPriorityToRunner []funcList
 
 // pt_br: impede que o loop ocorra em intervalos muitos próximos e trave o
 // processamento do browser para outras tarefas
@@ -45,35 +50,50 @@ func GetCacheUpdate() int {
 
 func AddToRunner(runnerFunc func()) string {
 	UId := getUId()
-	funcListToRunner[UId] = runnerFunc
+	funcListToRunner = append(funcListToRunner, funcList{id: UId, f: runnerFunc})
 
 	return UId
 }
 
 func AddToCacheRunner(runnerFunc func()) string {
 	UId := getUId()
-	funcListToCacheRunner[UId] = runnerFunc
+	funcListToCacheRunner = append(funcListToCacheRunner, funcList{id: UId, f: runnerFunc})
 
 	return UId
 }
 
 func DeleteFromRunner(UId string) {
-	delete(funcListToRunner, UId)
+	for k, runner := range funcListToRunner {
+		if runner.id == UId {
+			funcListToRunner = append(funcListToRunner[:k], funcListToRunner[k+1:]...)
+			break
+		}
+	}
 }
 
 func DeleteFromCacheRunner(UId string) {
-	delete(funcListToCacheRunner, UId)
+	for k, runner := range funcListToCacheRunner {
+		if runner.id == UId {
+			funcListToCacheRunner = append(funcListToCacheRunner[:k], funcListToCacheRunner[k+1:]...)
+			break
+		}
+	}
 }
 
 func AddToRunnerPriorityFunc(runnerFunc func()) string {
 	UId := getUId()
-	funcListPriorityToRunner[UId] = runnerFunc
+	funcListPriorityToRunner = append(funcListPriorityToRunner, funcList{id: UId, f: runnerFunc})
 
 	return UId
 }
 
 func DeleteFromRunnerPriorityFunc(UId string) {
-	delete(funcListPriorityToRunner, UId)
+	for k, runner := range funcListPriorityToRunner {
+		if runner.id == UId {
+			funcListPriorityToRunner = append(funcListPriorityToRunner[:k], funcListPriorityToRunner[k+1:]...)
+			break
+		}
+	}
 }
 
 func init() {
@@ -82,9 +102,9 @@ func init() {
 		"Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "_", "!", "@",
 		"#", "$", "%", "&", "*", "(", ")", "-", "_", "+", "=", "[", "{", "}", "]", "/", "?", ";", ":", ".", ",", "<", ">",
 		"|"}
-	funcListToRunner = make(map[string]func())
-	funcListToCacheRunner = make(map[string]func())
-	funcListPriorityToRunner = make(map[string]func())
+	funcListToRunner = make([]funcList, 0)
+	funcListToCacheRunner = make([]funcList, 0)
+	funcListPriorityToRunner = make([]funcList, 0)
 	tickerStart()
 }
 
@@ -117,8 +137,8 @@ func tickerRunner() {
 			}
 
 			for _, runnerFunc := range funcListToCacheRunner {
-				if runnerFunc != nil {
-					runnerFunc()
+				if runnerFunc.f != nil {
+					runnerFunc.f()
 				}
 			}
 
@@ -137,14 +157,14 @@ func tickerRunner() {
 			start := time.Now()
 
 			for _, runnerFunc := range funcListPriorityToRunner {
-				if runnerFunc != nil {
-					runnerFunc()
+				if runnerFunc.f != nil {
+					runnerFunc.f()
 				}
 			}
 
 			for _, runnerFunc := range funcListToRunner {
-				if runnerFunc != nil {
-					runnerFunc()
+				if runnerFunc.f != nil {
+					runnerFunc.f()
 				}
 			}
 
