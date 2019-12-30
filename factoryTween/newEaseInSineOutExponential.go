@@ -37,7 +37,8 @@ func NewEaseInSineOutExponential(duration time.Duration, startValue, endValue fl
 		StartValue:  startValue,
 		EndValue:    endValue,
 		Func:        tween.KEaseInSineOutExponential,
-		Interaction: interactionFunc,
+		Interaction: onStepFunc,
+		OnInvert:    onInvertFunc,
 		Repeat:      0,
 	}
 	t.Start()

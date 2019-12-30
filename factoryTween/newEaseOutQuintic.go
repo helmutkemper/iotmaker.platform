@@ -37,7 +37,8 @@ func NewEaseOutQuintic(duration time.Duration, startValue, endValue float64, onS
 		StartValue:  startValue,
 		EndValue:    endValue,
 		Func:        tween.KEaseOutQuintic,
-		Interaction: interactionFunc,
+		Interaction: onStepFunc,
+		OnInvert:    onInvertFunc,
 		Repeat:      0,
 	}
 	t.Start()

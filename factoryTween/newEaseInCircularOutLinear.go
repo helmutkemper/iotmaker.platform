@@ -37,7 +37,8 @@ func NewEaseInCircularOutLinear(duration time.Duration, startValue, endValue flo
 		StartValue:  startValue,
 		EndValue:    endValue,
 		Func:        tween.KEaseInCircularOutLinear,
-		Interaction: interactionFunc,
+		Interaction: onStepFunc,
+		OnInvert:    onInvertFunc,
 		Repeat:      0,
 	}
 	t.Start()

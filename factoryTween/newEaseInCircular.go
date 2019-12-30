@@ -32,13 +32,13 @@ func NewEaseInCircular(duration time.Duration, startValue, endValue float64, onS
 	t := &tween.Tween{
 		OnStart:     onStartFunc,
 		OnEnd:       onEndFunc,
-		OnInvert:    onInvertFunc,
 		Arguments:   arguments,
 		Duration:    duration,
 		StartValue:  startValue,
 		EndValue:    endValue,
 		Func:        tween.KEaseInCircular,
 		Interaction: onStepFunc,
+		OnInvert:    onInvertFunc,
 		Repeat:      loop,
 	}
 	t.Start()
