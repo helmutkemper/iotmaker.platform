@@ -1,7 +1,7 @@
 package image
 
 import (
-	"github.com/helmutkemper/iotmaker.platform.webbrowser/basic"
+	"github.com/helmutkemper/iotmaker.platform/basic"
 )
 
 type Image struct {
