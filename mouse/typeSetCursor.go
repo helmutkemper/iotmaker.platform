@@ -1,3 +1,7 @@
 package mouse
 
-type SetCursorFunc func(element interface{}, cursor interface{})
+type CursorPointer struct {
+	Id   string
+	Path string
+	Img  string
+}
