@@ -45,6 +45,11 @@ func AddFunctionPointer(id string, collisionFunction PointerCollisionFunction, p
 	listOnEventFunctions[id] = append(listOnEventFunctions[id], positiveEventFunction)
 }
 
+func RemoveFunctionPointer(id string) {
+	delete(listTestEventOverFunctions, id)
+	delete(listOnEventFunctions, id)
+}
+
 func AddFunctionPointerList(id string, collisionFunction []PointerCollisionFunction, positiveEventFunction []PointerEventFunction) {
 	for key := range collisionFunction {
 		AddFunctionPointer(id, collisionFunction[key], positiveEventFunction[key])

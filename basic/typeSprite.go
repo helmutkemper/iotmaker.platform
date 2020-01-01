@@ -7,7 +7,7 @@ import (
 )
 
 type Drag struct {
-	IsDraggable bool
+	isDraggable bool
 }
 
 type Sprite struct {
@@ -30,17 +30,26 @@ func (el *Sprite) GetPlatform() iotmaker_platform_IDraw.IDraw {
 	return el.Platform
 }
 
-func (el *Sprite) SetDraggable(enable bool) {
-	el.IsDraggable = enable
+func (el *Sprite) DragStart() {
+	el.setDraggable(true)
+}
+
+func (el *Sprite) DragStop() {
+	el.setDraggable(false)
+}
+
+func (el *Sprite) setDraggable(enable bool) {
+	id := el.Id + "DraggableImage"
+	el.isDraggable = enable
 	if enable == true {
-		platformMouse.AddFunctionPointer("size", el.GetCollisionBox, func(x, y float64, collision bool) {
-			//if collision == true {
+		platformMouse.AddFunctionPointer(id, el.GetCollisionBox, func(x, y float64, collision bool) {
 			el.OutBoxDimensions.X = x - el.OutBoxDimensions.Width/2
 			el.Dimensions.X = x - el.Dimensions.Width/2
 			el.OutBoxDimensions.Y = y - el.OutBoxDimensions.Height/2
 			el.Dimensions.Y = y - el.Dimensions.Height/2
-			//}
 		})
+	} else {
+		platformMouse.RemoveFunctionPointer(id)
 	}
 }
 

@@ -12,6 +12,7 @@ type funcList struct {
 	f  func()
 }
 
+var fpsLowLatencyFunc = 2
 var fps = 60
 var fpsCache = 10
 var kUIdCharList []string
@@ -21,6 +22,8 @@ var kUIdCharList []string
 var stopTicker bool
 var ticker *time.Ticker
 var tickerCache *time.Ticker
+var tickerLowLatency *time.Ticker
+var funcListLowLatencyFunc []funcList
 var funcListToRunner []funcList
 var funcListToCacheRunner []funcList
 var funcListPriorityToRunner []funcList
@@ -96,6 +99,22 @@ func DeleteFromRunnerPriorityFunc(UId string) {
 	}
 }
 
+func AddLowLatencyFunc(runnerFunc func()) string {
+	UId := getUId()
+	funcListLowLatencyFunc = append(funcListLowLatencyFunc, funcList{id: UId, f: runnerFunc})
+
+	return UId
+}
+
+func DeleteLowLatencyFunc(UId string) {
+	for k, runner := range funcListLowLatencyFunc {
+		if runner.id == UId {
+			funcListLowLatencyFunc = append(funcListLowLatencyFunc[:k], funcListLowLatencyFunc[k+1:]...)
+			break
+		}
+	}
+}
+
 func init() {
 	kUIdCharList = []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s",
 		"t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P",
@@ -105,6 +124,7 @@ func init() {
 	funcListToRunner = make([]funcList, 0)
 	funcListToCacheRunner = make([]funcList, 0)
 	funcListPriorityToRunner = make([]funcList, 0)
+	funcListLowLatencyFunc = make([]funcList, 0)
 	tickerStart()
 }
 
@@ -120,6 +140,7 @@ func getUId() string {
 func tickerStart() {
 	tickerCache = time.NewTicker(time.Second / time.Duration(fpsCache))
 	ticker = time.NewTicker(time.Second / time.Duration(fps))
+	tickerLowLatency = time.NewTicker(time.Second / time.Duration(fpsLowLatencyFunc))
 	slipFrameTimeAlarm = time.Second / time.Duration(fps)
 	go func() { tickerRunner() }()
 }
@@ -129,6 +150,14 @@ func tickerRunner() {
 
 	for {
 		select {
+		case <-tickerLowLatency.C:
+
+			for _, runnerFunc := range funcListLowLatencyFunc {
+				if runnerFunc.f != nil {
+					runnerFunc.f()
+				}
+			}
+
 		case <-tickerCache.C:
 
 			if stopTicker == true {
