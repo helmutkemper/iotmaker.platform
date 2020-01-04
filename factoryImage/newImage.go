@@ -1,11 +1,11 @@
 package factoryImage
 
 import (
-	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
-	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.coordinate"
-	"github.com/helmutkemper/iotmaker.platform/abstractType/genericTypes"
-	"github.com/helmutkemper/iotmaker.platform/abstractType/image"
-	"github.com/helmutkemper/iotmaker.platform/basic"
+	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
+	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.coordinate"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/genericTypes"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/image"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/basic"
 )
 
 func NewImage(platform, scratchPad iotmaker_platform_IDraw.IDraw, img interface{}, x, y, width, height float64, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) *image.Image {

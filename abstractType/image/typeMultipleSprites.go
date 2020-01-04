@@ -1,7 +1,7 @@
 package image
 
 import (
-	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
+	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
 	"time"
 )
 

@@ -1,9 +1,9 @@
 package basic
 
 import (
-	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
-	"github.com/helmutkemper/iotmaker.platform/abstractType/genericTypes"
-	platformMouse "github.com/helmutkemper/iotmaker.platform/mouse"
+	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/genericTypes"
+	platformMouse "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/mouse"
 )
 
 type Drag struct {

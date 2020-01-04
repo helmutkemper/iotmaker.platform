@@ -1,6 +1,6 @@
 package genericTypes
 
-import iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.coordinate"
+import iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.coordinate"
 
 func NewDimensions(dm Dimensions, x, y, width, height, border float64, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) Dimensions {
 

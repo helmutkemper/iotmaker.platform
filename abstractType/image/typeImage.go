@@ -1,7 +1,7 @@
 package image
 
 import (
-	"github.com/helmutkemper/iotmaker.platform/basic"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/basic"
 )
 
 type Image struct {

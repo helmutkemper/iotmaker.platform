@@ -1,6 +1,6 @@
 package image
 
-import iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
+import iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
 
 type HtmlImage struct {
 	Platform iotmaker_platform_IDraw.IHtml
