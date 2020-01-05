@@ -12,7 +12,7 @@ type funcList struct {
 	f  func()
 }
 
-var fpsLowLatencyFunc = 2
+var fpsLowLatencyFunc = 1
 var fps = 60
 var fpsCache = 10
 var kUIdCharList []string
@@ -34,11 +34,19 @@ var slipFrame int = 0
 var slipFrameTimeAlarm time.Duration
 
 func Set(value int) {
+	if value > 60 {
+		value = 60
+	}
+
 	fps = value
 	stopTicker = true
 }
 
 func SetCacheUpdate(value int) {
+	if value > fps/2 {
+		value = fps / 2
+	}
+
 	fpsCache = value
 	stopTicker = true
 }
