@@ -27,6 +27,7 @@ var funcListLowLatencyFunc []funcList
 var funcListToRunner []funcList
 var funcListToCacheRunner []funcList
 var funcListPriorityToRunner []funcList
+var funcCursor funcList
 
 // pt_br: impede que o loop ocorra em intervalos muitos próximos e trave o
 // processamento do browser para outras tarefas
@@ -57,6 +58,17 @@ func Get() int {
 
 func GetCacheUpdate() int {
 	return fpsCache
+}
+
+func AddCursor(runnerFunc func()) string {
+	UId := getUId()
+	funcCursor = funcList{id: UId, f: runnerFunc}
+
+	return UId
+}
+
+func RemoveCursor(id string) {
+	funcCursor = funcList{}
 }
 
 func AddToRunner(runnerFunc func()) string {
@@ -203,6 +215,10 @@ func tickerRunner() {
 				if runnerFunc.f != nil {
 					runnerFunc.f()
 				}
+			}
+
+			if funcCursor.f != nil {
+				funcCursor.f()
 			}
 
 			elapsed := time.Since(start)

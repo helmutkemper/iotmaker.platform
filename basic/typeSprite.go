@@ -20,21 +20,25 @@ func (el DragMode) FromString(value string) DragMode {
 var dragModeFromStringMap = map[string]DragMode{
 	"desktop": KDragModeDesktop,
 	"mobile":  KDragModeMobile,
+	"always":  KDragModeAlways,
 }
 
 var dragModeString = [...]string{
 	"desktop",
 	"mobile",
+	"always",
 }
 
 const (
 	KDragModeDesktop DragMode = iota
 	KDragModeMobile
+	KDragModeAlways
 )
 
 type Drag struct {
 	dragId      string
 	isDraggable bool
+	isMouseDown bool
 	dragMode    DragMode
 }
 
@@ -70,12 +74,29 @@ func (el *Sprite) DragStop() {
 	el.setDraggable(false)
 }
 
+func (el *Sprite) Move(x, y float64) {
+	el.OutBoxDimensions.X = x - el.OutBoxDimensions.Width/2
+	el.Dimensions.X = x - el.Dimensions.Width/2
+	el.OutBoxDimensions.Y = y - el.OutBoxDimensions.Height/2
+	el.Dimensions.Y = y - el.Dimensions.Height/2
+}
+
 func (el *Sprite) SetDraggableToDesktop() {
-	platformMouse.AddFunctionPointer(el.Id+"DraggableImage", el.GetCollisionBox, func(x, y float64, collision bool) {
-		el.OutBoxDimensions.X = x - el.OutBoxDimensions.Width/2
-		el.Dimensions.X = x - el.Dimensions.Width/2
-		el.OutBoxDimensions.Y = y - el.OutBoxDimensions.Height/2
-		el.Dimensions.Y = y - el.Dimensions.Height/2
+	platformMouse.AddFunctionPointer(el.Id+"DraggableImage", el.GetCollisionBox, func(x, y float64, collision bool, event platformMouse.EventMouse) {
+
+		switch event {
+		case platformMouse.KMouseDown:
+			el.isMouseDown = true
+		case platformMouse.KMouseUp:
+			el.isMouseDown = false
+		}
+
+		if el.dragMode == KDragModeAlways {
+			el.Move(x, y)
+		} else if el.dragMode == KDragModeDesktop && el.isMouseDown == true {
+			el.Move(x, y)
+		}
+
 	})
 }
 

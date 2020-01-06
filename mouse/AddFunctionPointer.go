@@ -23,7 +23,7 @@ func ManagerMouseMove(x, y float64) {
 			if funcTestOver != nil {
 
 				isOver = funcTestOver(x, y)
-				listOnEventFunctions[id][k](x, y, isOver)
+				listOnEventFunctions[id][k](x, y, isOver, KMouseMove)
 
 			}
 		}
@@ -40,7 +40,7 @@ func ManagerMouseDown(x, y float64) {
 			if funcTestOver != nil {
 
 				isOver = funcTestOver(x, y)
-				listOnEventFunctions[id][k](x, y, isOver)
+				listOnEventFunctions[id][k](x, y, isOver, KMouseDown)
 
 			}
 		}
@@ -57,7 +57,7 @@ func ManagerMouseUp(x, y float64) {
 			if funcTestOver != nil {
 
 				isOver = funcTestOver(x, y)
-				listOnEventFunctions[id][k](x, y, isOver)
+				listOnEventFunctions[id][k](x, y, isOver, KMouseUp)
 
 			}
 		}
@@ -74,7 +74,7 @@ func ManagerClick(x, y float64) {
 			if funcTestOver != nil {
 
 				isOver = funcTestOver(x, y)
-				listOnEventFunctions[id][k](x, y, isOver)
+				listOnEventFunctions[id][k](x, y, isOver, KClick)
 
 			}
 		}
@@ -91,7 +91,7 @@ func ManagerDoubleClick(x, y float64) {
 			if funcTestOver != nil {
 
 				isOver = funcTestOver(x, y)
-				listOnEventFunctions[id][k](x, y, isOver)
+				listOnEventFunctions[id][k](x, y, isOver, KDoubleClick)
 
 			}
 		}
@@ -108,7 +108,7 @@ func ManagerContextMenu(x, y float64) {
 			if funcTestOver != nil {
 
 				isOver = funcTestOver(x, y)
-				listOnEventFunctions[id][k](x, y, isOver)
+				listOnEventFunctions[id][k](x, y, isOver, KContextMenu)
 
 			}
 		}
@@ -125,7 +125,7 @@ func ManagerMouseEnter(x, y float64) {
 			if funcTestOver != nil {
 
 				isOver = funcTestOver(x, y)
-				listOnEventFunctions[id][k](x, y, isOver)
+				listOnEventFunctions[id][k](x, y, isOver, KMouseEnter)
 
 			}
 		}
@@ -142,7 +142,7 @@ func ManagerMouseOut(x, y float64) {
 			if funcTestOver != nil {
 
 				isOver = funcTestOver(x, y)
-				listOnEventFunctions[id][k](x, y, isOver)
+				listOnEventFunctions[id][k](x, y, isOver, KMouseOut)
 
 			}
 		}
