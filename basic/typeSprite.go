@@ -40,6 +40,8 @@ type Drag struct {
 	isDraggable bool
 	isMouseDown bool
 	dragMode    DragMode
+	xDelta      float64
+	yDelta      float64
 }
 
 type Sprite struct {
@@ -75,10 +77,10 @@ func (el *Sprite) DragStop() {
 }
 
 func (el *Sprite) Move(x, y float64) {
-	el.OutBoxDimensions.X = x - el.OutBoxDimensions.Width/2
-	el.Dimensions.X = x - el.Dimensions.Width/2
-	el.OutBoxDimensions.Y = y - el.OutBoxDimensions.Height/2
-	el.Dimensions.Y = y - el.Dimensions.Height/2
+	el.OutBoxDimensions.X = x
+	el.Dimensions.X = x
+	el.OutBoxDimensions.Y = y
+	el.Dimensions.Y = y
 }
 
 func (el *Sprite) SetDraggableToDesktop() {
@@ -86,7 +88,17 @@ func (el *Sprite) SetDraggableToDesktop() {
 
 		switch event {
 		case platformMouse.KMouseDown:
-			el.isMouseDown = true
+
+			if x >= el.OutBoxDimensions.X &&
+				x <= el.OutBoxDimensions.X+el.OutBoxDimensions.Width &&
+				y >= el.OutBoxDimensions.Y &&
+				y <= el.OutBoxDimensions.Y+el.OutBoxDimensions.Height {
+
+				el.isMouseDown = true
+				el.xDelta = x - el.Dimensions.X
+				el.yDelta = y - el.Dimensions.Y
+			}
+
 		case platformMouse.KMouseUp:
 			el.isMouseDown = false
 		}
@@ -94,7 +106,7 @@ func (el *Sprite) SetDraggableToDesktop() {
 		if el.dragMode == KDragModeAlways {
 			el.Move(x, y)
 		} else if el.dragMode == KDragModeDesktop && el.isMouseDown == true {
-			el.Move(x, y)
+			el.Move(x-el.xDelta, y-el.yDelta)
 		}
 
 	})

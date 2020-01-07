@@ -8,7 +8,7 @@ import (
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/basic"
 )
 
-func NewImage(platform, scratchPad iotmaker_platform_IDraw.IDraw, img interface{}, x, y, width, height float64, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) *image.Image {
+func NewImage(id string, platform, scratchPad iotmaker_platform_IDraw.IDraw, img interface{}, x, y, width, height float64, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) *image.Image {
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 
@@ -26,6 +26,7 @@ func NewImage(platform, scratchPad iotmaker_platform_IDraw.IDraw, img interface{
 
 	ret := &image.Image{
 		Sprite: basic.Sprite{
+			Id:         id,
 			Platform:   platform,
 			ScratchPad: scratchPad,
 			Dimensions: genericTypes.Dimensions{
