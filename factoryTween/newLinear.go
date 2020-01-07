@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-// en:
+// en: Ease tween linear
 //     duration: animation duration
 //     startValue: initial value
 //     endValue: final value
@@ -17,7 +17,7 @@ import (
 //     arguments: array of arguments passed for functions onStart, onEnd, onInvert and onStep.
 //                Example: ..., [arguments] x, y) will be onStartFunc(value, args...) { args[0]: x; args[1]: y}
 //
-// pt_br:
+// pt_br: Facilitador de interpolação linear
 //     duration: duração da animação
 //     startValue: valor inicial
 //     endValue: valor final
