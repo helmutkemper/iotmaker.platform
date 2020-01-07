@@ -1,7 +1,7 @@
 package factoryTween
 
 import (
-	"github.com/helmutkemper/iotmaker.platform/tween"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/tween"
 	"time"
 )
 

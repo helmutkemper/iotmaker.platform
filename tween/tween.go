@@ -1,7 +1,7 @@
 package tween
 
 import (
-	"github.com/helmutkemper/iotmaker.platform/fps"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/fps"
 	"time"
 )
 

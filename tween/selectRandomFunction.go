@@ -1,6 +1,6 @@
 package tween
 
-import "github.com/helmutkemper/iotmaker.platform/mathUtil"
+import "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/mathUtil"
 
 var i = -1
 
