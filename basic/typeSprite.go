@@ -107,6 +107,8 @@ func (el *Sprite) SetDraggableToDesktop() {
 			el.Move(x, y)
 		} else if el.dragMode == KDragModeDesktop && el.isMouseDown == true {
 			el.Move(x-el.xDelta, y-el.yDelta)
+		} else if el.dragMode == KDragModeMobile && event == platformMouse.KClick {
+			el.Move(x-el.xDelta, y-el.yDelta)
 		}
 
 	})
