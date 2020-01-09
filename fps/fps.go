@@ -166,8 +166,7 @@ func tickerStart() {
 }
 
 func tickerRunner() {
-	defer func() { tickerStart() }()
-
+	defer tickerStart()
 	for {
 		select {
 		case <-tickerLowLatency.C:
