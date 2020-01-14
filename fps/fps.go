@@ -1,6 +1,7 @@
 package fps
 
 import (
+	"math"
 	"math/rand"
 	"time"
 )
@@ -12,217 +13,306 @@ type funcList struct {
 	f  func()
 }
 
-var fpsLowLatencyFunc = 1
-var fps = 60
-var fpsCache = 10
-var kUIdCharList []string
+type Fps struct {
+	sleepFrame    int
+	fps           int
+	fpsLowLatency int
+	kUIdCharList  []string
 
-// en: Warning! stopTicker should be a channel, however, conflict with webassembly <-done channer
-// pt_br: Cuidado! stopTicker deveria ser um channel, porém, deu conflito com o webassembly <-done channer
-var stopTicker bool
-var ticker *time.Ticker
-var tickerCache *time.Ticker
-var tickerLowLatency *time.Ticker
-var funcListLowLatencyFunc []funcList
-var funcListToRunner []funcList
-var funcListToCacheRunner []funcList
-var funcListPriorityToRunner []funcList
-var funcCursor funcList
+	// en: Warning! stopTicker should be a channel, however, conflict with webassembly <-done channer
+	// pt_br: Cuidado! stopTicker deveria ser um channel, porém, deu conflito com o webassembly <-done channer
+	stopTicker bool
 
-// pt_br: impede que o loop ocorra em intervalos muitos próximos e trave o
-// processamento do browser para outras tarefas
-var slipFrame int = 0
-var slipFrameTimeAlarm time.Duration
+	ticker           *time.Ticker
+	tickerLowLatency *time.Ticker
 
-func Set(value int) {
-	if value > 60 {
-		value = 60
-	}
+	funcListToLowLatency []funcList
+	funcListToSystem     []funcList
+	funcListToCalculate  []funcList
+	funcListToDraw       []funcList
 
-	fps = value
-	stopTicker = true
+	funcCursorDraw funcList
+
+	// pt_br: impede que o loop ocorra em intervalos muitos próximos e trave o
+	// processamento do browser para outras tarefas
+	slipFrame          int
+	slipFrameTimeAlarm time.Duration
 }
 
-func SetCacheUpdate(value int) {
-	if value > fps/2 {
-		value = fps / 2
-	}
+func (el *Fps) Init() {
+	el.sleepFrame = 2
+	el.fps = 60
+	el.fpsLowLatency = 1
 
-	fpsCache = value
-	stopTicker = true
-}
-
-func Get() int {
-	return fps
-}
-
-func GetCacheUpdate() int {
-	return fpsCache
-}
-
-func AddCursor(runnerFunc func()) string {
-	UId := getUId()
-	funcCursor = funcList{id: UId, f: runnerFunc}
-
-	return UId
-}
-
-func RemoveCursor(id string) {
-	funcCursor = funcList{}
-}
-
-func AddToRunner(runnerFunc func()) string {
-	UId := getUId()
-	funcListToRunner = append(funcListToRunner, funcList{id: UId, f: runnerFunc})
-
-	return UId
-}
-
-func AddToCacheRunner(runnerFunc func()) string {
-	UId := getUId()
-	funcListToCacheRunner = append(funcListToCacheRunner, funcList{id: UId, f: runnerFunc})
-
-	return UId
-}
-
-func DeleteFromRunner(UId string) {
-	for k, runner := range funcListToRunner {
-		if runner.id == UId {
-			funcListToRunner = append(funcListToRunner[:k], funcListToRunner[k+1:]...)
-			break
-		}
-	}
-}
-
-func DeleteFromCacheRunner(UId string) {
-	for k, runner := range funcListToCacheRunner {
-		if runner.id == UId {
-			funcListToCacheRunner = append(funcListToCacheRunner[:k], funcListToCacheRunner[k+1:]...)
-			break
-		}
-	}
-}
-
-func AddToRunnerPriorityFunc(runnerFunc func()) string {
-	UId := getUId()
-	funcListPriorityToRunner = append(funcListPriorityToRunner, funcList{id: UId, f: runnerFunc})
-
-	return UId
-}
-
-func DeleteFromRunnerPriorityFunc(UId string) {
-	for k, runner := range funcListPriorityToRunner {
-		if runner.id == UId {
-			funcListPriorityToRunner = append(funcListPriorityToRunner[:k], funcListPriorityToRunner[k+1:]...)
-			break
-		}
-	}
-}
-
-func AddLowLatencyFunc(runnerFunc func()) string {
-	UId := getUId()
-	funcListLowLatencyFunc = append(funcListLowLatencyFunc, funcList{id: UId, f: runnerFunc})
-
-	return UId
-}
-
-func DeleteLowLatencyFunc(UId string) {
-	for k, runner := range funcListLowLatencyFunc {
-		if runner.id == UId {
-			funcListLowLatencyFunc = append(funcListLowLatencyFunc[:k], funcListLowLatencyFunc[k+1:]...)
-			break
-		}
-	}
-}
-
-func init() {
-	kUIdCharList = []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s",
+	el.kUIdCharList = []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s",
 		"t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P",
 		"Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "_", "!", "@",
 		"#", "$", "%", "&", "*", "(", ")", "-", "_", "+", "=", "[", "{", "}", "]", "/", "?", ";", ":", ".", ",", "<", ">",
 		"|"}
-	funcListToRunner = make([]funcList, 0)
-	funcListToCacheRunner = make([]funcList, 0)
-	funcListPriorityToRunner = make([]funcList, 0)
-	funcListLowLatencyFunc = make([]funcList, 0)
-	tickerStart()
+	el.funcListToSystem = make([]funcList, 0)
+	el.funcListToCalculate = make([]funcList, 0)
+	el.funcListToDraw = make([]funcList, 0)
+	el.tickerStart()
 }
 
-func getUId() string {
+func (el *Fps) SetSleepFrame(value int) {
+	el.sleepFrame = value
+}
+
+func (el *Fps) GetSleepFrame() int {
+	return el.sleepFrame
+}
+
+func (el *Fps) Set(value int) {
+	el.fps = value
+	el.stopTicker = true
+}
+
+func (el *Fps) Get() int {
+	return el.fps
+}
+
+func (el *Fps) AddCursorDrawFunc(runnerFunc func()) string {
+	UId := el.getUId()
+	el.funcCursorDraw = funcList{id: UId, f: runnerFunc}
+
+	return UId
+}
+
+func (el *Fps) RemoveCursorDrawFunc(id string) {
+	el.funcCursorDraw = funcList{}
+}
+
+func (el *Fps) AddToLowLatency(runnerFunc func()) string {
+	UId := el.getUId()
+	el.funcListToLowLatency = append(el.funcListToLowLatency, funcList{id: UId, f: runnerFunc})
+
+	return UId
+}
+
+func (el *Fps) DeleteFromLowLatency(UId string) {
+	for k, runner := range el.funcListToLowLatency {
+		if runner.id == UId {
+			el.funcListToLowLatency = append(el.funcListToLowLatency[:k], el.funcListToLowLatency[k+1:]...)
+			break
+		}
+	}
+}
+
+func (el *Fps) AddToSystem(runnerFunc func()) string {
+	UId := el.getUId()
+	el.funcListToSystem = append(el.funcListToSystem, funcList{id: UId, f: runnerFunc})
+
+	return UId
+}
+
+func (el *Fps) DeleteFromSystem(UId string) {
+	for k, runner := range el.funcListToSystem {
+		if runner.id == UId {
+			el.funcListToSystem = append(el.funcListToSystem[:k], el.funcListToSystem[k+1:]...)
+			break
+		}
+	}
+}
+
+func (el *Fps) AddToCalculate(runnerFunc func()) string {
+	UId := el.getUId()
+	el.funcListToCalculate = append(el.funcListToCalculate, funcList{id: UId, f: runnerFunc})
+
+	return UId
+}
+
+func (el *Fps) DeleteFromCalculate(UId string) {
+	for k, runner := range el.funcListToCalculate {
+		if runner.id == UId {
+			el.funcListToCalculate = append(el.funcListToCalculate[:k], el.funcListToCalculate[k+1:]...)
+			break
+		}
+	}
+}
+
+func (el *Fps) AddToDraw(runnerFunc func()) string {
+	UId := el.getUId()
+	el.funcListToDraw = append(el.funcListToDraw, funcList{id: UId, f: runnerFunc})
+
+	return UId
+}
+
+func (el *Fps) DeleteFromDraw(UId string) {
+	for k, runner := range el.funcListToDraw {
+		if runner.id == UId {
+			el.funcListToDraw = append(el.funcListToDraw[:k], el.funcListToDraw[k+1:]...)
+			break
+		}
+	}
+}
+
+func (el *Fps) SetZIndex(UId string, index int) int {
+	var function funcList
+	var pass = false
+	var length = len(el.funcListToDraw)
+
+	if index < 0 || index > length-1 {
+		return math.MaxInt32
+	}
+
+	for k, runner := range el.funcListToDraw {
+		if runner.id == UId {
+			pass = true
+			function = runner
+			el.funcListToDraw = append(el.funcListToDraw[:k], el.funcListToDraw[k+1:]...)
+			break
+		}
+	}
+
+	if pass == false {
+		return math.MaxInt32
+	}
+
+	if index == 0 {
+
+		el.funcListToDraw = append([]funcList{function}, el.funcListToDraw...)
+
+	} else if index == length-1 {
+
+		el.funcListToDraw = append(el.funcListToDraw, function)
+
+	} else {
+
+		firstPart := make([]funcList, len(el.funcListToDraw[:index]))
+		lastPart := make([]funcList, len(el.funcListToDraw[index:]))
+
+		copy(firstPart, el.funcListToDraw[:index])
+		copy(lastPart, el.funcListToDraw[index:])
+
+		firstPart = append(firstPart, function)
+
+		el.funcListToDraw = make([]funcList, 0)
+		el.funcListToDraw = append(firstPart, lastPart...)
+	}
+
+	return index
+}
+
+func (el *Fps) ToFront(UId string) int {
+	var function funcList
+	var pass = false
+	for k, runner := range el.funcListToDraw {
+		if runner.id == UId {
+			pass = true
+			function = runner
+			el.funcListToDraw = append(el.funcListToDraw[:k], el.funcListToDraw[k+1:]...)
+			break
+		}
+	}
+
+	if pass == false {
+		return math.MaxInt32
+	}
+
+	el.funcListToDraw = append(el.funcListToDraw, function)
+
+	return 0
+}
+
+func (el *Fps) ToBack(UId string) int {
+	var function funcList
+	var pass = false
+	for k, runner := range el.funcListToDraw {
+		if runner.id == UId {
+			pass = true
+			function = runner
+			el.funcListToDraw = append(el.funcListToDraw[:k], el.funcListToDraw[k+1:]...)
+			break
+		}
+	}
+
+	if pass == false {
+		return math.MaxInt32
+	}
+
+	el.funcListToDraw = append([]funcList{function}, el.funcListToDraw...)
+
+	return len(el.funcListToDraw) - 1
+}
+
+func (el *Fps) GetZIndex(UId string) int {
+	for k, runner := range el.funcListToDraw {
+		if runner.id == UId {
+			return k
+		}
+	}
+
+	return math.MaxInt32
+}
+
+func (el *Fps) getUId() string {
 	var UId = ""
 	for i := 0; i != kUIdSize; i += 1 {
-		UId += kUIdCharList[rand.Intn(len(kUIdCharList)-1)]
+		UId += el.kUIdCharList[rand.Intn(len(el.kUIdCharList)-1)]
 	}
 
 	return UId
 }
 
-func tickerStart() {
-	tickerCache = time.NewTicker(time.Second / time.Duration(fpsCache))
-	ticker = time.NewTicker(time.Second / time.Duration(fps))
-	tickerLowLatency = time.NewTicker(time.Second / time.Duration(fpsLowLatencyFunc))
-	slipFrameTimeAlarm = time.Second / time.Duration(fps)
-	go func() { tickerRunner() }()
+func (el *Fps) tickerStart() {
+	el.ticker = time.NewTicker(time.Second / time.Duration(el.fps))
+	el.tickerLowLatency = time.NewTicker(time.Second / time.Duration(el.fpsLowLatency))
+	el.slipFrameTimeAlarm = time.Second / time.Duration(el.fps)
+	go func() { el.tickerRunner() }()
 }
 
-func tickerRunner() {
-	defer tickerStart()
+func (el *Fps) tickerRunner() {
+	defer el.tickerStart()
 	for {
 		select {
-		case <-tickerLowLatency.C:
+		case <-el.tickerLowLatency.C:
 
-			for _, runnerFunc := range funcListLowLatencyFunc {
+			for _, runnerFunc := range el.funcListToLowLatency {
 				if runnerFunc.f != nil {
 					runnerFunc.f()
 				}
 			}
 
-		case <-tickerCache.C:
+		case <-el.ticker.C:
 
-			if stopTicker == true {
-				stopTicker = false
-				return
-			}
-
-			for _, runnerFunc := range funcListToCacheRunner {
-				if runnerFunc.f != nil {
-					runnerFunc.f()
-				}
-			}
-
-		case <-ticker.C:
-
-			if slipFrame != 0 {
-				slipFrame -= 1
+			if el.slipFrame != 0 {
+				el.slipFrame -= 1
 				continue
 			}
 
-			if stopTicker == true {
-				stopTicker = false
+			if el.stopTicker == true {
+				el.stopTicker = false
 				return
 			}
 
 			start := time.Now()
 
-			for _, runnerFunc := range funcListPriorityToRunner {
+			for _, runnerFunc := range el.funcListToSystem {
 				if runnerFunc.f != nil {
 					runnerFunc.f()
 				}
 			}
 
-			for _, runnerFunc := range funcListToRunner {
+			for _, runnerFunc := range el.funcListToCalculate {
 				if runnerFunc.f != nil {
 					runnerFunc.f()
 				}
 			}
 
-			if funcCursor.f != nil {
-				funcCursor.f()
+			for _, runnerFunc := range el.funcListToDraw {
+				if runnerFunc.f != nil {
+					runnerFunc.f()
+				}
+			}
+
+			if el.funcCursorDraw.f != nil {
+				el.funcCursorDraw.f()
 			}
 
 			elapsed := time.Since(start)
-			if elapsed > slipFrameTimeAlarm {
-				slipFrame = 2
+			if elapsed > el.slipFrameTimeAlarm {
+				el.slipFrame = el.sleepFrame
 			}
 		}
 	}

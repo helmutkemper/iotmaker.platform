@@ -41,7 +41,7 @@ func (el *Tween) tickerRunnerPrepare(startValue, endValue float64) {
 	el.loopStartValue = startValue
 	el.loopEndValue = endValue
 
-	el.fpsUId = fps.AddToRunnerPriorityFunc(el.tickerRunnerRun)
+	el.fpsUId = fps.AddToCalculate(el.tickerRunnerRun)
 }
 
 func (el *Tween) tickerRunnerRun() {
