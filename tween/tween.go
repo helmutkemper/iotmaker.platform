@@ -1,11 +1,12 @@
 package tween
 
 import (
-	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/fps"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/engine"
 	"time"
 )
 
 type Tween struct {
+	Engine         engine.IEngine
 	StartValue     float64
 	EndValue       float64
 	Arguments      []interface{}
@@ -24,6 +25,7 @@ type Tween struct {
 }
 
 func (el *Tween) Start() {
+	el.Engine.Init()
 	el.startTime = time.Now()
 	el.invert = true
 	go el.tickerRunnerPrepare(el.StartValue, el.EndValue)
@@ -41,7 +43,7 @@ func (el *Tween) tickerRunnerPrepare(startValue, endValue float64) {
 	el.loopStartValue = startValue
 	el.loopEndValue = endValue
 
-	el.fpsUId = fps.AddToCalculate(el.tickerRunnerRun)
+	el.fpsUId = el.Engine.AddToCalculate(el.tickerRunnerRun)
 }
 
 func (el *Tween) tickerRunnerRun() {
@@ -83,11 +85,11 @@ func (el *Tween) tickerRunnerRun() {
 }
 
 func (el *Tween) End() {
-	fps.DeleteFromRunnerPriorityFunc(el.fpsUId)
+	el.Engine.DeleteFromCalculate(el.fpsUId)
 }
 
 func (el *Tween) Stop() {
-	fps.DeleteFromRunnerPriorityFunc(el.fpsUId)
+	el.Engine.DeleteFromCalculate(el.fpsUId)
 	if el.OnEnd != nil {
 		if el.invert == true {
 			el.OnEnd(el.EndValue)

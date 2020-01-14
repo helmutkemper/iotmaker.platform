@@ -1,4 +1,4 @@
-package fps
+package engine
 
 import (
 	"math"
@@ -13,7 +13,7 @@ type funcList struct {
 	f  func()
 }
 
-type Fps struct {
+type Engine struct {
 	sleepFrame    int
 	fps           int
 	fpsLowLatency int
@@ -26,10 +26,10 @@ type Fps struct {
 	ticker           *time.Ticker
 	tickerLowLatency *time.Ticker
 
-	funcListToLowLatency []funcList
-	funcListToSystem     []funcList
-	funcListToCalculate  []funcList
-	funcListToDraw       []funcList
+	funcListToHighLatency []funcList
+	funcListToSystem      []funcList
+	funcListToCalculate   []funcList
+	funcListToDraw        []funcList
 
 	funcCursorDraw funcList
 
@@ -39,7 +39,7 @@ type Fps struct {
 	slipFrameTimeAlarm time.Duration
 }
 
-func (el *Fps) Init() {
+func (el *Engine) Init() {
 	el.sleepFrame = 2
 	el.fps = 60
 	el.fpsLowLatency = 1
@@ -55,58 +55,58 @@ func (el *Fps) Init() {
 	el.tickerStart()
 }
 
-func (el *Fps) SetSleepFrame(value int) {
+func (el *Engine) SetSleepFrame(value int) {
 	el.sleepFrame = value
 }
 
-func (el *Fps) GetSleepFrame() int {
+func (el *Engine) GetSleepFrame() int {
 	return el.sleepFrame
 }
 
-func (el *Fps) Set(value int) {
+func (el *Engine) Set(value int) {
 	el.fps = value
 	el.stopTicker = true
 }
 
-func (el *Fps) Get() int {
+func (el *Engine) Get() int {
 	return el.fps
 }
 
-func (el *Fps) AddCursorDrawFunc(runnerFunc func()) string {
+func (el *Engine) AddCursorDrawFunc(runnerFunc func()) string {
 	UId := el.getUId()
 	el.funcCursorDraw = funcList{id: UId, f: runnerFunc}
 
 	return UId
 }
 
-func (el *Fps) RemoveCursorDrawFunc(id string) {
+func (el *Engine) RemoveCursorDrawFunc(id string) {
 	el.funcCursorDraw = funcList{}
 }
 
-func (el *Fps) AddToLowLatency(runnerFunc func()) string {
+func (el *Engine) AddToHighLatency(runnerFunc func()) string {
 	UId := el.getUId()
-	el.funcListToLowLatency = append(el.funcListToLowLatency, funcList{id: UId, f: runnerFunc})
+	el.funcListToHighLatency = append(el.funcListToHighLatency, funcList{id: UId, f: runnerFunc})
 
 	return UId
 }
 
-func (el *Fps) DeleteFromLowLatency(UId string) {
-	for k, runner := range el.funcListToLowLatency {
+func (el *Engine) DeleteFromHighLatency(UId string) {
+	for k, runner := range el.funcListToHighLatency {
 		if runner.id == UId {
-			el.funcListToLowLatency = append(el.funcListToLowLatency[:k], el.funcListToLowLatency[k+1:]...)
+			el.funcListToHighLatency = append(el.funcListToHighLatency[:k], el.funcListToHighLatency[k+1:]...)
 			break
 		}
 	}
 }
 
-func (el *Fps) AddToSystem(runnerFunc func()) string {
+func (el *Engine) AddToSystem(runnerFunc func()) string {
 	UId := el.getUId()
 	el.funcListToSystem = append(el.funcListToSystem, funcList{id: UId, f: runnerFunc})
 
 	return UId
 }
 
-func (el *Fps) DeleteFromSystem(UId string) {
+func (el *Engine) DeleteFromSystem(UId string) {
 	for k, runner := range el.funcListToSystem {
 		if runner.id == UId {
 			el.funcListToSystem = append(el.funcListToSystem[:k], el.funcListToSystem[k+1:]...)
@@ -115,14 +115,14 @@ func (el *Fps) DeleteFromSystem(UId string) {
 	}
 }
 
-func (el *Fps) AddToCalculate(runnerFunc func()) string {
+func (el *Engine) AddToCalculate(runnerFunc func()) string {
 	UId := el.getUId()
 	el.funcListToCalculate = append(el.funcListToCalculate, funcList{id: UId, f: runnerFunc})
 
 	return UId
 }
 
-func (el *Fps) DeleteFromCalculate(UId string) {
+func (el *Engine) DeleteFromCalculate(UId string) {
 	for k, runner := range el.funcListToCalculate {
 		if runner.id == UId {
 			el.funcListToCalculate = append(el.funcListToCalculate[:k], el.funcListToCalculate[k+1:]...)
@@ -131,14 +131,14 @@ func (el *Fps) DeleteFromCalculate(UId string) {
 	}
 }
 
-func (el *Fps) AddToDraw(runnerFunc func()) string {
+func (el *Engine) AddToDraw(runnerFunc func()) string {
 	UId := el.getUId()
 	el.funcListToDraw = append(el.funcListToDraw, funcList{id: UId, f: runnerFunc})
 
 	return UId
 }
 
-func (el *Fps) DeleteFromDraw(UId string) {
+func (el *Engine) DeleteFromDraw(UId string) {
 	for k, runner := range el.funcListToDraw {
 		if runner.id == UId {
 			el.funcListToDraw = append(el.funcListToDraw[:k], el.funcListToDraw[k+1:]...)
@@ -147,7 +147,7 @@ func (el *Fps) DeleteFromDraw(UId string) {
 	}
 }
 
-func (el *Fps) SetZIndex(UId string, index int) int {
+func (el *Engine) SetZIndex(UId string, index int) int {
 	var function funcList
 	var pass = false
 	var length = len(el.funcListToDraw)
@@ -194,7 +194,7 @@ func (el *Fps) SetZIndex(UId string, index int) int {
 	return index
 }
 
-func (el *Fps) ToFront(UId string) int {
+func (el *Engine) ToFront(UId string) int {
 	var function funcList
 	var pass = false
 	for k, runner := range el.funcListToDraw {
@@ -215,7 +215,7 @@ func (el *Fps) ToFront(UId string) int {
 	return 0
 }
 
-func (el *Fps) ToBack(UId string) int {
+func (el *Engine) ToBack(UId string) int {
 	var function funcList
 	var pass = false
 	for k, runner := range el.funcListToDraw {
@@ -236,7 +236,7 @@ func (el *Fps) ToBack(UId string) int {
 	return len(el.funcListToDraw) - 1
 }
 
-func (el *Fps) GetZIndex(UId string) int {
+func (el *Engine) GetZIndex(UId string) int {
 	for k, runner := range el.funcListToDraw {
 		if runner.id == UId {
 			return k
@@ -246,7 +246,7 @@ func (el *Fps) GetZIndex(UId string) int {
 	return math.MaxInt32
 }
 
-func (el *Fps) getUId() string {
+func (el *Engine) getUId() string {
 	var UId = ""
 	for i := 0; i != kUIdSize; i += 1 {
 		UId += el.kUIdCharList[rand.Intn(len(el.kUIdCharList)-1)]
@@ -255,20 +255,20 @@ func (el *Fps) getUId() string {
 	return UId
 }
 
-func (el *Fps) tickerStart() {
+func (el *Engine) tickerStart() {
 	el.ticker = time.NewTicker(time.Second / time.Duration(el.fps))
 	el.tickerLowLatency = time.NewTicker(time.Second / time.Duration(el.fpsLowLatency))
 	el.slipFrameTimeAlarm = time.Second / time.Duration(el.fps)
 	go func() { el.tickerRunner() }()
 }
 
-func (el *Fps) tickerRunner() {
+func (el *Engine) tickerRunner() {
 	defer el.tickerStart()
 	for {
 		select {
 		case <-el.tickerLowLatency.C:
 
-			for _, runnerFunc := range el.funcListToLowLatency {
+			for _, runnerFunc := range el.funcListToHighLatency {
 				if runnerFunc.f != nil {
 					runnerFunc.f()
 				}

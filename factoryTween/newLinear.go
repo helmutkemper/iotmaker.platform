@@ -1,6 +1,7 @@
 package factoryTween
 
 import (
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/engine"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/tween"
 	"time"
 )
@@ -28,8 +29,9 @@ import (
 //     loop: número de interações ou -1 para um número infinito de interações
 //     arguments: array de argumentos passados para as funções onStart, onEnd, onInvert e onStep.
 //                Exemplo: ..., [argumentos] x, y) será onStartFunc(value, args...) { args[0]: x; args[1]: y}
-func NewLinear(duration time.Duration, startValue, endValue float64, onStartFunc, onEndFunc, onInvertFunc func(value float64, arguments ...interface{}), onStepFunc func(value, percentToComplete float64, arguments ...interface{}), loop int, arguments ...interface{}) *tween.Tween {
+func NewLinear(engine engine.IEngine, duration time.Duration, startValue, endValue float64, onStartFunc, onEndFunc, onInvertFunc func(value float64, arguments ...interface{}), onStepFunc func(value, percentToComplete float64, arguments ...interface{}), loop int, arguments ...interface{}) *tween.Tween {
 	t := &tween.Tween{
+		Engine:      engine,
 		OnStart:     onStartFunc,
 		OnEnd:       onEndFunc,
 		Arguments:   arguments,
