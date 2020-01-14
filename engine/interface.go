@@ -1,5 +1,6 @@
 package engine
 
+// fixme: projeto a parte?
 type IEngine interface {
 	Init()
 	SetSleepFrame(value int)
