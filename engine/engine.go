@@ -40,6 +40,7 @@ type Engine struct {
 }
 
 func (el *Engine) Init() {
+	// fixme: must be a interval of time
 	el.sleepFrame = 2
 	el.fps = 60
 	el.fpsLowLatency = 1
