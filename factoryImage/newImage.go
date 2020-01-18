@@ -6,9 +6,10 @@ import (
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/genericTypes"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/image"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/basic"
+	stageEngine "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/engine"
 )
 
-func NewImage(id string, platform, scratchPad iotmaker_platform_IDraw.IDraw, img interface{}, x, y, width, height float64, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) *image.Image {
+func NewImage(id string, engine stageEngine.IEngine, platform, scratchPad iotmaker_platform_IDraw.IDraw, img interface{}, x, y, width, height float64, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) *image.Image {
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 
@@ -27,6 +28,7 @@ func NewImage(id string, platform, scratchPad iotmaker_platform_IDraw.IDraw, img
 	ret := &image.Image{
 		Sprite: basic.Sprite{
 			Id:         id,
+			Engine:     engine,
 			Platform:   platform,
 			ScratchPad: scratchPad,
 			Dimensions: genericTypes.Dimensions{

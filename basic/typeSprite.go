@@ -3,6 +3,7 @@ package basic
 import (
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/genericTypes"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/engine"
 	platformMouse "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/mouse"
 	"strings"
 )
@@ -45,6 +46,7 @@ type Drag struct {
 }
 
 type Sprite struct {
+	Engine                               engine.IEngine
 	Id                                   string
 	Platform                             iotmaker_platform_IDraw.IDraw
 	ScratchPad                           iotmaker_platform_IDraw.IDraw
@@ -83,8 +85,15 @@ func (el *Sprite) Move(x, y float64) {
 	el.Dimensions.Y = y
 }
 
+func (el *Sprite) dragOnMouseMove() {
+	el.Move(float64(platformMouse.Move.X), float64(platformMouse.Move.Y))
+}
+
 func (el *Sprite) SetDraggableToDesktop() {
-	platformMouse.AddFunctionPointer(el.Id+"DraggableImage", el.GetCollisionBox, func(x, y float64, collision bool, event platformMouse.EventMouse) {
+
+	el.Engine.AddToSystem(el.dragOnMouseMove)
+
+	/*platformMouse.AddFunctionPointer(el.Id+"DraggableImage", el.GetCollisionBox, func(x, y float64, collision bool, event platformMouse.EventMouse) {
 
 		switch event {
 		case platformMouse.KMouseDown:
@@ -111,7 +120,7 @@ func (el *Sprite) SetDraggableToDesktop() {
 			el.Move(x-el.xDelta, y-el.yDelta)
 		}
 
-	})
+	})*/
 }
 
 func (el *Sprite) RemoveDraggableToDesktop() {
