@@ -28,6 +28,7 @@ type Engine struct {
 
 	funcListToHighLatency []funcList
 	funcListToSystem      []funcList
+	funcListToAfterSystem []funcList
 	funcListToCalculate   []funcList
 	funcListToDraw        []funcList
 
@@ -51,6 +52,7 @@ func (el *Engine) Init() {
 		"#", "$", "%", "&", "*", "(", ")", "-", "_", "+", "=", "[", "{", "}", "]", "/", "?", ";", ":", ".", ",", "<", ">",
 		"|"}
 	el.funcListToSystem = make([]funcList, 0)
+	el.funcListToAfterSystem = make([]funcList, 0)
 	el.funcListToCalculate = make([]funcList, 0)
 	el.funcListToDraw = make([]funcList, 0)
 	el.tickerStart()
@@ -111,6 +113,22 @@ func (el *Engine) DeleteFromSystem(UId string) {
 	for k, runner := range el.funcListToSystem {
 		if runner.id == UId {
 			el.funcListToSystem = append(el.funcListToSystem[:k], el.funcListToSystem[k+1:]...)
+			break
+		}
+	}
+}
+
+func (el *Engine) AddToAfterSystem(runnerFunc func()) string {
+	UId := el.getUId()
+	el.funcListToAfterSystem = append(el.funcListToAfterSystem, funcList{id: UId, f: runnerFunc})
+
+	return UId
+}
+
+func (el *Engine) DeleteFromAfterSystem(UId string) {
+	for k, runner := range el.funcListToAfterSystem {
+		if runner.id == UId {
+			el.funcListToAfterSystem = append(el.funcListToAfterSystem[:k], el.funcListToAfterSystem[k+1:]...)
 			break
 		}
 	}
@@ -195,7 +213,33 @@ func (el *Engine) SetZIndex(UId string, index int) int {
 	return index
 }
 
-func (el *Engine) ToFront(UId string) int {
+func (el *Engine) asLastFunctionToRunGeneric(UId string, list *[]funcList) int {
+	var function funcList
+	var pass = false
+	var listCopy = make([]funcList, len(*list))
+
+	copy(listCopy, *list)
+
+	for k, runner := range listCopy {
+		if runner.id == UId {
+			pass = true
+			function = runner
+			listCopy = append(listCopy[:k], listCopy[k+1:]...)
+			break
+		}
+	}
+
+	if pass == false {
+		return math.MaxInt32
+	}
+
+	listCopy = append(listCopy, function)
+	*list = listCopy
+
+	return 0
+}
+
+func (el *Engine) SetAsLastFunctionToRun(UId string) int {
 	var function funcList
 	var pass = false
 	for k, runner := range el.funcListToDraw {
@@ -290,6 +334,12 @@ func (el *Engine) tickerRunner() {
 			start := time.Now()
 
 			for _, runnerFunc := range el.funcListToSystem {
+				if runnerFunc.f != nil {
+					runnerFunc.f()
+				}
+			}
+
+			for _, runnerFunc := range el.funcListToAfterSystem {
 				if runnerFunc.f != nil {
 					runnerFunc.f()
 				}
