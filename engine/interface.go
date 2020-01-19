@@ -5,22 +5,38 @@ type IEngine interface {
 	Init()
 	SetSleepFrame(value int)
 	GetSleepFrame() int
-	Set(value int)
-	Get() int
-	AddCursorDrawFunc(runnerFunc func()) string
-	RemoveCursorDrawFunc(id string)
-	AddToHighLatency(runnerFunc func()) string
-	DeleteFromHighLatency(UId string)
-	AddToSystem(runnerFunc func()) string
-	DeleteFromSystem(UId string)
-	AddToAfterSystem(runnerFunc func()) string
-	DeleteFromAfterSystem(UId string)
-	AddToCalculate(runnerFunc func()) string
-	DeleteFromCalculate(UId string)
-	AddToDraw(runnerFunc func()) string
-	DeleteFromDraw(UId string)
-	SetZIndex(UId string, index int) int
-	SetAsLastFunctionToRun(UId string) int
-	ToBack(UId string) int
-	GetZIndex(UId string) int
+	SetFPS(value int)
+	GetFPS() int
+	CursorAddDrawFunction(runnerFunc func()) string
+	CursorRemoveDrawFunction(id string)
+	HighLatencyAddToFunctions(runnerFunc func()) string
+	HighLatencyDeleteFromFunctions(UId string)
+	HighLatencySetZIndex(UId string, index int) int
+	HighLatencyGetZIndex(UId string) int
+	HighLatencySetAsFistFunctionToRun(UId string) int
+	HighLatencySetAsLastFunctionToRun(UId string) int
+	SystemAddToFunctions(runnerFunc func()) string
+	SystemDeleteFromFunctions(UId string)
+	SystemSetZIndex(UId string, index int) int
+	SystemGetZIndex(UId string) int
+	SystemSetAsFistFunctionToRun(UId string) int
+	SystemSetAsLastFunctionToRun(UId string) int
+	AfterSystemAddToFunctions(runnerFunc func()) string
+	AfterSystemDeleteFromFunctions(UId string)
+	AfterSystemSetZIndex(UId string, index int) int
+	AfterSystemGetZIndex(UId string) int
+	AfterSystemSetAsFistFunctionToRun(UId string) int
+	AfterSystemSetAsLastFunctionToRun(UId string) int
+	MathAddToFunctions(runnerFunc func()) string
+	MathDeleteFromFunctions(UId string)
+	MathSetZIndex(UId string, index int) int
+	MathGetZIndex(UId string) int
+	MathSetAsFistFunctionToRun(UId string) int
+	MathSetAsLastFunctionToRun(UId string) int
+	DrawAddToFunctions(runnerFunc func()) string
+	DrawDeleteFromFunctions(UId string)
+	DrawSetZIndex(UId string, index int) int
+	DrawGetZIndex(UId string) int
+	DrawSetAsFistFunctionToRun(UId string) int
+	DrawSetAsLastFunctionToRun(UId string) int
 }

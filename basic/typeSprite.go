@@ -91,7 +91,7 @@ func (el *Sprite) dragOnMouseMove() {
 
 func (el *Sprite) SetDraggableToDesktop() {
 
-	el.Engine.AddToSystem(el.dragOnMouseMove)
+	el.Engine.SystemAddToFunctions(el.dragOnMouseMove)
 
 	/*platformMouse.AddFunctionPointer(el.Id+"DraggableImage", el.GetCollisionBox, func(x, y float64, collision bool, event platformMouse.EventMouse) {
 

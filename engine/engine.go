@@ -8,7 +8,7 @@ import (
 
 const kUIdSize = 10
 
-type funcList struct {
+type FuncList struct {
 	id string
 	f  func()
 }
@@ -26,13 +26,13 @@ type Engine struct {
 	ticker           *time.Ticker
 	tickerLowLatency *time.Ticker
 
-	funcListToHighLatency []funcList
-	funcListToSystem      []funcList
-	funcListToAfterSystem []funcList
-	funcListToCalculate   []funcList
-	funcListToDraw        []funcList
+	funcListToHighLatency []FuncList
+	funcListToSystem      []FuncList
+	funcListToAfterSystem []FuncList
+	funcListToMath        []FuncList
+	funcListToDraw        []FuncList
 
-	funcCursorDraw funcList
+	funcCursorDraw FuncList
 
 	// pt_br: impede que o loop ocorra em intervalos muitos próximos e trave o
 	// processamento do browser para outras tarefas
@@ -51,10 +51,10 @@ func (el *Engine) Init() {
 		"Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "_", "!", "@",
 		"#", "$", "%", "&", "*", "(", ")", "-", "_", "+", "=", "[", "{", "}", "]", "/", "?", ";", ":", ".", ",", "<", ">",
 		"|"}
-	el.funcListToSystem = make([]funcList, 0)
-	el.funcListToAfterSystem = make([]funcList, 0)
-	el.funcListToCalculate = make([]funcList, 0)
-	el.funcListToDraw = make([]funcList, 0)
+	el.funcListToSystem = make([]FuncList, 0)
+	el.funcListToAfterSystem = make([]FuncList, 0)
+	el.funcListToMath = make([]FuncList, 0)
+	el.funcListToDraw = make([]FuncList, 0)
 	el.tickerStart()
 }
 
@@ -66,34 +66,34 @@ func (el *Engine) GetSleepFrame() int {
 	return el.sleepFrame
 }
 
-func (el *Engine) Set(value int) {
+func (el *Engine) SetFPS(value int) {
 	el.fps = value
 	el.stopTicker = true
 }
 
-func (el *Engine) Get() int {
+func (el *Engine) GetFPS() int {
 	return el.fps
 }
 
-func (el *Engine) AddCursorDrawFunc(runnerFunc func()) string {
+func (el *Engine) CursorAddDrawFunction(runnerFunc func()) string {
 	UId := el.getUId()
-	el.funcCursorDraw = funcList{id: UId, f: runnerFunc}
+	el.funcCursorDraw = FuncList{id: UId, f: runnerFunc}
 
 	return UId
 }
 
-func (el *Engine) RemoveCursorDrawFunc(id string) {
-	el.funcCursorDraw = funcList{}
+func (el *Engine) CursorRemoveDrawFunction(id string) {
+	el.funcCursorDraw = FuncList{}
 }
 
-func (el *Engine) AddToHighLatency(runnerFunc func()) string {
+func (el *Engine) HighLatencyAddToFunctions(runnerFunc func()) string {
 	UId := el.getUId()
-	el.funcListToHighLatency = append(el.funcListToHighLatency, funcList{id: UId, f: runnerFunc})
+	el.funcListToHighLatency = append(el.funcListToHighLatency, FuncList{id: UId, f: runnerFunc})
 
 	return UId
 }
 
-func (el *Engine) DeleteFromHighLatency(UId string) {
+func (el *Engine) HighLatencyDeleteFromFunctions(UId string) {
 	for k, runner := range el.funcListToHighLatency {
 		if runner.id == UId {
 			el.funcListToHighLatency = append(el.funcListToHighLatency[:k], el.funcListToHighLatency[k+1:]...)
@@ -102,123 +102,15 @@ func (el *Engine) DeleteFromHighLatency(UId string) {
 	}
 }
 
-func (el *Engine) AddToSystem(runnerFunc func()) string {
-	UId := el.getUId()
-	el.funcListToSystem = append(el.funcListToSystem, funcList{id: UId, f: runnerFunc})
-
-	return UId
-}
-
-func (el *Engine) DeleteFromSystem(UId string) {
-	for k, runner := range el.funcListToSystem {
-		if runner.id == UId {
-			el.funcListToSystem = append(el.funcListToSystem[:k], el.funcListToSystem[k+1:]...)
-			break
-		}
-	}
-}
-
-func (el *Engine) AddToAfterSystem(runnerFunc func()) string {
-	UId := el.getUId()
-	el.funcListToAfterSystem = append(el.funcListToAfterSystem, funcList{id: UId, f: runnerFunc})
-
-	return UId
-}
-
-func (el *Engine) DeleteFromAfterSystem(UId string) {
-	for k, runner := range el.funcListToAfterSystem {
-		if runner.id == UId {
-			el.funcListToAfterSystem = append(el.funcListToAfterSystem[:k], el.funcListToAfterSystem[k+1:]...)
-			break
-		}
-	}
-}
-
-func (el *Engine) AddToCalculate(runnerFunc func()) string {
-	UId := el.getUId()
-	el.funcListToCalculate = append(el.funcListToCalculate, funcList{id: UId, f: runnerFunc})
-
-	return UId
-}
-
-func (el *Engine) DeleteFromCalculate(UId string) {
-	for k, runner := range el.funcListToCalculate {
-		if runner.id == UId {
-			el.funcListToCalculate = append(el.funcListToCalculate[:k], el.funcListToCalculate[k+1:]...)
-			break
-		}
-	}
-}
-
-func (el *Engine) AddToDraw(runnerFunc func()) string {
-	UId := el.getUId()
-	el.funcListToDraw = append(el.funcListToDraw, funcList{id: UId, f: runnerFunc})
-
-	return UId
-}
-
-func (el *Engine) DeleteFromDraw(UId string) {
-	for k, runner := range el.funcListToDraw {
-		if runner.id == UId {
-			el.funcListToDraw = append(el.funcListToDraw[:k], el.funcListToDraw[k+1:]...)
-			break
-		}
-	}
-}
-
-func (el *Engine) SetZIndex(UId string, index int) int {
-	var function funcList
+func (el *Engine) HighLatencySetZIndex(UId string, index int) int {
+	var function FuncList
 	var pass = false
-	var length = len(el.funcListToDraw)
+	var length = len(el.funcListToHighLatency)
+	var listCopy = make([]FuncList, len(el.funcListToHighLatency))
 
 	if index < 0 || index > length-1 {
 		return math.MaxInt32
 	}
-
-	for k, runner := range el.funcListToDraw {
-		if runner.id == UId {
-			pass = true
-			function = runner
-			el.funcListToDraw = append(el.funcListToDraw[:k], el.funcListToDraw[k+1:]...)
-			break
-		}
-	}
-
-	if pass == false {
-		return math.MaxInt32
-	}
-
-	if index == 0 {
-
-		el.funcListToDraw = append([]funcList{function}, el.funcListToDraw...)
-
-	} else if index == length-1 {
-
-		el.funcListToDraw = append(el.funcListToDraw, function)
-
-	} else {
-
-		firstPart := make([]funcList, len(el.funcListToDraw[:index]))
-		lastPart := make([]funcList, len(el.funcListToDraw[index:]))
-
-		copy(firstPart, el.funcListToDraw[:index])
-		copy(lastPart, el.funcListToDraw[index:])
-
-		firstPart = append(firstPart, function)
-
-		el.funcListToDraw = make([]funcList, 0)
-		el.funcListToDraw = append(firstPart, lastPart...)
-	}
-
-	return index
-}
-
-func (el *Engine) asLastFunctionToRunGeneric(UId string, list *[]funcList) int {
-	var function funcList
-	var pass = false
-	var listCopy = make([]funcList, len(*list))
-
-	copy(listCopy, *list)
 
 	for k, runner := range listCopy {
 		if runner.id == UId {
@@ -233,20 +125,55 @@ func (el *Engine) asLastFunctionToRunGeneric(UId string, list *[]funcList) int {
 		return math.MaxInt32
 	}
 
-	listCopy = append(listCopy, function)
-	*list = listCopy
+	if index == 0 {
 
-	return 0
+		listCopy = append([]FuncList{function}, listCopy...)
+
+	} else if index == length-1 {
+
+		listCopy = append(listCopy, function)
+
+	} else {
+
+		firstPart := make([]FuncList, len(listCopy[:index]))
+		lastPart := make([]FuncList, len(listCopy[index:]))
+
+		copy(firstPart, listCopy[:index])
+		copy(lastPart, listCopy[index:])
+
+		firstPart = append(firstPart, function)
+
+		listCopy = make([]FuncList, 0)
+		listCopy = append(firstPart, lastPart...)
+
+	}
+
+	el.funcListToHighLatency = listCopy
+	return index
 }
 
-func (el *Engine) SetAsLastFunctionToRun(UId string) int {
-	var function funcList
+func (el *Engine) HighLatencyGetZIndex(UId string) int {
+	for k, runner := range el.funcListToHighLatency {
+		if runner.id == UId {
+			return k
+		}
+	}
+
+	return math.MaxInt32
+}
+
+func (el *Engine) HighLatencySetAsFistFunctionToRun(UId string) int {
+	var function FuncList
 	var pass = false
-	for k, runner := range el.funcListToDraw {
+	var listCopy = make([]FuncList, len(el.funcListToHighLatency))
+
+	copy(listCopy, el.funcListToHighLatency)
+
+	for k, runner := range listCopy {
 		if runner.id == UId {
 			pass = true
 			function = runner
-			el.funcListToDraw = append(el.funcListToDraw[:k], el.funcListToDraw[k+1:]...)
+			listCopy = append(listCopy[:k], listCopy[k+1:]...)
 			break
 		}
 	}
@@ -255,19 +182,23 @@ func (el *Engine) SetAsLastFunctionToRun(UId string) int {
 		return math.MaxInt32
 	}
 
-	el.funcListToDraw = append(el.funcListToDraw, function)
+	el.funcListToHighLatency = append([]FuncList{function}, listCopy...)
 
-	return 0
+	return len(el.funcListToHighLatency) - 1
 }
 
-func (el *Engine) ToBack(UId string) int {
-	var function funcList
+func (el *Engine) HighLatencySetAsLastFunctionToRun(UId string) int {
+	var function FuncList
 	var pass = false
-	for k, runner := range el.funcListToDraw {
+	var listCopy = make([]FuncList, len(el.funcListToHighLatency))
+
+	copy(listCopy, el.funcListToHighLatency)
+
+	for k, runner := range listCopy {
 		if runner.id == UId {
 			pass = true
 			function = runner
-			el.funcListToDraw = append(el.funcListToDraw[:k], el.funcListToDraw[k+1:]...)
+			listCopy = append(listCopy[:k], listCopy[k+1:]...)
 			break
 		}
 	}
@@ -276,12 +207,456 @@ func (el *Engine) ToBack(UId string) int {
 		return math.MaxInt32
 	}
 
-	el.funcListToDraw = append([]funcList{function}, el.funcListToDraw...)
+	el.funcListToHighLatency = append(listCopy, function)
 
-	return len(el.funcListToDraw) - 1
+	return 0
 }
 
-func (el *Engine) GetZIndex(UId string) int {
+func (el *Engine) SystemAddToFunctions(runnerFunc func()) string {
+	UId := el.getUId()
+	el.funcListToSystem = append(el.funcListToSystem, FuncList{id: UId, f: runnerFunc})
+
+	return UId
+}
+
+func (el *Engine) SystemDeleteFromFunctions(UId string) {
+	for k, runner := range el.funcListToSystem {
+		if runner.id == UId {
+			el.funcListToSystem = append(el.funcListToSystem[:k], el.funcListToSystem[k+1:]...)
+			break
+		}
+	}
+}
+
+func (el *Engine) SystemSetZIndex(UId string, index int) int {
+	var function FuncList
+	var pass = false
+	var length = len(el.funcListToSystem)
+	var listCopy = make([]FuncList, len(el.funcListToSystem))
+
+	if index < 0 || index > length-1 {
+		return math.MaxInt32
+	}
+
+	for k, runner := range listCopy {
+		if runner.id == UId {
+			pass = true
+			function = runner
+			listCopy = append(listCopy[:k], listCopy[k+1:]...)
+			break
+		}
+	}
+
+	if pass == false {
+		return math.MaxInt32
+	}
+
+	if index == 0 {
+
+		listCopy = append([]FuncList{function}, listCopy...)
+
+	} else if index == length-1 {
+
+		listCopy = append(listCopy, function)
+
+	} else {
+
+		firstPart := make([]FuncList, len(listCopy[:index]))
+		lastPart := make([]FuncList, len(listCopy[index:]))
+
+		copy(firstPart, listCopy[:index])
+		copy(lastPart, listCopy[index:])
+
+		firstPart = append(firstPart, function)
+
+		listCopy = make([]FuncList, 0)
+		listCopy = append(firstPart, lastPart...)
+
+	}
+
+	el.funcListToSystem = listCopy
+	return index
+}
+
+func (el *Engine) SystemGetZIndex(UId string) int {
+	for k, runner := range el.funcListToSystem {
+		if runner.id == UId {
+			return k
+		}
+	}
+
+	return math.MaxInt32
+}
+
+func (el *Engine) SystemSetAsFistFunctionToRun(UId string) int {
+	var function FuncList
+	var pass = false
+	var listCopy = make([]FuncList, len(el.funcListToSystem))
+
+	copy(listCopy, el.funcListToSystem)
+
+	for k, runner := range listCopy {
+		if runner.id == UId {
+			pass = true
+			function = runner
+			listCopy = append(listCopy[:k], listCopy[k+1:]...)
+			break
+		}
+	}
+
+	if pass == false {
+		return math.MaxInt32
+	}
+
+	el.funcListToSystem = append([]FuncList{function}, listCopy...)
+
+	return len(el.funcListToSystem) - 1
+}
+
+func (el *Engine) SystemSetAsLastFunctionToRun(UId string) int {
+	var function FuncList
+	var pass = false
+	var listCopy = make([]FuncList, len(el.funcListToSystem))
+
+	copy(listCopy, el.funcListToSystem)
+
+	for k, runner := range listCopy {
+		if runner.id == UId {
+			pass = true
+			function = runner
+			listCopy = append(listCopy[:k], listCopy[k+1:]...)
+			break
+		}
+	}
+
+	if pass == false {
+		return math.MaxInt32
+	}
+
+	el.funcListToSystem = append(listCopy, function)
+
+	return 0
+}
+
+func (el *Engine) AfterSystemAddToFunctions(runnerFunc func()) string {
+	UId := el.getUId()
+	el.funcListToAfterSystem = append(el.funcListToAfterSystem, FuncList{id: UId, f: runnerFunc})
+
+	return UId
+}
+
+func (el *Engine) AfterSystemDeleteFromFunctions(UId string) {
+	for k, runner := range el.funcListToAfterSystem {
+		if runner.id == UId {
+			el.funcListToAfterSystem = append(el.funcListToAfterSystem[:k], el.funcListToAfterSystem[k+1:]...)
+			break
+		}
+	}
+}
+
+func (el *Engine) AfterSystemSetZIndex(UId string, index int) int {
+	var function FuncList
+	var pass = false
+	var length = len(el.funcListToAfterSystem)
+	var listCopy = make([]FuncList, len(el.funcListToAfterSystem))
+
+	if index < 0 || index > length-1 {
+		return math.MaxInt32
+	}
+
+	for k, runner := range listCopy {
+		if runner.id == UId {
+			pass = true
+			function = runner
+			listCopy = append(listCopy[:k], listCopy[k+1:]...)
+			break
+		}
+	}
+
+	if pass == false {
+		return math.MaxInt32
+	}
+
+	if index == 0 {
+
+		listCopy = append([]FuncList{function}, listCopy...)
+
+	} else if index == length-1 {
+
+		listCopy = append(listCopy, function)
+
+	} else {
+
+		firstPart := make([]FuncList, len(listCopy[:index]))
+		lastPart := make([]FuncList, len(listCopy[index:]))
+
+		copy(firstPart, listCopy[:index])
+		copy(lastPart, listCopy[index:])
+
+		firstPart = append(firstPart, function)
+
+		listCopy = make([]FuncList, 0)
+		listCopy = append(firstPart, lastPart...)
+
+	}
+
+	el.funcListToAfterSystem = listCopy
+	return index
+}
+
+func (el *Engine) AfterSystemGetZIndex(UId string) int {
+	for k, runner := range el.funcListToAfterSystem {
+		if runner.id == UId {
+			return k
+		}
+	}
+
+	return math.MaxInt32
+}
+
+func (el *Engine) AfterSystemSetAsFistFunctionToRun(UId string) int {
+	var function FuncList
+	var pass = false
+	var listCopy = make([]FuncList, len(el.funcListToAfterSystem))
+
+	copy(listCopy, el.funcListToAfterSystem)
+
+	for k, runner := range listCopy {
+		if runner.id == UId {
+			pass = true
+			function = runner
+			listCopy = append(listCopy[:k], listCopy[k+1:]...)
+			break
+		}
+	}
+
+	if pass == false {
+		return math.MaxInt32
+	}
+
+	el.funcListToAfterSystem = append([]FuncList{function}, listCopy...)
+
+	return len(el.funcListToAfterSystem) - 1
+}
+
+func (el *Engine) AfterSystemSetAsLastFunctionToRun(UId string) int {
+	var function FuncList
+	var pass = false
+	var listCopy = make([]FuncList, len(el.funcListToAfterSystem))
+
+	copy(listCopy, el.funcListToAfterSystem)
+
+	for k, runner := range listCopy {
+		if runner.id == UId {
+			pass = true
+			function = runner
+			listCopy = append(listCopy[:k], listCopy[k+1:]...)
+			break
+		}
+	}
+
+	if pass == false {
+		return math.MaxInt32
+	}
+
+	el.funcListToAfterSystem = append(listCopy, function)
+
+	return 0
+}
+
+func (el *Engine) MathAddToFunctions(runnerFunc func()) string {
+	UId := el.getUId()
+	el.funcListToMath = append(el.funcListToMath, FuncList{id: UId, f: runnerFunc})
+
+	return UId
+}
+
+func (el *Engine) MathDeleteFromFunctions(UId string) {
+	for k, runner := range el.funcListToMath {
+		if runner.id == UId {
+			el.funcListToMath = append(el.funcListToMath[:k], el.funcListToMath[k+1:]...)
+			break
+		}
+	}
+}
+
+func (el *Engine) MathSetZIndex(UId string, index int) int {
+	var function FuncList
+	var pass = false
+	var length = len(el.funcListToMath)
+	var listCopy = make([]FuncList, len(el.funcListToMath))
+
+	if index < 0 || index > length-1 {
+		return math.MaxInt32
+	}
+
+	for k, runner := range listCopy {
+		if runner.id == UId {
+			pass = true
+			function = runner
+			listCopy = append(listCopy[:k], listCopy[k+1:]...)
+			break
+		}
+	}
+
+	if pass == false {
+		return math.MaxInt32
+	}
+
+	if index == 0 {
+
+		listCopy = append([]FuncList{function}, listCopy...)
+
+	} else if index == length-1 {
+
+		listCopy = append(listCopy, function)
+
+	} else {
+
+		firstPart := make([]FuncList, len(listCopy[:index]))
+		lastPart := make([]FuncList, len(listCopy[index:]))
+
+		copy(firstPart, listCopy[:index])
+		copy(lastPart, listCopy[index:])
+
+		firstPart = append(firstPart, function)
+
+		listCopy = make([]FuncList, 0)
+		listCopy = append(firstPart, lastPart...)
+
+	}
+
+	el.funcListToMath = listCopy
+	return index
+}
+
+func (el *Engine) MathGetZIndex(UId string) int {
+	for k, runner := range el.funcListToMath {
+		if runner.id == UId {
+			return k
+		}
+	}
+
+	return math.MaxInt32
+}
+
+func (el *Engine) MathSetAsFistFunctionToRun(UId string) int {
+	var function FuncList
+	var pass = false
+	var listCopy = make([]FuncList, len(el.funcListToMath))
+
+	copy(listCopy, el.funcListToMath)
+
+	for k, runner := range listCopy {
+		if runner.id == UId {
+			pass = true
+			function = runner
+			listCopy = append(listCopy[:k], listCopy[k+1:]...)
+			break
+		}
+	}
+
+	if pass == false {
+		return math.MaxInt32
+	}
+
+	el.funcListToMath = append([]FuncList{function}, listCopy...)
+
+	return len(el.funcListToMath) - 1
+}
+
+func (el *Engine) MathSetAsLastFunctionToRun(UId string) int {
+	var function FuncList
+	var pass = false
+	var listCopy = make([]FuncList, len(el.funcListToMath))
+
+	copy(listCopy, el.funcListToMath)
+
+	for k, runner := range listCopy {
+		if runner.id == UId {
+			pass = true
+			function = runner
+			listCopy = append(listCopy[:k], listCopy[k+1:]...)
+			break
+		}
+	}
+
+	if pass == false {
+		return math.MaxInt32
+	}
+
+	el.funcListToMath = append(listCopy, function)
+
+	return 0
+}
+
+func (el *Engine) DrawAddToFunctions(runnerFunc func()) string {
+	UId := el.getUId()
+	el.funcListToDraw = append(el.funcListToDraw, FuncList{id: UId, f: runnerFunc})
+
+	return UId
+}
+
+func (el *Engine) DrawDeleteFromFunctions(UId string) {
+	for k, runner := range el.funcListToDraw {
+		if runner.id == UId {
+			el.funcListToDraw = append(el.funcListToDraw[:k], el.funcListToDraw[k+1:]...)
+			break
+		}
+	}
+}
+
+func (el *Engine) DrawSetZIndex(UId string, index int) int {
+	var function FuncList
+	var pass = false
+	var length = len(el.funcListToDraw)
+	var listCopy = make([]FuncList, len(el.funcListToDraw))
+
+	if index < 0 || index > length-1 {
+		return math.MaxInt32
+	}
+
+	for k, runner := range listCopy {
+		if runner.id == UId {
+			pass = true
+			function = runner
+			listCopy = append(listCopy[:k], listCopy[k+1:]...)
+			break
+		}
+	}
+
+	if pass == false {
+		return math.MaxInt32
+	}
+
+	if index == 0 {
+
+		listCopy = append([]FuncList{function}, listCopy...)
+
+	} else if index == length-1 {
+
+		listCopy = append(listCopy, function)
+
+	} else {
+
+		firstPart := make([]FuncList, len(listCopy[:index]))
+		lastPart := make([]FuncList, len(listCopy[index:]))
+
+		copy(firstPart, listCopy[:index])
+		copy(lastPart, listCopy[index:])
+
+		firstPart = append(firstPart, function)
+
+		listCopy = make([]FuncList, 0)
+		listCopy = append(firstPart, lastPart...)
+
+	}
+
+	el.funcListToDraw = listCopy
+	return index
+}
+
+func (el *Engine) DrawGetZIndex(UId string) int {
 	for k, runner := range el.funcListToDraw {
 		if runner.id == UId {
 			return k
@@ -291,6 +666,57 @@ func (el *Engine) GetZIndex(UId string) int {
 	return math.MaxInt32
 }
 
+func (el *Engine) DrawSetAsFistFunctionToRun(UId string) int {
+	var function FuncList
+	var pass = false
+	var listCopy = make([]FuncList, len(el.funcListToDraw))
+
+	copy(listCopy, el.funcListToDraw)
+
+	for k, runner := range listCopy {
+		if runner.id == UId {
+			pass = true
+			function = runner
+			listCopy = append(listCopy[:k], listCopy[k+1:]...)
+			break
+		}
+	}
+
+	if pass == false {
+		return math.MaxInt32
+	}
+
+	el.funcListToDraw = append([]FuncList{function}, listCopy...)
+
+	return len(el.funcListToDraw) - 1
+}
+
+func (el *Engine) DrawSetAsLastFunctionToRun(UId string) int {
+	var function FuncList
+	var pass = false
+	var listCopy = make([]FuncList, len(el.funcListToDraw))
+
+	copy(listCopy, el.funcListToDraw)
+
+	for k, runner := range listCopy {
+		if runner.id == UId {
+			pass = true
+			function = runner
+			listCopy = append(listCopy[:k], listCopy[k+1:]...)
+			break
+		}
+	}
+
+	if pass == false {
+		return math.MaxInt32
+	}
+
+	el.funcListToDraw = append(listCopy, function)
+
+	return 0
+}
+
+// todo: uID deveria ser algo isolado
 func (el *Engine) getUId() string {
 	var UId = ""
 	for i := 0; i != kUIdSize; i += 1 {
@@ -304,6 +730,7 @@ func (el *Engine) tickerStart() {
 	el.ticker = time.NewTicker(time.Second / time.Duration(el.fps))
 	el.tickerLowLatency = time.NewTicker(time.Second / time.Duration(el.fpsLowLatency))
 	el.slipFrameTimeAlarm = time.Second / time.Duration(el.fps)
+	// fixme: remover a função desnecessária
 	go func() { el.tickerRunner() }()
 }
 
@@ -345,7 +772,7 @@ func (el *Engine) tickerRunner() {
 				}
 			}
 
-			for _, runnerFunc := range el.funcListToCalculate {
+			for _, runnerFunc := range el.funcListToMath {
 				if runnerFunc.f != nil {
 					runnerFunc.f()
 				}

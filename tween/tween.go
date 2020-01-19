@@ -43,7 +43,7 @@ func (el *Tween) tickerRunnerPrepare(startValue, endValue float64) {
 	el.loopStartValue = startValue
 	el.loopEndValue = endValue
 
-	el.fpsUId = el.Engine.AddToCalculate(el.tickerRunnerRun)
+	el.fpsUId = el.Engine.MathAddToFunctions(el.tickerRunnerRun)
 }
 
 func (el *Tween) tickerRunnerRun() {
@@ -85,11 +85,11 @@ func (el *Tween) tickerRunnerRun() {
 }
 
 func (el *Tween) End() {
-	el.Engine.DeleteFromCalculate(el.fpsUId)
+	el.Engine.MathDeleteFromFunctions(el.fpsUId)
 }
 
 func (el *Tween) Stop() {
-	el.Engine.DeleteFromCalculate(el.fpsUId)
+	el.Engine.MathDeleteFromFunctions(el.fpsUId)
 	if el.OnEnd != nil {
 		if el.invert == true {
 			el.OnEnd(el.EndValue)
