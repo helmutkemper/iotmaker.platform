@@ -57,7 +57,9 @@ type Sprite struct {
 	prepareGradientFilterFunctionPointer func(iotmaker_platform_IDraw.ICanvasGradient)
 	Drag
 
-	move chan platformMouse.Coordinate
+	mouseChannelOnMoveEvent chan platformMouse.Coordinate
+	mouseChannelOnDownEvent chan platformMouse.Coordinate
+	mouseChannelOnUpEvent   chan platformMouse.Coordinate
 }
 
 func (el *Sprite) SetDragMode(mode DragMode) {
@@ -88,45 +90,60 @@ func (el *Sprite) Move(x, y float64) {
 }
 
 func (el *Sprite) dragOnMouseMove() {
-	//_ = <- el.move
-	//coordinate := <- el.move
-	//el.Move(float64(coordinate.X), float64(coordinate.Y))
-}
+	var x float64
+	var y float64
 
-func (el *Sprite) SetDraggableToDesktop() {
-
-	el.move = make(chan platformMouse.Coordinate)
-	platformMouse.Move.Add(el.move)
-	//el.Engine.DrawAddToFunctions(el.dragOnMouseMove)
-
-	/*platformMouse.AddFunctionPointer(el.Id+"DraggableImage", el.GetCollisionBox, func(x, y float64, collision bool, event platformMouse.EventMouse) {
-
-		switch event {
-		case platformMouse.KMouseDown:
-
-			if x >= el.OutBoxDimensions.X &&
-				x <= el.OutBoxDimensions.X+el.OutBoxDimensions.Width &&
-				y >= el.OutBoxDimensions.Y &&
-				y <= el.OutBoxDimensions.Y+el.OutBoxDimensions.Height {
-
-				el.isMouseDown = true
-				el.xDelta = x - el.Dimensions.X
-				el.yDelta = y - el.Dimensions.Y
-			}
-
-		case platformMouse.KMouseUp:
-			el.isMouseDown = false
+	select {
+	case coordinate := <-el.mouseChannelOnMoveEvent:
+		if coordinate.HasInit == false {
+			return
 		}
+
+		x = float64(coordinate.X)
+		y = float64(coordinate.Y)
 
 		if el.dragMode == KDragModeAlways {
 			el.Move(x, y)
 		} else if el.dragMode == KDragModeDesktop && el.isMouseDown == true {
 			el.Move(x-el.xDelta, y-el.yDelta)
-		} else if el.dragMode == KDragModeMobile && event == platformMouse.KClick {
-			el.Move(x-el.xDelta, y-el.yDelta)
+		} //else if el.dragMode == KDragModeMobile && event == platformMouse.KClick {
+		//el.Move(x-el.xDelta, y-el.yDelta)
+	//}
+
+	case coordinate := <-el.mouseChannelOnDownEvent:
+
+		x = float64(coordinate.X)
+		y = float64(coordinate.Y)
+
+		if x >= el.OutBoxDimensions.X &&
+			x <= el.OutBoxDimensions.X+el.OutBoxDimensions.Width &&
+			y >= el.OutBoxDimensions.Y &&
+			y <= el.OutBoxDimensions.Y+el.OutBoxDimensions.Height {
+
+			el.isMouseDown = true
+			el.xDelta = x - el.Dimensions.X
+			el.yDelta = y - el.Dimensions.Y
 		}
 
-	})*/
+	case <-el.mouseChannelOnUpEvent:
+
+		el.isMouseDown = false
+
+	default:
+	}
+}
+
+func (el *Sprite) SetDraggableToDesktop() {
+
+	el.mouseChannelOnMoveEvent = make(chan platformMouse.Coordinate, 1)
+	el.mouseChannelOnDownEvent = make(chan platformMouse.Coordinate, 1)
+	el.mouseChannelOnUpEvent = make(chan platformMouse.Coordinate, 1)
+
+	platformMouse.Move.Add(el.mouseChannelOnMoveEvent)
+	platformMouse.Down.Add(el.mouseChannelOnDownEvent)
+	platformMouse.Up.Add(el.mouseChannelOnUpEvent)
+
+	el.Engine.DrawAddToFunctions(el.dragOnMouseMove)
 }
 
 func (el *Sprite) RemoveDraggableToDesktop() {

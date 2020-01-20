@@ -2,7 +2,6 @@ package mouse
 
 import (
 	"errors"
-	"fmt"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.channels-go/mouse"
 )
 
@@ -15,7 +14,7 @@ func (el *SendToChannel) Init() {
 }
 
 func (el *SendToChannel) Add(value chan Coordinate) int {
-	value = make(chan Coordinate)
+
 	el.List = append(el.List, value)
 
 	return len(el.List) - 1
@@ -37,19 +36,18 @@ func (el *SendToChannel) Remove(key int) error {
 }
 
 type Coordinate struct {
-	X    int
-	Y    int
-	Test bool
+	X       int
+	Y       int
+	HasInit bool
 }
 
 func (el *Coordinate) SetEventCoordinate(x, y int) {
 	el.X = x
 	el.Y = y
-	el.Test = true
+	el.HasInit = true
 }
 
 func (el *Coordinate) GetEventCoordinate() (int, int) {
-	el.Test = false
 	return el.X, el.Y
 }
 
@@ -59,6 +57,29 @@ var DoubleClick SendToChannel
 var Up SendToChannel
 var Down SendToChannel
 
+// en: A channel can be initialized in two ways:
+// make (chan type)
+// make (chan type, length)
+// When length is used to start a channel, the len() and cap() functions can be
+// used to determine whether or not a channel can receive more data.
+// As some events happen much faster than engine events, there is the risk that the
+// channel is full, causing a fatal go crash, so the len() function is used to clear
+// the channel before new data can be written.
+// if len( channel ) == 1 {
+//   <- channel // clear channel
+// }
+//
+// pt_br: Um canal pode ser inicializado de duas formas:
+// make( chan type)
+// make( chan type, length )
+// Quando length é usado para iniciar um canal, as funções len() e cap() podem ser
+// usadas para determinar se um canal pode ou não receber mais dados.
+// Como alguns eventos acontecem muito mais rápido do que os eventos da engine, há o
+// risco do canal está cheio, causando um travamento fatal do go, por isto, a função
+// len() é usada para limpar o canal antes que um novo dado possa ser escrito.
+// if len( channel ) == 1 {
+//   <- channel // clear channel
+// }
 func init() {
 
 	Move.Init()
@@ -72,38 +93,54 @@ func init() {
 			select {
 			case coordinate := <-mouse.BrowserMouseToPlatformMouseCoordinate:
 				for k := range Move.List {
-					close(Move.List[k])
-					Move.List[k] = make(chan Coordinate)
-					Move.List[k] <- Coordinate{X: coordinate.X, Y: coordinate.Y}
+
+					if len(Move.List[k]) == 1 {
+						<-Move.List[k]
+					}
+
+					Move.List[k] <- Coordinate{X: coordinate.X, Y: coordinate.Y, HasInit: true}
 				}
 
 			case coordinate := <-mouse.BrowserMouseClickToPlatformMouseClickEvent:
 				for k := range Click.List {
-					Click.List[k] <- Coordinate{X: coordinate.X, Y: coordinate.Y}
-				}
 
-				fmt.Printf("mouse click\n")
+					if len(Click.List[k]) == 1 {
+						<-Click.List[k]
+					}
+
+					Click.List[k] <- Coordinate{X: coordinate.X, Y: coordinate.Y, HasInit: true}
+				}
 
 			case coordinate := <-mouse.BrowserMouseDoubleClickToPlatformMouseDoubleClickEvent:
 				for k := range DoubleClick.List {
-					DoubleClick.List[k] <- Coordinate{X: coordinate.X, Y: coordinate.Y}
-				}
 
-				fmt.Printf("mouse double click\n")
+					if len(DoubleClick.List[k]) == 1 {
+						<-DoubleClick.List[k]
+					}
+
+					DoubleClick.List[k] <- Coordinate{X: coordinate.X, Y: coordinate.Y, HasInit: true}
+				}
 
 			case coordinate := <-mouse.BrowserMouseDownToPlatformMouseDownEvent:
 				for k := range Down.List {
-					Down.List[k] <- Coordinate{X: coordinate.X, Y: coordinate.Y}
-				}
 
-				fmt.Printf("mouse down\n")
+					if len(Down.List[k]) == 1 {
+						<-Down.List[k]
+					}
+
+					Down.List[k] <- Coordinate{X: coordinate.X, Y: coordinate.Y, HasInit: true}
+				}
 
 			case coordinate := <-mouse.BrowserMouseUpToPlatformMouseUpEvent:
 				for k := range Up.List {
-					Up.List[k] <- Coordinate{X: coordinate.X, Y: coordinate.Y}
+
+					if len(Up.List[k]) == 1 {
+						<-Up.List[k]
+					}
+
+					Up.List[k] <- Coordinate{X: coordinate.X, Y: coordinate.Y, HasInit: true}
 				}
 
-				fmt.Printf("mouse up\n")
 			}
 		}
 	}()
