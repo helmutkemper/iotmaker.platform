@@ -1,6 +1,7 @@
 package tween
 
 import (
+	"fmt"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/engine"
 	"time"
 )
@@ -56,7 +57,7 @@ func (el *Tween) tickerRunnerRun() {
 	}
 
 	if elapsed >= el.Duration {
-
+		fmt.Printf("Repeat: %v\n", el.Repeat)
 		if el.Repeat == 0 {
 			if el.OnEnd != nil {
 				el.OnEnd(value)
@@ -88,13 +89,15 @@ func (el *Tween) End() {
 	el.Engine.MathDeleteFromFunctions(el.fpsUId)
 }
 
+// fixme: OnEnd() está sendo chamado em excesso
+//        deveria ser OnInvert()
 func (el *Tween) Stop() {
 	el.Engine.MathDeleteFromFunctions(el.fpsUId)
-	if el.OnEnd != nil {
+	/*if el.OnEnd != nil {
 		if el.invert == true {
 			el.OnEnd(el.EndValue)
 		} else {
 			el.OnEnd(el.StartValue)
 		}
-	}
+	}*/
 }

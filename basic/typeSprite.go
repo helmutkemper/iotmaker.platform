@@ -56,6 +56,8 @@ type Sprite struct {
 	prepareShadowFilterFunctionPointer   func(iotmaker_platform_IDraw.ICanvasShadow)
 	prepareGradientFilterFunctionPointer func(iotmaker_platform_IDraw.ICanvasGradient)
 	Drag
+
+	move chan platformMouse.Coordinate
 }
 
 func (el *Sprite) SetDragMode(mode DragMode) {
@@ -86,12 +88,16 @@ func (el *Sprite) Move(x, y float64) {
 }
 
 func (el *Sprite) dragOnMouseMove() {
-	el.Move(float64(platformMouse.Move.X), float64(platformMouse.Move.Y))
+	//_ = <- el.move
+	//coordinate := <- el.move
+	//el.Move(float64(coordinate.X), float64(coordinate.Y))
 }
 
 func (el *Sprite) SetDraggableToDesktop() {
 
-	el.Engine.SystemAddToFunctions(el.dragOnMouseMove)
+	el.move = make(chan platformMouse.Coordinate)
+	platformMouse.Move.Add(el.move)
+	//el.Engine.DrawAddToFunctions(el.dragOnMouseMove)
 
 	/*platformMouse.AddFunctionPointer(el.Id+"DraggableImage", el.GetCollisionBox, func(x, y float64, collision bool, event platformMouse.EventMouse) {
 
