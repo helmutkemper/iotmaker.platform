@@ -57,6 +57,9 @@ type Sprite struct {
 	prepareGradientFilterFunctionPointer func(iotmaker_platform_IDraw.ICanvasGradient)
 	Drag
 
+	MovieDeltaX int
+	MovieDeltaY int
+
 	mouseChannelOnMoveEvent chan platformMouse.Coordinate
 	mouseChannelOnDownEvent chan platformMouse.Coordinate
 	mouseChannelOnUpEvent   chan platformMouse.Coordinate
@@ -83,10 +86,10 @@ func (el *Sprite) DragStop() {
 }
 
 func (el *Sprite) Move(x, y float64) {
-	el.OutBoxDimensions.X = x
-	el.Dimensions.X = x
-	el.OutBoxDimensions.Y = y
-	el.Dimensions.Y = y
+	el.OutBoxDimensions.X = x + float64(el.MovieDeltaX)
+	el.Dimensions.X = x + float64(el.MovieDeltaX)
+	el.OutBoxDimensions.Y = y + float64(el.MovieDeltaY)
+	el.Dimensions.Y = y + float64(el.MovieDeltaY)
 }
 
 func (el *Sprite) dragOnMouseMove() {
