@@ -1,10 +1,10 @@
 package draw
 
 import (
-	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
-	"github.com/helmutkemper/iotmaker.platform/abstractType/genericTypes"
-	"github.com/helmutkemper/iotmaker.platform/independentDraw"
-	"github.com/helmutkemper/iotmaker.platform/mouse"
+	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/genericTypes"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/independentDraw"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/mouse"
 	iotmaker_threadsafe "github.com/helmutkemper/iotmaker.threadsafe"
 	"image/color"
 	"reflect"

@@ -1,11 +1,11 @@
 package button
 
 import (
-	"github.com/helmutkemper/iotmaker.platform/abstractType/basicBox"
-	"github.com/helmutkemper/iotmaker.platform/abstractType/text"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/basic"
 )
 
 type Button struct {
-	BasicBox draw.BasicBox
-	Label    text.Text
+	basic.Sprite
+	Img  interface{}
+	data interface{}
 }

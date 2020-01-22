@@ -9,21 +9,21 @@ import (
 	stageEngine "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/engine"
 )
 
-func NewImage(id string, engine stageEngine.IEngine, platform, scratchPad iotmaker_platform_IDraw.IDraw, img interface{}, x, y, width, height float64, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) *image.Image {
+func NewImage(id string, engine stageEngine.IEngine, platform, scratchPad iotmaker_platform_IDraw.IDraw, img interface{}, x, y, width, height int, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) *image.Image {
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 
-	densityCalc.Set(x)
-	x = densityCalc.Float64()
+	densityCalc.Set(float64(x))
+	x = densityCalc.Int()
 
-	densityCalc.Set(y)
-	y = densityCalc.Float64()
+	densityCalc.Set(float64(y))
+	y = densityCalc.Int()
 
-	densityCalc.Set(width)
-	width = densityCalc.Float64()
+	densityCalc.Set(float64(width))
+	width = densityCalc.Int()
 
-	densityCalc.Set(height)
-	height = densityCalc.Float64()
+	densityCalc.Set(float64(height))
+	height = densityCalc.Int()
 
 	ret := &image.Image{
 		Sprite: basic.Sprite{
@@ -32,16 +32,16 @@ func NewImage(id string, engine stageEngine.IEngine, platform, scratchPad iotmak
 			Platform:   platform,
 			ScratchPad: scratchPad,
 			Dimensions: genericTypes.Dimensions{
-				X:      x,
-				Y:      y,
-				Width:  width,
-				Height: height,
+				X:      float64(x),
+				Y:      float64(y),
+				Width:  float64(width),
+				Height: float64(height),
 			},
 			OutBoxDimensions: genericTypes.Dimensions{
-				X:      x,
-				Y:      y,
-				Width:  width,
-				Height: height,
+				X:      float64(x),
+				Y:      float64(y),
+				Width:  float64(width),
+				Height: float64(height),
 			},
 		},
 		Img: img,
