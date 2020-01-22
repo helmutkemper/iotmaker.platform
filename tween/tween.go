@@ -1,7 +1,6 @@
 package tween
 
 import (
-	"fmt"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/engine"
 	"time"
 )
@@ -15,6 +14,8 @@ type Tween struct {
 	Duration       time.Duration
 	Func           func(currentTime, duration, startValue, changeInValue float64) float64
 	Interaction    func(value, percentToComplete float64, arguments ...interface{})
+	OnCycleStart   func(value float64, arguments ...interface{})
+	OnCycleEnd     func(value float64, arguments ...interface{})
 	OnStart        func(value float64, arguments ...interface{})
 	OnEnd          func(value float64, arguments ...interface{})
 	OnInvert       func(value float64, arguments ...interface{})
@@ -29,16 +30,21 @@ func (el *Tween) Start() {
 	el.Engine.Init()
 	el.startTime = time.Now()
 	el.invert = true
-	go el.tickerRunnerPrepare(el.StartValue, el.EndValue)
-}
 
-func (el *Tween) tickerRunnerPrepare(startValue, endValue float64) {
 	if el.Func == nil {
 		return
 	}
 
 	if el.OnStart != nil {
-		el.OnStart(el.StartValue)
+		el.OnStart(el.StartValue, el.Arguments)
+	}
+
+	go el.tickerRunnerPrepare(el.StartValue, el.EndValue)
+}
+
+func (el *Tween) tickerRunnerPrepare(startValue, endValue float64) {
+	if el.OnCycleStart != nil {
+		el.OnCycleStart(el.StartValue, el.Arguments)
 	}
 
 	el.loopStartValue = startValue
@@ -57,14 +63,14 @@ func (el *Tween) tickerRunnerRun() {
 	}
 
 	if elapsed >= el.Duration {
-		fmt.Printf("Repeat: %v\n", el.Repeat)
+
+		el.Stop()
+
 		if el.Repeat == 0 {
 			if el.OnEnd != nil {
 				el.OnEnd(value)
 			}
 		}
-
-		el.Stop()
 
 		if el.Repeat != 0 {
 			el.startTime = time.Now()
@@ -89,15 +95,9 @@ func (el *Tween) End() {
 	el.Engine.MathDeleteFromFunctions(el.fpsUId)
 }
 
-// fixme: OnEnd() está sendo chamado em excesso
-//        deveria ser OnInvert()
 func (el *Tween) Stop() {
 	el.Engine.MathDeleteFromFunctions(el.fpsUId)
-	/*if el.OnEnd != nil {
-		if el.invert == true {
-			el.OnEnd(el.EndValue)
-		} else {
-			el.OnEnd(el.StartValue)
-		}
-	}*/
+	if el.OnCycleEnd != nil {
+		el.OnCycleEnd(el.EndValue, el.Arguments)
+	}
 }
