@@ -52,7 +52,6 @@ func NewBoxWithRoundedCorners(id string, engine stageEngine.IEngine, platform, s
 			},
 		},
 	}
-	rect.Init()
 	rect.Crete()
 
 	return rect

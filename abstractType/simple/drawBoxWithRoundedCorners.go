@@ -28,7 +28,7 @@ type BoxWithRoundedCorners struct {
 // en: Calculate a rectangle
 //
 // pt_br: Calcula o retângulo
-func (el *BoxWithRoundedCorners) Init() {
+func (el *BoxWithRoundedCorners) calculate() {
 	el.x1 = el.Dimensions.X
 	el.x2 = el.x1 + el.Dimensions.Border
 	el.x3 = el.x2 + el.Dimensions.Width - 2*el.Dimensions.Border
@@ -67,6 +67,8 @@ func (el *BoxWithRoundedCorners) Draw() {
 	//           i     h          g     f
 	//             x1  x2         x3 x4
 	//              border        border
+
+	el.calculate()
 
 	el.ScratchPad.BeginPath()
 	el.ScratchPad.MoveTo(el.x2, el.y1)                                    // a

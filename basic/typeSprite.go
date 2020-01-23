@@ -1,6 +1,7 @@
 package basic
 
 import (
+	"fmt"
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/genericTypes"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/engine"
@@ -60,9 +61,15 @@ type Sprite struct {
 	MovieDeltaX int
 	MovieDeltaY int
 
-	mouseChannelOnMoveEvent chan platformMouse.Coordinate
-	mouseChannelOnDownEvent chan platformMouse.Coordinate
-	mouseChannelOnUpEvent   chan platformMouse.Coordinate
+	idMouseChannelOnMoveEvent  int
+	idMouseChannelOnDownEvent  int
+	idMouseChannelOnUpEvent    int
+	idMouseChannelOnClickEvent int
+
+	mouseChannelOnMoveEvent  chan platformMouse.Coordinate
+	mouseChannelOnDownEvent  chan platformMouse.Coordinate
+	mouseChannelOnUpEvent    chan platformMouse.Coordinate
+	mouseChannelOnClickEvent chan platformMouse.Coordinate
 }
 
 func (el *Sprite) SetDragMode(mode DragMode) {
@@ -113,6 +120,15 @@ func (el *Sprite) dragOnMouseMove() {
 		//el.Move(x-el.xDelta, y-el.yDelta)
 	//}
 
+	case coordinate := <-el.mouseChannelOnClickEvent:
+
+		x = float64(coordinate.X)
+		y = float64(coordinate.Y)
+
+		if el.dragMode == KDragModeMobile {
+			el.Move(x-el.xDelta, y-el.yDelta)
+		}
+
 	case coordinate := <-el.mouseChannelOnDownEvent:
 
 		x = float64(coordinate.X)
@@ -141,15 +157,38 @@ func (el *Sprite) SetDraggableToDesktop() {
 	el.mouseChannelOnMoveEvent = make(chan platformMouse.Coordinate, 1)
 	el.mouseChannelOnDownEvent = make(chan platformMouse.Coordinate, 1)
 	el.mouseChannelOnUpEvent = make(chan platformMouse.Coordinate, 1)
+	el.mouseChannelOnClickEvent = make(chan platformMouse.Coordinate, 1)
 
-	platformMouse.Move.Add(el.mouseChannelOnMoveEvent)
-	platformMouse.Down.Add(el.mouseChannelOnDownEvent)
-	platformMouse.Up.Add(el.mouseChannelOnUpEvent)
+	el.idMouseChannelOnMoveEvent = platformMouse.Move.Add(el.mouseChannelOnMoveEvent)
+	el.idMouseChannelOnDownEvent = platformMouse.Down.Add(el.mouseChannelOnDownEvent)
+	el.idMouseChannelOnUpEvent = platformMouse.Up.Add(el.mouseChannelOnUpEvent)
+	el.idMouseChannelOnClickEvent = platformMouse.Click.Add(el.mouseChannelOnClickEvent)
 
 	el.Engine.DrawAddToFunctions(el.dragOnMouseMove)
 }
 
 func (el *Sprite) RemoveDraggableToDesktop() {
+	var err error
+	err = platformMouse.Move.Remove(el.idMouseChannelOnMoveEvent)
+	if err != nil {
+		fmt.Printf("typeSprite.RemoveDraggableToDesktop().Move.error: %v\n", err)
+	}
+
+	err = platformMouse.Down.Remove(el.idMouseChannelOnDownEvent)
+	if err != nil {
+		fmt.Printf("typeSprite.RemoveDraggableToDesktop().Down.error: %v\n", err)
+	}
+
+	err = platformMouse.Up.Remove(el.idMouseChannelOnUpEvent)
+	if err != nil {
+		fmt.Printf("typeSprite.RemoveDraggableToDesktop().Up.error: %v\n", err)
+	}
+
+	err = platformMouse.Click.Remove(el.idMouseChannelOnClickEvent)
+	if err != nil {
+		fmt.Printf("typeSprite.RemoveDraggableToDesktop().Click.error: %v\n", err)
+	}
+
 	platformMouse.RemoveFunctionPointer(el.Id + "DraggableImage")
 }
 
