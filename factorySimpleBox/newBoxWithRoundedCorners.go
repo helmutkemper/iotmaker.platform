@@ -1,18 +1,18 @@
 package factorySimpleBox
 
 import (
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.interfaces/iStage"
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
 	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.coordinate"
-	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/genericTypes"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/simple"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/basic"
-	stageEngine "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/engine"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/dimensions"
 )
 
 // en: This function create a path of a box with rounded corners into the platform using density
 //
 // pt_br: Esta função cria o caminho de um quadrado com cantos arredondados na plataforma usando densidade
-func NewBoxWithRoundedCorners(id string, engine stageEngine.IEngine, platform, scratchPad iotmaker_platform_IDraw.IDraw, x, y, width, height, border int, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) *simple.BoxWithRoundedCorners {
+func NewBoxWithRoundedCorners(id string, stage iStage.IStage, platform, scratchPad iotmaker_platform_IDraw.IDraw, x, y, width, height, border int, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) *simple.BoxWithRoundedCorners {
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 
@@ -34,17 +34,17 @@ func NewBoxWithRoundedCorners(id string, engine stageEngine.IEngine, platform, s
 	rect := &simple.BoxWithRoundedCorners{
 		Sprite: basic.Sprite{
 			Id:         id,
-			Engine:     engine,
+			Stage:      stage,
 			Platform:   platform,
 			ScratchPad: scratchPad,
-			Dimensions: genericTypes.Dimensions{
+			Dimensions: dimensions.Dimensions{
 				X:      float64(x),
 				Y:      float64(y),
 				Width:  float64(width),
 				Height: float64(height),
 				Border: float64(border),
 			},
-			OutBoxDimensions: genericTypes.Dimensions{
+			OutBoxDimensions: dimensions.Dimensions{
 				X:      float64(x),
 				Y:      float64(y),
 				Width:  float64(width),

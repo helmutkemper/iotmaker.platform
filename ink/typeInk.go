@@ -1,4 +1,4 @@
-package genericTypes
+package ink
 
 import (
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"

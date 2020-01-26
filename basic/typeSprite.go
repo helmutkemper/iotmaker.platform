@@ -2,9 +2,10 @@ package basic
 
 import (
 	"fmt"
-	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
-	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/genericTypes"
-	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/engine"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.interfaces/iStage"
+	iotmakerPlatformIDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/dimensions"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/ink"
 	platformMouse "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/mouse"
 	"strings"
 )
@@ -47,15 +48,15 @@ type Drag struct {
 }
 
 type Sprite struct {
-	Engine                               engine.IEngine
+	Stage                                iStage.IStage
 	Id                                   string
-	Platform                             iotmaker_platform_IDraw.IDraw
-	ScratchPad                           iotmaker_platform_IDraw.IDraw
-	Dimensions                           genericTypes.Dimensions
-	OutBoxDimensions                     genericTypes.Dimensions
-	Ink                                  genericTypes.Ink
-	prepareShadowFilterFunctionPointer   func(iotmaker_platform_IDraw.ICanvasShadow)
-	prepareGradientFilterFunctionPointer func(iotmaker_platform_IDraw.ICanvasGradient)
+	Platform                             iotmakerPlatformIDraw.IDraw
+	ScratchPad                           iotmakerPlatformIDraw.IDraw
+	Dimensions                           dimensions.Dimensions
+	OutBoxDimensions                     dimensions.Dimensions
+	Ink                                  ink.Ink
+	prepareShadowFilterFunctionPointer   func(iotmakerPlatformIDraw.ICanvasShadow)
+	prepareGradientFilterFunctionPointer func(iotmakerPlatformIDraw.ICanvasGradient)
 	Drag
 
 	MovieDeltaX int
@@ -76,11 +77,11 @@ func (el *Sprite) SetDragMode(mode DragMode) {
 	el.dragMode = mode
 }
 
-func (el *Sprite) SetPlatform(platform iotmaker_platform_IDraw.IDraw) {
+func (el *Sprite) SetPlatform(platform iotmakerPlatformIDraw.IDraw) {
 	el.Platform = platform
 }
 
-func (el *Sprite) GetPlatform() iotmaker_platform_IDraw.IDraw {
+func (el *Sprite) GetPlatform() iotmakerPlatformIDraw.IDraw {
 	return el.Platform
 }
 
@@ -116,9 +117,7 @@ func (el *Sprite) dragOnMouseMove() {
 			el.Move(x, y)
 		} else if el.dragMode == KDragModeDesktop && el.isMouseDown == true {
 			el.Move(x-el.xDelta, y-el.yDelta)
-		} //else if el.dragMode == KDragModeMobile && event == platformMouse.KClick {
-		//el.Move(x-el.xDelta, y-el.yDelta)
-	//}
+		}
 
 	case coordinate := <-el.mouseChannelOnClickEvent:
 
@@ -164,7 +163,8 @@ func (el *Sprite) SetDraggableToDesktop() {
 	el.idMouseChannelOnUpEvent = platformMouse.Up.Add(el.mouseChannelOnUpEvent)
 	el.idMouseChannelOnClickEvent = platformMouse.Click.Add(el.mouseChannelOnClickEvent)
 
-	el.Engine.DrawAddToFunctions(el.dragOnMouseMove)
+	engine := el.Stage.GetEngine()
+	engine.DrawAddToFunctions(el.dragOnMouseMove)
 }
 
 func (el *Sprite) RemoveDraggableToDesktop() {

@@ -86,11 +86,12 @@ func (el *Engine) CursorRemoveDrawFunction(id string) {
 	el.funcCursorDraw = FuncList{}
 }
 
-func (el *Engine) HighLatencyAddToFunctions(runnerFunc func()) string {
+func (el *Engine) HighLatencyAddToFunctions(runnerFunc func()) (string, int) {
 	UId := el.getUId()
+	index := len(el.funcListToHighLatency)
 	el.funcListToHighLatency = append(el.funcListToHighLatency, FuncList{id: UId, f: runnerFunc})
 
-	return UId
+	return UId, index
 }
 
 func (el *Engine) HighLatencyDeleteFromFunctions(UId string) {
@@ -212,11 +213,12 @@ func (el *Engine) HighLatencySetAsLastFunctionToRun(UId string) int {
 	return 0
 }
 
-func (el *Engine) SystemAddToFunctions(runnerFunc func()) string {
+func (el *Engine) SystemAddToFunctions(runnerFunc func()) (string, int) {
 	UId := el.getUId()
+	index := len(el.funcListToSystem)
 	el.funcListToSystem = append(el.funcListToSystem, FuncList{id: UId, f: runnerFunc})
 
-	return UId
+	return UId, index
 }
 
 func (el *Engine) SystemDeleteFromFunctions(UId string) {
@@ -338,11 +340,12 @@ func (el *Engine) SystemSetAsLastFunctionToRun(UId string) int {
 	return 0
 }
 
-func (el *Engine) AfterSystemAddToFunctions(runnerFunc func()) string {
+func (el *Engine) AfterSystemAddToFunctions(runnerFunc func()) (string, int) {
 	UId := el.getUId()
+	index := len(el.funcListToAfterSystem)
 	el.funcListToAfterSystem = append(el.funcListToAfterSystem, FuncList{id: UId, f: runnerFunc})
 
-	return UId
+	return UId, index
 }
 
 func (el *Engine) AfterSystemDeleteFromFunctions(UId string) {
@@ -464,11 +467,12 @@ func (el *Engine) AfterSystemSetAsLastFunctionToRun(UId string) int {
 	return 0
 }
 
-func (el *Engine) MathAddToFunctions(runnerFunc func()) string {
+func (el *Engine) MathAddToFunctions(runnerFunc func()) (string, int) {
 	UId := el.getUId()
+	index := len(el.funcListToMath)
 	el.funcListToMath = append(el.funcListToMath, FuncList{id: UId, f: runnerFunc})
 
-	return UId
+	return UId, index
 }
 
 func (el *Engine) MathDeleteFromFunctions(UId string) {
@@ -590,11 +594,12 @@ func (el *Engine) MathSetAsLastFunctionToRun(UId string) int {
 	return 0
 }
 
-func (el *Engine) DrawAddToFunctions(runnerFunc func()) string {
+func (el *Engine) DrawAddToFunctions(runnerFunc func()) (string, int) {
 	UId := el.getUId()
+	index := len(el.funcListToDraw)
 	el.funcListToDraw = append(el.funcListToDraw, FuncList{id: UId, f: runnerFunc})
 
-	return UId
+	return UId, index
 }
 
 func (el *Engine) DrawDeleteFromFunctions(UId string) {

@@ -1,4 +1,4 @@
-package genericTypes
+package dimensions
 
 type Dimensions struct {
 	X                     float64

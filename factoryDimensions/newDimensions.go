@@ -1,4 +1,4 @@
-package genericTypes
+package factoryDimensions
 
 import iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.coordinate"
 
