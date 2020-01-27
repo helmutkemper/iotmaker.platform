@@ -73,6 +73,15 @@ type Sprite struct {
 	mouseChannelOnClickEvent chan platformMouse.Coordinate
 }
 
+func (el *Sprite) GetId() string {
+	return el.Id
+}
+
+// Shadowing method Draw must be implemented into parent struct
+func (el *Sprite) Draw() {
+
+}
+
 func (el *Sprite) SetDragMode(mode DragMode) {
 	el.dragMode = mode
 }
@@ -100,6 +109,7 @@ func (el *Sprite) Move(x, y float64) {
 	el.Dimensions.Y = y + float64(el.MovieDeltaY)
 }
 
+// fixme: GetCollisionBox(xEvent, yEvent float64) bool
 func (el *Sprite) dragOnMouseMove() {
 	var x float64
 	var y float64
@@ -133,10 +143,11 @@ func (el *Sprite) dragOnMouseMove() {
 		x = float64(coordinate.X)
 		y = float64(coordinate.Y)
 
-		if x >= el.OutBoxDimensions.X &&
-			x <= el.OutBoxDimensions.X+el.OutBoxDimensions.Width &&
-			y >= el.OutBoxDimensions.Y &&
-			y <= el.OutBoxDimensions.Y+el.OutBoxDimensions.Height {
+		if el.Stage.IsDraggable(x, y) != el.Id {
+			return
+		}
+
+		if el.GetCollisionBox(x, y) {
 
 			el.isMouseDown = true
 			el.xDelta = x - el.Dimensions.X
