@@ -73,11 +73,18 @@ type Sprite struct {
 	mouseChannelOnClickEvent chan platformMouse.Coordinate
 }
 
+// en: Get a unique element id
+//
+// pt_br: Retorna o id único do elemento
 func (el *Sprite) GetId() string {
 	return el.Id
 }
 
-// Shadowing method Draw must be implemented into parent struct
+// en: Draw function to re draw element at every frame
+//     note: Shadowing function Draw must be implemented into parent struct
+//
+// pt_br: Função de desenho para redesenhar o elemento a cada frame
+//     nota: Função a ser implementada no struct pai
 func (el *Sprite) Draw() {
 
 }
@@ -212,6 +219,9 @@ func (el *Sprite) setDraggable(enable bool) {
 	}
 }
 
+// en: Get an information about (x, y) is in element boxe
+//
+// pt_br: Retorna a informação se (x, y) está dentro da caxa do elemento
 func (el *Sprite) GetCollisionBox(xEvent, yEvent float64) bool {
 	return el.OutBoxDimensions.X <= xEvent && el.OutBoxDimensions.X+el.OutBoxDimensions.Width >= xEvent &&
 		el.OutBoxDimensions.Y <= yEvent && el.OutBoxDimensions.Y+el.OutBoxDimensions.Height >= yEvent
