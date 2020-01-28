@@ -1,12 +1,9 @@
 package factoryFont
 
 import (
-	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.coordinate"
-	"github.com/helmutkemper/iotmaker.platform.webbrowser/font"
-	"github.com/helmutkemper/iotmaker.platform.webbrowser/fontFamily"
-	"github.com/helmutkemper/iotmaker.platform.webbrowser/fontStyle"
-	"github.com/helmutkemper/iotmaker.platform.webbrowser/fontVariant"
-	"github.com/helmutkemper/iotmaker.platform.webbrowser/fontWeight"
+	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.coordinate"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/font"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/fontWeight"
 	"image/color"
 )
 
@@ -36,7 +33,20 @@ import (
 //     fontWeight.KLighter ou fontWeight.K100 a fontWeight.K900
 //     density: Por favor, veja o elemento densidade
 //     iDensity: Por favor, veja o elemento densidade
-func NewFontWithStyleVariantWeight(size float64, sizeUnit string, fontColor color.RGBA, family fontFamily.FontFamily, style fontStyle.FontStyle, variant fontVariant.FontVariant, weight fontWeight.FontWeight, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) font.Font {
+func NewFontWithStyleVariantWeight(
+
+	size float64,
+	sizeUnit string,
+	fontColor color.RGBA,
+	family string,
+	style string,
+	variant string,
+	weight factoryFontWeight.FontWeight,
+	density interface{},
+	iDensity iotmaker_platform_coordinate.IDensity,
+
+) font.Font {
+
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 

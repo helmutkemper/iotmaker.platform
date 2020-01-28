@@ -1,8 +1,8 @@
 package factoryFont
 
 import (
-	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.coordinate"
-	"github.com/helmutkemper/iotmaker.platform.webbrowser/font"
+	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.coordinate"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/font"
 	"image/color"
 )
 
@@ -24,7 +24,16 @@ import (
 //             Exemplo: 'Verdana' ou fontFamily.KHelvetica
 //     density: Por favor, veja o elemento densidade
 //     iDensity: Por favor, veja o elemento densidade
-func NewFont(size float64, sizeUnit string, fontColor color.RGBA, family interface{}, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) font.Font {
+func NewFont(
+
+	size float64,
+	sizeUnit string,
+	fontColor color.RGBA,
+	family string,
+	density interface{},
+	iDensity iotmaker_platform_coordinate.IDensity,
+
+) font.Font {
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 

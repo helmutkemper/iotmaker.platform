@@ -1,8 +1,8 @@
 package factoryFont
 
 import (
-	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
-	"github.com/helmutkemper/iotmaker.platform.webbrowser/font"
+	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/font"
 )
 
 // en: set a global font for canvas element (based on web browser canvas)
