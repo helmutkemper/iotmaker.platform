@@ -11,7 +11,7 @@ import (
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/ink"
 )
 
-func NewTextWithFont(
+func NewTextWithMaxWidth(
 
 	id string,
 	stage iStage.IStage,
@@ -24,6 +24,7 @@ func NewTextWithFont(
 	label string,
 	x,
 	y int,
+	maxWidth int,
 	density interface{},
 	iDensity iotmaker_platform_coordinate.IDensity,
 
@@ -49,11 +50,12 @@ func NewTextWithFont(
 			ScratchPad: scratchPad,
 			Ink:        ik,
 		},
-		Label: label,
-		Font:  labelFont,
-		Fill:  true,
-		X:     x,
-		Y:     y,
+		Label:    label,
+		Font:     labelFont,
+		Fill:     true,
+		X:        x,
+		Y:        y,
+		MaxWidth: maxWidth,
 	}
 
 	tx.Create()

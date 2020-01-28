@@ -3,7 +3,6 @@ package factoryFont
 import (
 	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.coordinate"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/font"
-	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/fontWeight"
 	"image/color"
 )
 
@@ -35,7 +34,7 @@ func NewFontWithStyle(
 	family string,
 	style string,
 	variant string,
-	weight factoryFontWeight.FontWeight,
+	weight string,
 	density interface{},
 	iDensity iotmaker_platform_coordinate.IDensity,
 

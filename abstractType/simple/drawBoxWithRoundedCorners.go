@@ -68,6 +68,8 @@ func (el *BoxWithRoundedCorners) Draw() {
 	//             x1  x2         x3 x4
 	//              border        border
 
+	el.ScratchPad.Save()
+
 	el.calculate()
 
 	el.ScratchPad.BeginPath()
@@ -83,4 +85,6 @@ func (el *BoxWithRoundedCorners) Draw() {
 	el.ScratchPad.ClosePath(el.x2, el.y1)                                 // a
 
 	el.ScratchPad.Stroke()
+
+	el.ScratchPad.Restore()
 }

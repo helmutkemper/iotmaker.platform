@@ -4,6 +4,7 @@ import (
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.interfaces/iStage"
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
 	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.coordinate"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/font"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/text"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/basic"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/factoryInk"
@@ -19,6 +20,7 @@ func NewText(
 	shadow iotmaker_platform_IDraw.IFilterShadowInterface,
 	gradient iotmaker_platform_IDraw.IFilterGradientInterface,
 	color interface{},
+	labelFont font.Font,
 	label string,
 	x,
 	y int,
@@ -47,15 +49,13 @@ func NewText(
 			ScratchPad: scratchPad,
 			Ink:        ik,
 		},
-		Label:  label,
-		Fill:   true,
-		Stroke: true,
-		X:      x,
-		Y:      y,
+		Label: label,
+		Font:  labelFont,
+		Fill:  true,
+		X:     x,
+		Y:     y,
 	}
 
-	//tx.ConfigShadowPlatformAndFilter()
-	//tx.ConfigGradientPlatformAndFilter()
 	tx.Create()
 
 	return &tx

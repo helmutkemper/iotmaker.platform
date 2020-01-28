@@ -1,7 +1,6 @@
 package text
 
 import (
-	"fmt"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/font"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/basic"
 	"reflect"
@@ -75,8 +74,7 @@ func (el *Text) Clear() {
 }
 
 func (el *Text) Draw() {
-	//el.prepareGradientFilter(el.Platform)
-	//el.prepareShadowFilter()
+	el.ScratchPad.Save()
 
 	if reflect.DeepEqual(font.Font{}, el.Font) == false {
 		el.ScratchPad.Font(el.Font)
@@ -84,25 +82,19 @@ func (el *Text) Draw() {
 
 	if el.Fill == true {
 		if el.MaxWidth != 0 {
-			fmt.Printf("FillText()\n")
 			el.ScratchPad.FillText(el.Label, el.X, el.Y, el.MaxWidth)
 		} else {
-			fmt.Printf("FillText()\n")
 			el.ScratchPad.FillText(el.Label, el.X, el.Y)
 		}
 	}
 
 	if el.Stroke {
 		if el.MaxWidth != 0 {
-			fmt.Printf("StrokeText()\n")
 			el.ScratchPad.StrokeText(el.Label, el.X, el.Y, el.MaxWidth)
 		} else {
-			fmt.Printf("StrokeText()\n")
 			el.ScratchPad.StrokeText(el.Label, el.X, el.Y)
 		}
 	}
 
-	//el.ScratchPad.ResetStrokeStyle()
-	//el.ScratchPad.ResetFillStyle()
-	//el.ScratchPad.ResetShadow()
+	el.ScratchPad.Restore()
 }

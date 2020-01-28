@@ -6,7 +6,19 @@ import (
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/font"
 )
 
-func NewMeasureTextWithFont(platform iotmaker_platform_IDraw.IDraw, text string, font font.Font) iotmaker_platform_textMetrics.TextMetrics {
-	platform.Font(font)
-	return platform.MeasureText(text)
+func NewMeasureText(
+
+	platform iotmaker_platform_IDraw.IDraw,
+
+	labelFont font.Font,
+	label string,
+
+) iotmaker_platform_textMetrics.TextMetrics {
+
+	platform.Save()
+	platform.Font(labelFont)
+	metrics := platform.MeasureText(label)
+	platform.Restore()
+
+	return metrics
 }
