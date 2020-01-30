@@ -50,7 +50,8 @@ func (el *Tween) tickerRunnerPrepare(startValue, endValue float64) {
 	el.loopStartValue = startValue
 	el.loopEndValue = endValue
 
-	el.fpsUId = el.Engine.MathAddToFunctions(el.tickerRunnerRun)
+	// fixme: _ é um index do array? tem uso aqui?
+	el.fpsUId, _ = el.Engine.MathAddToFunctions(el.tickerRunnerRun)
 }
 
 func (el *Tween) tickerRunnerRun() {

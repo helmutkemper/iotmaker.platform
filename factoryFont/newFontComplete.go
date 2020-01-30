@@ -12,7 +12,6 @@ import (
 //     fontColor: a color.RGBA struct used with text
 //     family: font name. Must be a string or a constant fontFamily.FontFamily
 //             Example: 'Verdana' or fontFamily.KHelvetica
-//     style: must be fontStyle.KItalic or fontStyle.KOblique
 //     density: Please, see a density methods
 //     iDensity: Please, see a density methods
 //
@@ -23,14 +22,12 @@ import (
 //     family: nome da fonte escolhida. Pode ser string ou uma constante
 //     fontFamily.FontFamily.
 //             Exemplo: 'Verdana' ou fontFamily.KHelvetica
-//     style: deve ser fontStyle.KItalic ou fontStyle.KOblique
 //     density: Por favor, veja o elemento densidade
 //     iDensity: Por favor, veja o elemento densidade
-func NewFontWithStyle(
+func NewFontComplete(
 
-	size float64,
-	sizeUnit string,
-	fontColor color.RGBA,
+	size int,
+	color color.RGBA,
 	family string,
 	style string,
 	variant string,
@@ -39,21 +36,19 @@ func NewFontWithStyle(
 	iDensity iotmaker_platform_coordinate.IDensity,
 
 ) font.Font {
-
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 
-	densityCalc.Set(size)
-	size = densityCalc.Float64()
+	densityCalc.SetInt(size)
+	size = densityCalc.Int()
 
 	f := font.Font{
-		Size:     size,
-		SizeUnit: sizeUnit,
-		Color:    fontColor,
-		Family:   family,
-		Style:    style,
-		Variant:  variant,
-		Weight:   weight,
+		Size:    size,
+		Color:   color,
+		Family:  family,
+		Style:   style,
+		Variant: variant,
+		Weight:  weight,
 	}
 	return f
 }

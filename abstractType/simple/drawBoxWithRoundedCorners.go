@@ -14,15 +14,15 @@ import (
 type BoxWithRoundedCorners struct {
 	basic.Sprite
 
-	x1 float64
-	x2 float64
-	x3 float64
-	x4 float64
+	x1 int
+	x2 int
+	x3 int
+	x4 int
 
-	y1 float64
-	y2 float64
-	y3 float64
-	y4 float64
+	y1 int
+	y2 int
+	y3 int
+	y4 int
 }
 
 // en: Calculate a rectangle

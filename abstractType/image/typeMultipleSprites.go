@@ -8,23 +8,23 @@ import (
 type MultipleSprites struct {
 	Platform                iotmaker_platform_IDraw.IDraw
 	Img                     interface{}
-	SpriteWidth             float64
-	SpriteHeight            float64
-	SpriteFirstElementIndex float64
-	SpriteLastElementIndex  float64
+	SpriteWidth             int
+	SpriteHeight            int
+	SpriteFirstElementIndex int
+	SpriteLastElementIndex  int
 	SpriteChangeInterval    time.Duration
-	X                       float64
-	Y                       float64
-	Width                   float64
-	Height                  float64
+	X                       int
+	Y                       int
+	Width                   int
+	Height                  int
 
-	ClearRectDeltaX      float64
-	ClearRectDeltaY      float64
-	ClearRectDeltaWidth  float64
-	ClearRectDeltaHeight float64
+	ClearRectDeltaX      int
+	ClearRectDeltaY      int
+	ClearRectDeltaWidth  int
+	ClearRectDeltaHeight int
 
-	LifeCycleLimit          float64
-	LifeCycleRepeatLimit    float64
+	LifeCycleLimit          int
+	LifeCycleRepeatLimit    int
 	LifeCycleRepeatInterval time.Duration
 }
 

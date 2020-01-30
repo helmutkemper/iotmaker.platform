@@ -6,15 +6,15 @@ import (
 )
 
 type Ink struct {
-	lastInteractionLineWidth float64
-	LineWidth                float64
+	lastInteractionLineWidth int
+	LineWidth                int
 	Shadow                   iotmaker_platform_IDraw.IFilterShadowInterface
 	Gradient                 iotmaker_platform_IDraw.IFilterGradientInterface
 	Color                    color.RGBA
 	hasModified              bool
 }
 
-func (el *Ink) Set(lineWidth float64, fillColor interface{}, shadow iotmaker_platform_IDraw.IFilterShadowInterface, gradient iotmaker_platform_IDraw.IFilterGradientInterface) {
+func (el *Ink) Set(lineWidth int, fillColor interface{}, shadow iotmaker_platform_IDraw.IFilterShadowInterface, gradient iotmaker_platform_IDraw.IFilterGradientInterface) {
 	if el.lastInteractionLineWidth != lineWidth {
 		el.lastInteractionLineWidth = lineWidth
 		el.hasModified = true

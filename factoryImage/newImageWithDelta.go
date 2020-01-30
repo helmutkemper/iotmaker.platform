@@ -9,27 +9,27 @@ import (
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/dimensions"
 )
 
-func NewImageWithDelta(id string, stage iStage.IStage, platform, scratchPad iotmaker_platform_IDraw.IDraw, img interface{}, x, y, width, height, xDelta, yDelta float64, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) *image.Image {
+func NewImageWithDelta(id string, stage iStage.IStage, platform, scratchPad iotmaker_platform_IDraw.IDraw, img interface{}, x, y, width, height, xDelta, yDelta int, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) *image.Image {
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 
-	densityCalc.Set(x)
-	x = densityCalc.Float64()
+	densityCalc.SetInt(x)
+	x = densityCalc.Int()
 
-	densityCalc.Set(y)
-	y = densityCalc.Float64()
+	densityCalc.SetInt(y)
+	y = densityCalc.Int()
 
-	densityCalc.Set(width)
-	width = densityCalc.Float64()
+	densityCalc.SetInt(width)
+	width = densityCalc.Int()
 
-	densityCalc.Set(height)
-	height = densityCalc.Float64()
+	densityCalc.SetInt(height)
+	height = densityCalc.Int()
 
-	densityCalc.Set(xDelta)
-	xDelta = densityCalc.Float64()
+	densityCalc.SetInt(xDelta)
+	xDelta = densityCalc.Int()
 
-	densityCalc.Set(yDelta)
-	yDelta = densityCalc.Float64()
+	densityCalc.SetInt(yDelta)
+	yDelta = densityCalc.Int()
 
 	ret := &image.Image{
 		Sprite: basic.Sprite{

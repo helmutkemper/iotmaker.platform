@@ -13,16 +13,16 @@ func NewImage(id string, stage iStage.IStage, platform, scratchPad iotmaker_plat
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 
-	densityCalc.Set(float64(x))
+	densityCalc.SetInt(x)
 	x = densityCalc.Int()
 
-	densityCalc.Set(float64(y))
+	densityCalc.SetInt(y)
 	y = densityCalc.Int()
 
-	densityCalc.Set(float64(width))
+	densityCalc.SetInt(width)
 	width = densityCalc.Int()
 
-	densityCalc.Set(float64(height))
+	densityCalc.SetInt(height)
 	height = densityCalc.Int()
 
 	ret := &image.Image{
@@ -32,16 +32,16 @@ func NewImage(id string, stage iStage.IStage, platform, scratchPad iotmaker_plat
 			Platform:   platform,
 			ScratchPad: scratchPad,
 			Dimensions: dimensions.Dimensions{
-				X:      float64(x),
-				Y:      float64(y),
-				Width:  float64(width),
-				Height: float64(height),
+				X:      x,
+				Y:      y,
+				Width:  width,
+				Height: height,
 			},
 			OutBoxDimensions: dimensions.Dimensions{
-				X:      float64(x),
-				Y:      float64(y),
-				Width:  float64(width),
-				Height: float64(height),
+				X:      x,
+				Y:      y,
+				Width:  width,
+				Height: height,
 			},
 		},
 		Img: img,

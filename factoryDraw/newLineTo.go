@@ -10,20 +10,20 @@ func NewLineTo(platform iotmaker_platform_IDraw.IDraw, x1, y1, x2, y2, lineWidth
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 
-	densityCalc.Set(x1)
-	x1 = densityCalc.Float64()
+	densityCalc.SetInt(x1)
+	x1 = densityCalc.Int()
 
-	densityCalc.Set(x2)
-	x2 = densityCalc.Float64()
+	densityCalc.SetInt(x2)
+	x2 = densityCalc.Int()
 
-	densityCalc.Set(y1)
-	y1 = densityCalc.Float64()
+	densityCalc.SetInt(y1)
+	y1 = densityCalc.Int()
 
-	densityCalc.Set(y2)
-	y2 = densityCalc.Float64()
+	densityCalc.SetInt(y2)
+	y2 = densityCalc.Int()
 
-	densityCalc.Set(lineWidth)
-	lineWidth = densityCalc.Float64()
+	densityCalc.SetInt(lineWidth)
+	lineWidth = densityCalc.Int()
 
 	lt := draw.LineTo{
 		Platform:  platform,

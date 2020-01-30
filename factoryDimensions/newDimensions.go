@@ -7,20 +7,20 @@ func NewDimensions(dm Dimensions, x, y, width, height, border float64, density i
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 
-	densityCalc.Set(x)
-	x = densityCalc.Float64()
+	densityCalc.SetInt(x)
+	x = densityCalc.Int()
 
-	densityCalc.Set(y)
-	y = densityCalc.Float64()
+	densityCalc.SetInt(y)
+	y = densityCalc.Int()
 
-	densityCalc.Set(width)
-	width = densityCalc.Float64()
+	densityCalc.SetInt(width)
+	width = densityCalc.Int()
 
-	densityCalc.Set(height)
-	height = densityCalc.Float64()
+	densityCalc.SetInt(height)
+	height = densityCalc.Int()
 
-	densityCalc.Set(border)
-	border = densityCalc.Float64()
+	densityCalc.SetInt(border)
+	border = densityCalc.Int()
 
 	dm.Set(x, y, width, height, border)
 

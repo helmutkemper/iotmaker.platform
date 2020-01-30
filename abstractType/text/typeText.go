@@ -80,6 +80,10 @@ func (el *Text) Draw() {
 		el.ScratchPad.Font(el.Font)
 	}
 
+	//metrics := el.ScratchPad.MeasureText(el.Label)
+
+	el.Dimensions.X = el.X
+
 	if el.Fill == true {
 		if el.MaxWidth != 0 {
 			el.ScratchPad.FillText(el.Label, el.X, el.Y, el.MaxWidth)

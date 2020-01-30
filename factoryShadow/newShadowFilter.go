@@ -37,8 +37,8 @@ func NewShadowFilter(color color.RGBA, blur, offsetX, offsetY float64, density i
 	sd := &shadow.Shadow{
 		Color:   color,
 		Blur:    blur,
-		OffsetX: densityOffsetX.Float64(),
-		OffsetY: densityOffsetY.Float64(),
+		OffsetX: densityOffsetX.Int(),
+		OffsetY: densityOffsetY.Int(),
 	}
 
 	sd.ColorEnable = true

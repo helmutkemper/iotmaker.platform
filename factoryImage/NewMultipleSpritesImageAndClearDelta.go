@@ -7,33 +7,33 @@ import (
 	"time"
 )
 
-func NewMultipleSpritesImageAndClearDelta(platform iotmaker_platform_IDraw.IDraw, img interface{}, spriteWidth, spriteHeight, spriteFirstElementIndex, spriteLastElementIndex float64, spriteChangeInterval time.Duration, xImageOut, yImageOut, widthImageOut, heightImageOut, clearRectDeltaX, clearRectDeltaY, clearRectDeltaWidth, clearRectDeltaHeight float64, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) *image.MultipleSprites {
+func NewMultipleSpritesImageAndClearDelta(platform iotmaker_platform_IDraw.IDraw, img interface{}, spriteWidth, spriteHeight, spriteFirstElementIndex, spriteLastElementIndex int, spriteChangeInterval time.Duration, xImageOut, yImageOut, widthImageOut, heightImageOut, clearRectDeltaX, clearRectDeltaY, clearRectDeltaWidth, clearRectDeltaHeight int, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) *image.MultipleSprites {
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 
-	densityCalc.Set(xImageOut)
-	xImageOut = densityCalc.Float64()
+	densityCalc.SetInt(xImageOut)
+	xImageOut = densityCalc.Int()
 
-	densityCalc.Set(yImageOut)
-	yImageOut = densityCalc.Float64()
+	densityCalc.SetInt(yImageOut)
+	yImageOut = densityCalc.Int()
 
-	densityCalc.Set(widthImageOut)
-	widthImageOut = densityCalc.Float64()
+	densityCalc.SetInt(widthImageOut)
+	widthImageOut = densityCalc.Int()
 
-	densityCalc.Set(heightImageOut)
-	heightImageOut = densityCalc.Float64()
+	densityCalc.SetInt(heightImageOut)
+	heightImageOut = densityCalc.Int()
 
-	densityCalc.Set(clearRectDeltaX)
-	clearRectDeltaX = densityCalc.Float64()
+	densityCalc.SetInt(clearRectDeltaX)
+	clearRectDeltaX = densityCalc.Int()
 
-	densityCalc.Set(clearRectDeltaY)
-	clearRectDeltaY = densityCalc.Float64()
+	densityCalc.SetInt(clearRectDeltaY)
+	clearRectDeltaY = densityCalc.Int()
 
-	densityCalc.Set(clearRectDeltaWidth)
-	clearRectDeltaWidth = densityCalc.Float64()
+	densityCalc.SetInt(clearRectDeltaWidth)
+	clearRectDeltaWidth = densityCalc.Int()
 
-	densityCalc.Set(clearRectDeltaHeight)
-	clearRectDeltaHeight = densityCalc.Float64()
+	densityCalc.SetInt(clearRectDeltaHeight)
+	clearRectDeltaHeight = densityCalc.Int()
 
 	ret := &image.MultipleSprites{
 		Platform:                platform,

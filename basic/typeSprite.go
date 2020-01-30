@@ -43,8 +43,8 @@ type Drag struct {
 	isDraggable bool
 	isMouseDown bool
 	dragMode    DragMode
-	xDelta      float64
-	yDelta      float64
+	xDelta      int
+	yDelta      int
 }
 
 type Sprite struct {
@@ -109,17 +109,17 @@ func (el *Sprite) DragStop() {
 	el.setDraggable(false)
 }
 
-func (el *Sprite) Move(x, y float64) {
-	el.OutBoxDimensions.X = x + float64(el.MovieDeltaX)
-	el.Dimensions.X = x + float64(el.MovieDeltaX)
-	el.OutBoxDimensions.Y = y + float64(el.MovieDeltaY)
-	el.Dimensions.Y = y + float64(el.MovieDeltaY)
+func (el *Sprite) Move(x, y int) {
+	el.OutBoxDimensions.X = x + el.MovieDeltaX
+	el.Dimensions.X = x + el.MovieDeltaX
+	el.OutBoxDimensions.Y = y + el.MovieDeltaY
+	el.Dimensions.Y = y + el.MovieDeltaY
 }
 
 // fixme: GetCollisionBox(xEvent, yEvent float64) bool
 func (el *Sprite) dragOnMouseMove() {
-	var x float64
-	var y float64
+	var x int
+	var y int
 
 	select {
 	case coordinate := <-el.mouseChannelOnMoveEvent:
@@ -127,8 +127,8 @@ func (el *Sprite) dragOnMouseMove() {
 			return
 		}
 
-		x = float64(coordinate.X)
-		y = float64(coordinate.Y)
+		x = coordinate.X
+		y = coordinate.Y
 
 		if el.dragMode == KDragModeAlways {
 			el.Move(x, y)
@@ -138,8 +138,8 @@ func (el *Sprite) dragOnMouseMove() {
 
 	case coordinate := <-el.mouseChannelOnClickEvent:
 
-		x = float64(coordinate.X)
-		y = float64(coordinate.Y)
+		x = coordinate.X
+		y = coordinate.Y
 
 		if el.dragMode == KDragModeMobile {
 			el.Move(x-el.xDelta, y-el.yDelta)
@@ -147,8 +147,8 @@ func (el *Sprite) dragOnMouseMove() {
 
 	case coordinate := <-el.mouseChannelOnDownEvent:
 
-		x = float64(coordinate.X)
-		y = float64(coordinate.Y)
+		x = coordinate.X
+		y = coordinate.Y
 
 		if el.Stage.IsDraggable(x, y) != el.Id {
 			return
@@ -222,7 +222,7 @@ func (el *Sprite) setDraggable(enable bool) {
 // en: Get an information about (x, y) is in element boxe
 //
 // pt_br: Retorna a informação se (x, y) está dentro da caxa do elemento
-func (el *Sprite) GetCollisionBox(xEvent, yEvent float64) bool {
+func (el *Sprite) GetCollisionBox(xEvent, yEvent int) bool {
 	return el.OutBoxDimensions.X <= xEvent && el.OutBoxDimensions.X+el.OutBoxDimensions.Width >= xEvent &&
 		el.OutBoxDimensions.Y <= yEvent && el.OutBoxDimensions.Y+el.OutBoxDimensions.Height >= yEvent
 }

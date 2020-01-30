@@ -26,10 +26,10 @@ import (
 //     iDensity: Por favor, veja o elemento densidade
 func NewFont(
 
-	size float64,
-	sizeUnit string,
-	fontColor color.RGBA,
+	size int,
+	color color.RGBA,
 	family string,
+	style string,
 	density interface{},
 	iDensity iotmaker_platform_coordinate.IDensity,
 
@@ -37,14 +37,14 @@ func NewFont(
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 
-	densityCalc.Set(size)
-	size = densityCalc.Float64()
+	densityCalc.SetInt(size)
+	size = densityCalc.Int()
 
 	f := font.Font{
-		Size:     size,
-		SizeUnit: sizeUnit,
-		Family:   family,
-		Color:    fontColor,
+		Size:   size,
+		Color:  color,
+		Family: family,
+		Style:  style,
 	}
 	return f
 }
