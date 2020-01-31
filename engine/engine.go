@@ -1,6 +1,7 @@
 package engine
 
 import (
+	"fmt"
 	"math"
 	"math/rand"
 	"time"
@@ -795,6 +796,7 @@ func (el *Engine) tickerRunner() {
 
 			elapsed := time.Since(start)
 			if elapsed > el.slipFrameTimeAlarm {
+				fmt.Printf("Esta dando timeout kemper!!\n")
 				el.slipFrame = el.sleepFrame
 			}
 		}
