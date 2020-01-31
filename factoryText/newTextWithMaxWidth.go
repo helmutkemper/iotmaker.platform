@@ -53,8 +53,6 @@ func NewTextWithMaxWidth(
 		Label:    label,
 		Font:     labelFont,
 		Fill:     true,
-		X:        x,
-		Y:        y,
 		MaxWidth: maxWidth,
 	}
 

@@ -116,6 +116,16 @@ func (el *Sprite) Move(x, y int) {
 	el.Dimensions.Y = y + el.MovieDeltaY
 }
 
+func (el *Sprite) MoveX(x int) {
+	el.OutBoxDimensions.X = x + el.MovieDeltaX
+	el.Dimensions.X = x + el.MovieDeltaX
+}
+
+func (el *Sprite) MoveY(x, y int) {
+	el.OutBoxDimensions.Y = y + el.MovieDeltaY
+	el.Dimensions.Y = y + el.MovieDeltaY
+}
+
 // fixme: GetCollisionBox(xEvent, yEvent float64) bool
 func (el *Sprite) dragOnMouseMove() {
 	var x int
