@@ -39,12 +39,19 @@ const (
 )
 
 type Drag struct {
-	dragId      string
-	isDraggable bool
-	isMouseDown bool
-	dragMode    DragMode
-	xDelta      int
-	yDelta      int
+	dragId       string
+	isDraggable  bool
+	isMouseDown  bool
+	dragMode     DragMode
+	xDelta       int
+	yDelta       int
+	onMoveXStart int
+	onMoveYStart int
+	onMoveXDelta int
+	onMoveYDelta int
+
+	onStartFun func(int, int)
+	onEndFun   func(int, int)
 }
 
 type Sprite struct {
@@ -89,6 +96,14 @@ func (el *Sprite) Draw() {
 
 }
 
+func (el *Sprite) SetOnDragStartFunc(f func(int, int)) {
+	el.onStartFun = f
+}
+
+func (el *Sprite) SetOnDragEndFunc(f func(int, int)) {
+	el.onEndFun = f
+}
+
 func (el *Sprite) SetDragMode(mode DragMode) {
 	el.dragMode = mode
 }
@@ -101,12 +116,20 @@ func (el *Sprite) GetPlatform() iotmakerPlatformIDraw.IDraw {
 	return el.Platform
 }
 
+func (el *Sprite) DragIsDragging() bool {
+	return el.isMouseDown
+}
+
 func (el *Sprite) DragStart() {
 	el.setDraggable(true)
 }
 
 func (el *Sprite) DragStop() {
 	el.setDraggable(false)
+}
+
+func (el *Sprite) GetDragDelta() (int, int) {
+	return el.onMoveXDelta, el.onMoveYDelta
 }
 
 func (el *Sprite) Move(x, y int) {
@@ -169,9 +192,32 @@ func (el *Sprite) dragOnMouseMove() {
 			el.isMouseDown = true
 			el.xDelta = x - el.Dimensions.X
 			el.yDelta = y - el.Dimensions.Y
+
+			el.onMoveXStart = x
+			el.onMoveYStart = y
+
+			if el.onStartFun != nil {
+				el.onStartFun(x, y)
+			}
+
+			fmt.Printf("xDeltaStart: %v\n", el.onMoveXStart)
 		}
 
-	case <-el.mouseChannelOnUpEvent:
+	case coordinate := <-el.mouseChannelOnUpEvent:
+
+		x = coordinate.X
+		y = coordinate.Y
+
+		el.onMoveXDelta = x - el.onMoveXStart
+		el.onMoveYDelta = y - el.onMoveYStart
+
+		fmt.Printf("x: %v\n", x)
+		fmt.Printf("xDeltaEnd: %v\n", el.onMoveXDelta)
+
+		if el.isMouseDown == true && el.onEndFun != nil {
+			el.isMouseDown = false
+			el.onEndFun(x, y)
+		}
 
 		el.isMouseDown = false
 
