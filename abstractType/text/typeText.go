@@ -11,11 +11,9 @@ import (
 type Text struct {
 	basic.Sprite
 
-	//prepareShadowFilterFunctionPointer   func(iotmaker_platform_IDraw.ICanvasShadow)
-	//prepareGradientFilterFunctionPointer func(iotmaker_platform_IDraw.ICanvasGradient)
-
 	Label    string
 	Font     font.Font
+	Metrics  iotmakerPlatformTextMetrics.TextMetrics
 	Fill     bool
 	Stroke   bool
 	MaxWidth int
@@ -32,11 +30,11 @@ func (el *Text) Clear() {
 func (el *Text) Draw() {
 	el.ScratchPad.Save()
 
-	metrics := iotmakerPlatformTextMetrics.TextMetrics{}
+	el.Metrics = iotmakerPlatformTextMetrics.TextMetrics{}
 
 	if reflect.DeepEqual(font.Font{}, el.Font) == false {
 		el.ScratchPad.Font(el.Font)
-		metrics = el.ScratchPad.MeasureText(el.Label)
+		el.Metrics = el.ScratchPad.MeasureText(el.Label)
 
 		if reflect.DeepEqual(color.RGBA{}, el.Font.Color) == false && el.Fill == true {
 			el.ScratchPad.SetFillStyle(el.Font.Color)
@@ -47,10 +45,10 @@ func (el *Text) Draw() {
 		}
 	}
 
-	el.Dimensions.Width = int(metrics.Width)
+	el.Dimensions.Width = int(el.Metrics.Width)
 	el.Dimensions.Height = el.Font.Size
 
-	el.OutBoxDimensions.Width = int(metrics.Width)
+	el.OutBoxDimensions.Width = int(el.Metrics.Width)
 	el.OutBoxDimensions.Height = el.Font.Size
 
 	if el.Fill == true {
