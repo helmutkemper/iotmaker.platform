@@ -1,6 +1,8 @@
-// en: this package contains a list of colors names and has based on golang.org/x/image/colornames.
+// en: this package contains a list of colors names and has based on
+// https://godoc.org/golang.org/x/image/colornames.
 //
-// pt_br: este pacote contem a lista de nomes de cores e foi baseado em golang.org/x/image/colornames.
+// pt_br: este pacote contem a lista de nomes de cores e foi baseado em
+// https://godoc.org/golang.org/x/image/colornames.
 //
 //    Example:
 //    colorDarkRed := factoryColorNames.newDarkred()

@@ -1,5 +1,7 @@
 package dimensions
 
+type Overflow int
+
 type Dimensions struct {
 	X                     int
 	Y                     int
@@ -17,6 +19,9 @@ type Dimensions struct {
 	lastInteractionHeight int
 	lastInteractionBorder int
 	hasModified           bool
+
+	Parent   *Dimensions
+	Overflow Overflow
 }
 
 func (el Dimensions) GetModified() bool {
