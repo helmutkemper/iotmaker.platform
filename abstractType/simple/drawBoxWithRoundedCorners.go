@@ -84,7 +84,5 @@ func (el *BoxWithRoundedCorners) Draw() {
 	el.ScratchPad.ArcTo(el.x1, el.y1, el.x2, el.y1, el.Dimensions.Border) // i->j
 	el.ScratchPad.ClosePath(el.x2, el.y1)                                 // a
 
-	el.ScratchPad.Stroke()
-
 	el.ScratchPad.Restore()
 }

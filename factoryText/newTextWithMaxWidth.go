@@ -16,7 +16,7 @@ func NewTextWithMaxWidth(
 	stage iStage.IStage,
 	platform,
 	scratchPad iotmaker_platform_IDraw.IDraw,
-	ink ink.Ink,
+	ink ink.Interface,
 	labelFont font.Font,
 	label string,
 	x,

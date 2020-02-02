@@ -61,7 +61,7 @@ type Sprite struct {
 	ScratchPad                           iotmakerPlatformIDraw.IDraw
 	Dimensions                           dimensions.Dimensions
 	OutBoxDimensions                     dimensions.Dimensions
-	Ink                                  ink.Ink
+	Ink                                  ink.Interface
 	prepareShadowFilterFunctionPointer   func(iotmakerPlatformIDraw.ICanvasShadow)
 	prepareGradientFilterFunctionPointer func(iotmakerPlatformIDraw.ICanvasGradient)
 	Drag
@@ -150,12 +150,12 @@ func (el *Sprite) MoveY(x, y int) {
 }
 
 func (el *Sprite) ColorFiltersStart(platform iotmakerPlatformIDraw.IDraw) {
-	if el.Ink.Shadow == nil {
+	if el.Ink == nil {
 		return
 	}
 
-	el.Ink.Shadow.PrepareFilter(platform)
-	el.Ink.Gradient.PrepareFilter(platform)
+	el.Ink.ShadowPrepareFilter(platform)
+	el.Ink.GradientPrepareFilter(platform)
 }
 
 func (el *Sprite) dragOnMouseMove() {

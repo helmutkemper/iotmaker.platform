@@ -16,7 +16,7 @@ func NewImage(
 	stage iStage.IStage,
 	platform,
 	scratchPad iotmaker_platform_IDraw.IDraw,
-	ink ink.Ink,
+	ink ink.Interface,
 	img interface{},
 	x,
 	y,

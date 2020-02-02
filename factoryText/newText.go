@@ -17,7 +17,7 @@ func NewText(
 	stage iStage.IStage,
 	platform,
 	scratchPad iotmaker_platform_IDraw.IDraw,
-	ink ink.Ink,
+	ink ink.Interface,
 	font font.Font,
 	label string,
 	x,
