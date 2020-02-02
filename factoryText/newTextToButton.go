@@ -1,70 +1,49 @@
-package factoryImage
+package factoryText
 
 import (
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.interfaces/iStage"
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
 	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.coordinate"
-	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/image"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/font"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/text"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/basic"
-	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/dimensions"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/ink"
 )
 
-func NewImage(
+func NewTextToButton(
 
 	id string,
 	stage iStage.IStage,
 	platform,
 	scratchPad iotmaker_platform_IDraw.IDraw,
 	ink ink.Ink,
-	img interface{},
-	x,
-	y,
-	width,
-	height int,
+	font font.Font,
+	label string,
 	density interface{},
 	iDensity iotmaker_platform_coordinate.IDensity,
 
-) *image.Image {
+) *text.Text {
 
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 
-	densityCalc.SetInt(x)
-	x = densityCalc.Int()
+	densityCalc.SetInt(font.Size)
+	font.Size = densityCalc.Int()
 
-	densityCalc.SetInt(y)
-	y = densityCalc.Int()
-
-	densityCalc.SetInt(width)
-	width = densityCalc.Int()
-
-	densityCalc.SetInt(height)
-	height = densityCalc.Int()
-
-	ret := &image.Image{
+	tx := text.Text{
 		Sprite: basic.Sprite{
 			Id:         id,
 			Stage:      stage,
 			Platform:   platform,
 			ScratchPad: scratchPad,
 			Ink:        ink,
-			Dimensions: dimensions.Dimensions{
-				X:      x,
-				Y:      y,
-				Width:  width,
-				Height: height,
-			},
-			OutBoxDimensions: dimensions.Dimensions{
-				X:      x,
-				Y:      y,
-				Width:  width,
-				Height: height,
-			},
 		},
-		Img: img,
+		Label: label,
+		Font:  font,
+		Fill:  true,
 	}
-	ret.Crete()
 
-	return ret
+	tx.Create()
+
+	return &tx
 }

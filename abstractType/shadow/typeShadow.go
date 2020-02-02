@@ -1,23 +1,20 @@
 package shadow
 
 import (
-	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
+	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
 	"image/color"
+	"reflect"
 )
 
 // en: Please, usa a  function shadow.NewShadowFilter() to make a new filter
 //
 // pt_br: Por favor, use a função shadow.NewShadowFilter() para montar um novo filtro
 type Shadow struct {
-	Platform      iotmaker_platform_IDraw.ICanvasShadow
-	Color         color.RGBA
-	ColorEnable   bool
-	Blur          float64
-	BlurEnable    bool
-	OffsetX       float64
-	OffsetXEnable bool
-	OffsetY       float64
-	OffsetYEnable bool
+	Platform iotmaker_platform_IDraw.ICanvasShadow
+	Color    color.RGBA
+	Blur     float64
+	OffsetX  int
+	OffsetY  int
 }
 
 // en: Please, usa a  function shadow.NewShadowFilter() to make a new filter.
@@ -29,22 +26,12 @@ func (el *Shadow) PrepareFilter(platform iotmaker_platform_IDraw.ICanvasShadow) 
 
 	el.Platform = platform
 
-	// the feature of the javascript itself
-	if el.ColorEnable == false || el.Platform == nil {
+	if el.Platform == nil || reflect.DeepEqual(color.RGBA{}, el.Color) == true {
 		return
 	}
 
 	el.Platform.SetShadowColor(el.Color)
-
-	if el.BlurEnable == true {
-		el.Platform.SetShadowBlur(el.Blur)
-	}
-
-	if el.OffsetXEnable == true {
-		el.Platform.ShadowOffsetX(el.OffsetX)
-	}
-
-	if el.OffsetYEnable == true {
-		el.Platform.ShadowOffsetY(el.OffsetY)
-	}
+	el.Platform.SetShadowBlur(el.Blur)
+	el.Platform.ShadowOffsetX(el.OffsetX)
+	el.Platform.ShadowOffsetY(el.OffsetY)
 }

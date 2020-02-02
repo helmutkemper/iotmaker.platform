@@ -1,8 +1,8 @@
 package factoryPoint
 
 import (
-	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.coordinate"
-	"github.com/helmutkemper/iotmaker.platform/abstractType/point"
+	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.coordinate"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/point"
 )
 
 // en: Creates a set of coordinates, taking into account the size of the screen.

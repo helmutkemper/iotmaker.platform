@@ -4,7 +4,6 @@ import (
 	iotmakerPlatformTextMetrics "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.textMetrics"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/font"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/basic"
-	"image/color"
 	"reflect"
 )
 
@@ -29,20 +28,13 @@ func (el *Text) Clear() {
 
 func (el *Text) Draw() {
 	el.ScratchPad.Save()
+	el.ColorFiltersStart(el.ScratchPad)
 
 	el.Metrics = iotmakerPlatformTextMetrics.TextMetrics{}
 
 	if reflect.DeepEqual(font.Font{}, el.Font) == false {
 		el.ScratchPad.Font(el.Font)
 		el.Metrics = el.ScratchPad.MeasureText(el.Label)
-
-		if reflect.DeepEqual(color.RGBA{}, el.Font.Color) == false && el.Fill == true {
-			el.ScratchPad.SetFillStyle(el.Font.Color)
-		}
-
-		if reflect.DeepEqual(color.RGBA{}, el.Font.Color) == false && el.Stroke == true {
-			el.ScratchPad.SetStrokeStyle(el.Font.Color)
-		}
 	}
 
 	el.Dimensions.Width = int(el.Metrics.Width)

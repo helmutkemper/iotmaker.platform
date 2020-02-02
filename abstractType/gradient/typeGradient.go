@@ -1,8 +1,8 @@
 package gradient
 
 import (
-	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
-	"github.com/helmutkemper/iotmaker.platform/abstractType/point"
+	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/point"
 )
 
 type Gradient struct {
@@ -11,10 +11,6 @@ type Gradient struct {
 	CoordinateP0 interface{}
 	CoordinateP1 interface{}
 	ColorList    []ColorStop
-}
-
-func (el *Gradient) SetGlobal(platform iotmaker_platform_IDraw.ICanvasGradient) {
-	el.PrepareFilter(platform)
 }
 
 func (el *Gradient) PrepareFilter(platform iotmaker_platform_IDraw.ICanvasGradient) {

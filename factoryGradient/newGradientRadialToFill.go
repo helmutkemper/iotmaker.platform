@@ -1,9 +1,9 @@
 package factoryGradient
 
 import (
-	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
-	"github.com/helmutkemper/iotmaker.platform/abstractType/gradient"
-	"github.com/helmutkemper/iotmaker.platform/abstractType/point"
+	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/gradient"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/point"
 )
 
 // en: Make a new filter radial gradient with fill for use with the canvas elements.

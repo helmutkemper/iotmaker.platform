@@ -1,9 +1,9 @@
 package factoryShadow
 
 import (
-	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
-	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.coordinate"
-	"github.com/helmutkemper/iotmaker.platform/abstractType/shadow"
+	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
+	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.coordinate"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/shadow"
 	"image/color"
 	"reflect"
 )
@@ -20,7 +20,7 @@ import (
 //    density      := 1.0
 //    iDensity     := &Density{}
 //    shadowFilter := shadow.NewShadowFilter(color, blur, offsetX, offsetY)
-func NewShadowFilter(color color.RGBA, blur, offsetX, offsetY float64, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) iotmaker_platform_IDraw.IFilterShadowInterface {
+func NewShadow(color color.RGBA, blur, offsetX, offsetY float64, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) iotmaker_platform_IDraw.IFilterShadowInterface {
 
 	if reflect.DeepEqual(color, color.RGBA) {
 		return &shadow.Shadow{}
@@ -39,20 +39,6 @@ func NewShadowFilter(color color.RGBA, blur, offsetX, offsetY float64, density i
 		Blur:    blur,
 		OffsetX: densityOffsetX.Int(),
 		OffsetY: densityOffsetY.Int(),
-	}
-
-	sd.ColorEnable = true
-
-	if blur != 0 {
-		sd.BlurEnable = true
-	}
-
-	if offsetX != 0 {
-		sd.OffsetXEnable = true
-	}
-
-	if offsetY != 0 {
-		sd.OffsetYEnable = true
 	}
 
 	return sd

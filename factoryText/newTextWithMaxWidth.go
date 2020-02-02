@@ -7,7 +7,6 @@ import (
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/font"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/text"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/basic"
-	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/factoryInk"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/ink"
 )
 
@@ -17,9 +16,7 @@ func NewTextWithMaxWidth(
 	stage iStage.IStage,
 	platform,
 	scratchPad iotmaker_platform_IDraw.IDraw,
-	shadow iotmaker_platform_IDraw.IFilterShadowInterface,
-	gradient iotmaker_platform_IDraw.IFilterGradientInterface,
-	color interface{},
+	ink ink.Ink,
 	labelFont font.Font,
 	label string,
 	x,
@@ -39,16 +36,13 @@ func NewTextWithMaxWidth(
 	densityCalc.SetInt(y)
 	y = densityCalc.Int()
 
-	ik := ink.Ink{}
-	ik = factoryInk.NewInk(ik, 0, color, shadow, gradient, density, iDensity)
-
 	tx := text.Text{
 		Sprite: basic.Sprite{
 			Id:         id,
 			Stage:      stage,
 			Platform:   platform,
 			ScratchPad: scratchPad,
-			Ink:        ik,
+			Ink:        ink,
 		},
 		Label:    label,
 		Font:     labelFont,

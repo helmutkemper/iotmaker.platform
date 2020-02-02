@@ -3,7 +3,6 @@ package factoryFont
 import (
 	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.coordinate"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/font"
-	"image/color"
 )
 
 // en: Create a new font struct
@@ -27,7 +26,7 @@ import (
 func NewFont(
 
 	size int,
-	color color.RGBA,
+	//color color.RGBA,
 	family string,
 	style string,
 	density interface{},
@@ -41,8 +40,8 @@ func NewFont(
 	size = densityCalc.Int()
 
 	f := font.Font{
-		Size:   size,
-		Color:  color,
+		Size: size,
+		//Color:  color,
 		Family: family,
 		Style:  style,
 	}

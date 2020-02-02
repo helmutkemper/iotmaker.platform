@@ -1,7 +1,7 @@
-package factoryColor
+package factoryColorGradient
 
 import (
-	"github.com/helmutkemper/iotmaker.platform/abstractType/gradient"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/gradient"
 	"image/color"
 )
 

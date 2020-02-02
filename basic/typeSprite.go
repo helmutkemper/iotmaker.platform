@@ -149,7 +149,15 @@ func (el *Sprite) MoveY(x, y int) {
 	el.Dimensions.Y = y + el.MovieDeltaY
 }
 
-// fixme: GetCollisionBox(xEvent, yEvent float64) bool
+func (el *Sprite) ColorFiltersStart(platform iotmakerPlatformIDraw.IDraw) {
+	if el.Ink.Shadow == nil {
+		return
+	}
+
+	el.Ink.Shadow.PrepareFilter(platform)
+	el.Ink.Gradient.PrepareFilter(platform)
+}
+
 func (el *Sprite) dragOnMouseMove() {
 	var x int
 	var y int
@@ -199,8 +207,6 @@ func (el *Sprite) dragOnMouseMove() {
 			if el.onStartFun != nil {
 				el.onStartFun(x, y)
 			}
-
-			fmt.Printf("xDeltaStart: %v\n", el.onMoveXStart)
 		}
 
 	case coordinate := <-el.mouseChannelOnUpEvent:
@@ -210,9 +216,6 @@ func (el *Sprite) dragOnMouseMove() {
 
 		el.onMoveXDelta = x - el.onMoveXStart
 		el.onMoveYDelta = y - el.onMoveYStart
-
-		fmt.Printf("x: %v\n", x)
-		fmt.Printf("xDeltaEnd: %v\n", el.onMoveXDelta)
 
 		if el.isMouseDown == true && el.onEndFun != nil {
 			el.isMouseDown = false

@@ -16,6 +16,7 @@ func (el *Image) Crete() {
 
 func (el *Image) Draw() {
 	el.ScratchPad.Save()
+	el.ColorFiltersStart(el.ScratchPad)
 	el.ScratchPad.DrawImage(el.Img, el.Dimensions.X, el.Dimensions.Y, el.Dimensions.Width, el.Dimensions.Height)
 	el.ScratchPad.Restore()
 }

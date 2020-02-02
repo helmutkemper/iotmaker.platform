@@ -8,7 +8,6 @@ import (
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/text"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/basic"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/dimensions"
-	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/factoryInk"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/ink"
 )
 
@@ -18,9 +17,7 @@ func NewText(
 	stage iStage.IStage,
 	platform,
 	scratchPad iotmaker_platform_IDraw.IDraw,
-	shadow iotmaker_platform_IDraw.IFilterShadowInterface,
-	gradient iotmaker_platform_IDraw.IFilterGradientInterface,
-	color interface{},
+	ink ink.Ink,
 	font font.Font,
 	label string,
 	x,
@@ -42,16 +39,13 @@ func NewText(
 	densityCalc.SetInt(font.Size)
 	font.Size = densityCalc.Int()
 
-	ik := ink.Ink{}
-	ik = factoryInk.NewInk(ik, 0, color, shadow, gradient, density, iDensity)
-
 	tx := text.Text{
 		Sprite: basic.Sprite{
 			Id:               id,
 			Stage:            stage,
 			Platform:         platform,
 			ScratchPad:       scratchPad,
-			Ink:              ik,
+			Ink:              ink,
 			Dimensions:       dimensions.Dimensions{X: x, Y: y},
 			OutBoxDimensions: dimensions.Dimensions{X: x, Y: y},
 		},
