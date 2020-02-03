@@ -3,6 +3,7 @@ package text
 import (
 	iotmakerPlatformTextMetrics "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.textMetrics"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/font"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/point"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/basic"
 	"reflect"
 )
@@ -27,8 +28,8 @@ func (el *Text) Clear() {
 }
 
 func (el *Text) Draw() {
+
 	el.ScratchPad.Save()
-	el.ColorFiltersStart(el.ScratchPad)
 
 	el.Metrics = iotmakerPlatformTextMetrics.TextMetrics{}
 
@@ -42,6 +43,15 @@ func (el *Text) Draw() {
 
 	el.OutBoxDimensions.Width = int(el.Metrics.Width)
 	el.OutBoxDimensions.Height = el.Font.Size
+
+	el.ColorFiltersStart(el.ScratchPad)
+
+	if el.Ink != nil {
+		p0 := point.Point{el.OutBoxDimensions.X, el.OutBoxDimensions.Y}
+		p1 := point.Point{el.OutBoxDimensions.X + el.OutBoxDimensions.Width, el.OutBoxDimensions.Y + el.OutBoxDimensions.Height}
+
+		el.Ink.SetGradientLinearRectangle(p0, p1)
+	}
 
 	if el.Fill == true {
 		if el.MaxWidth != 0 {

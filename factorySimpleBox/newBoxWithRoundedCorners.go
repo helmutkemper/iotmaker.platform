@@ -7,12 +7,29 @@ import (
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/simple"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/basic"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/dimensions"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/ink"
 )
 
 // en: This function create a path of a box with rounded corners into the platform using density
 //
 // pt_br: Esta função cria o caminho de um quadrado com cantos arredondados na plataforma usando densidade
-func NewBoxWithRoundedCorners(id string, stage iStage.IStage, platform, scratchPad iotmaker_platform_IDraw.IDraw, x, y, width, height, border int, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) *simple.BoxWithRoundedCorners {
+func NewBoxWithRoundedCorners(
+
+	id string,
+	stage iStage.IStage,
+	platform,
+	scratchPad iotmaker_platform_IDraw.IDraw,
+	ink ink.Interface,
+	x,
+	y,
+	width,
+	height,
+	border int,
+	density interface{},
+	iDensity iotmaker_platform_coordinate.IDensity,
+
+) *simple.BoxWithRoundedCorners {
+
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 
@@ -37,6 +54,7 @@ func NewBoxWithRoundedCorners(id string, stage iStage.IStage, platform, scratchP
 			Stage:      stage,
 			Platform:   platform,
 			ScratchPad: scratchPad,
+			Ink:        ink,
 			Dimensions: dimensions.Dimensions{
 				X:      x,
 				Y:      y,

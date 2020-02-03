@@ -5,6 +5,7 @@ import (
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.interfaces/iStage"
 	iotmakerPlatformIDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/dimensions"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/gravity"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/ink"
 	platformMouse "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/mouse"
 	"strings"
@@ -61,6 +62,7 @@ type Sprite struct {
 	ScratchPad                           iotmakerPlatformIDraw.IDraw
 	Dimensions                           dimensions.Dimensions
 	OutBoxDimensions                     dimensions.Dimensions
+	Gravity                              gravity.Gravity
 	Ink                                  ink.Interface
 	prepareShadowFilterFunctionPointer   func(iotmakerPlatformIDraw.ICanvasShadow)
 	prepareGradientFilterFunctionPointer func(iotmakerPlatformIDraw.ICanvasGradient)
@@ -151,6 +153,18 @@ func (el *Sprite) MoveY(x, y int) {
 
 func (el *Sprite) ColorFiltersStart(platform iotmakerPlatformIDraw.IDraw) {
 	if el.Ink == nil {
+
+		fmt.Printf("entrou: %v\n", el.Id)
+
+		if platform == nil {
+			fmt.Printf("retornou: %v\n", el.Id)
+			return
+		}
+
+		platform.ResetShadow()
+		platform.ResetStrokeStyle()
+		platform.ResetFillStyle()
+		platform.ResetLineWidth()
 		return
 	}
 

@@ -1,6 +1,7 @@
 package simple
 
 import (
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/point"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/basic"
 )
 
@@ -69,8 +70,16 @@ func (el *BoxWithRoundedCorners) Draw() {
 	//              border        border
 
 	el.ScratchPad.Save()
-
 	el.calculate()
+
+	el.ColorFiltersStart(el.ScratchPad)
+
+	if el.Ink != nil {
+		p0 := point.Point{el.OutBoxDimensions.X, el.OutBoxDimensions.Y}
+		p1 := point.Point{el.OutBoxDimensions.X + el.OutBoxDimensions.Width, el.OutBoxDimensions.Y + el.OutBoxDimensions.Height}
+
+		el.Ink.SetGradientLinearRectangle(p0, p1)
+	}
 
 	el.ScratchPad.BeginPath()
 	el.ScratchPad.MoveTo(el.x2, el.y1)                                    // a

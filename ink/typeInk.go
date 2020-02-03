@@ -2,7 +2,9 @@ package ink
 
 import (
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/point"
 	"image/color"
+	"reflect"
 )
 
 type Ink struct {
@@ -25,11 +27,29 @@ func (el *Ink) ShadowPrepareFilter(platform iotmaker_platform_IDraw.ICanvasShado
 
 func (el *Ink) GradientPrepareFilter(platform iotmaker_platform_IDraw.ICanvasGradient) {
 
-	if el.Gradient == nil || platform == nil {
+	if platform == nil {
+		return
+	}
+
+	if el.Gradient == nil {
+		if reflect.DeepEqual(color.RGBA{}, el.Color) == false {
+			platform.SetFillStyle(el.Color)
+			platform.Fill()
+		}
+
 		return
 	}
 
 	el.Gradient.PrepareFilter(platform)
+}
+
+func (el *Ink) SetGradientLinearRectangle(p0, p1 point.Point) {
+	if el.Gradient == nil {
+		return
+	}
+
+	el.Gradient.SetP0(p0)
+	el.Gradient.SetP1(p1)
 }
 
 func (el *Ink) Set(lineWidth int, fillColor interface{}, shadow iotmaker_platform_IDraw.IFilterShadowInterface, gradient iotmaker_platform_IDraw.IFilterGradientInterface) {

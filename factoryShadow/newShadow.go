@@ -20,7 +20,16 @@ import (
 //    density      := 1.0
 //    iDensity     := &Density{}
 //    shadowFilter := shadow.NewShadowFilter(color, blur, offsetX, offsetY)
-func NewShadow(color color.RGBA, blur, offsetX, offsetY float64, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) iotmaker_platform_IDraw.IFilterShadowInterface {
+func NewShadow(
+
+	color color.RGBA,
+	blur,
+	offsetX,
+	offsetY float64,
+	density interface{},
+	iDensity iotmaker_platform_coordinate.IDensity,
+
+) iotmaker_platform_IDraw.IFilterShadowInterface {
 
 	if reflect.DeepEqual(color, color.RGBA) {
 		return &shadow.Shadow{}

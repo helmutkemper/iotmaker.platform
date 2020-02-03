@@ -13,6 +13,14 @@ type Gradient struct {
 	ColorList    []ColorStop
 }
 
+func (el *Gradient) SetP0(point interface{}) {
+	el.CoordinateP0 = point
+}
+
+func (el *Gradient) SetP1(point interface{}) {
+	el.CoordinateP1 = point
+}
+
 func (el *Gradient) PrepareFilter(platform iotmaker_platform_IDraw.ICanvasGradient) {
 	el.Platform = platform
 
