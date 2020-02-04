@@ -154,10 +154,7 @@ func (el *Sprite) MoveY(x, y int) {
 func (el *Sprite) ColorFiltersStart(platform iotmakerPlatformIDraw.IDraw) {
 	if el.Ink == nil {
 
-		fmt.Printf("entrou: %v\n", el.Id)
-
 		if platform == nil {
-			fmt.Printf("retornou: %v\n", el.Id)
 			return
 		}
 
