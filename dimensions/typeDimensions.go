@@ -3,6 +3,7 @@ package dimensions
 import (
 	"errors"
 	"fmt"
+	"reflect"
 )
 
 type Corner int
@@ -21,6 +22,117 @@ type Link struct {
 	CornerFromB Corner
 }
 
+//                A
+//     +----------O---------+
+//     |          X         |
+//     |   +------O-----+   |
+//   D O   O            O   O B
+//     |   +------O-----+   |
+//     |          |         |
+//     +----------O---------+
+//                C
+func (el *Link) LinkIsPresentAtTheBottom(containerA, containerB *Dimensions) {
+	AY := containerA.Y
+	AHeight := containerA.Height
+	BHeight := containerB.Height
+	BBottom := containerB.SpaceBottom
+	containerB.Y = AY + AHeight - BHeight + BBottom
+}
+
+//                A
+//     +----------O---------+
+//     |          |         |
+//     |   +------O-----+   |
+//   D O   O            O   O B
+//     |   +------O-----+   |
+//     |          X         |
+//     +----------O---------+
+//                C
+func (el *Link) LinkIsPresentAtTheTop(containerA, containerB *Dimensions) {
+	AY := containerA.Y
+	BTop := containerB.SpaceTop
+	containerB.Y = AY + BTop
+}
+
+//                A
+//     +----------O---------+
+//     |          |         |
+//     |   +------O-----+   |
+//   D O   O            O   O B
+//     |   +------O-----+   |
+//     |          |         |
+//     +----------O---------+
+//                C
+func (el *Link) LinkIsPresentAtTheTopAndBottom(containerA, containerB *Dimensions) {
+	AY := containerA.Y
+	AHeight := containerA.Height
+	CHeight := containerB.Height
+	BTop := containerB.SpaceTop
+	BY := AY + AHeight/2 - CHeight/2
+
+	if BY < BTop {
+		BY = BTop
+	}
+
+	containerB.Y = BY
+}
+
+//                A
+//     +----------O---------+
+//     |                    |
+//     |   +------O-----+   |
+//   D O-X-O            O---O B
+//     |   +------O-----+   |
+//     |                    |
+//     +----------O---------+
+//                C
+func (el *Link) LinkIsPresentAtTheRight(containerA, containerB *Dimensions) {
+	AX := containerA.X
+	AWidth := containerA.Width
+	CWidth := containerB.Width
+	containerB.X = AX + AWidth - CWidth
+}
+
+//                A
+//     +----------O---------+
+//     |                    |
+//     |   +------O-----+   |
+//   D O---O            O-X-O B
+//     |   +------O-----+   |
+//     |                    |
+//     +----------O---------+
+//                C
+func (el *Link) LinkIsPresentAtTheLeft(containerA, containerB *Dimensions) {
+	AX := containerA.X
+	containerB.X = AX
+}
+
+//                A
+//     +----------O---------+
+//     |                    |
+//     |   +------O-----+   |
+//   D O---O            O---O B
+//     |   +------O-----+   |
+//     |                    |
+//     +----------O---------+
+//                C
+func (el *Link) LinkIsPresentAtTheRightAndLeft(containerA, containerB *Dimensions) {
+	AX := containerA.X
+	AWidth := containerA.Width
+	CWidth := containerB.Width
+	containerB.X = AX + AWidth/2 - CWidth/2
+}
+
+//                A
+//     +----------O---------+
+//     |                    |
+//     |   +------O-----+   |
+//   D O   O            O   O B
+//     |   +------O-----+   |
+//     |                    |
+//     +----------O---------+
+//                C
+//
 //                      A
 //             +--------O-------+
 //             |                |
@@ -77,6 +189,7 @@ func NewContainerWithSpace(width, height, left, right, top, bottom int) *Dimensi
 	}
 }
 
+// Warning: Father aways must be containerA
 func NewLink(containerA, containerB *Dimensions, cornerFromA, cornerFromB Corner) (error, *Link) {
 	switch cornerFromA {
 	case KCornerA:
@@ -115,15 +228,80 @@ func NewLink(containerA, containerB *Dimensions, cornerFromA, cornerFromB Corner
 
 func NewAssembly(linkA, linkB, linkC, linkD *Link) {
 
+	//                      A
+	//             +--------O-------+
+	//             |        |aPass  |
+	//             | +------O-----+ |
+	//           D O-O dPass      O-O B bPass
+	//             | +------O-----+ |
+	//             |        |cPass  |
+	//             +--------O-------+
+	//                      C
+
+	err := make([]error, 0)
+
+	aPass := !reflect.DeepEqual(*linkA, Link{})
+	bPass := !reflect.DeepEqual(*linkB, Link{})
+	cPass := !reflect.DeepEqual(*linkC, Link{})
+	dPass := !reflect.DeepEqual(*linkD, Link{})
+
+	//BX := 0
+	//BY := 0
+
+	//containerA := &Dimensions{}
+	//containerB := &Dimensions{}
+
+	// todo: must be a func
+	if aPass == false && cPass == false {
+		err = append(err, errors.New("this container can't be assembled. links a and c are not connected"))
+	} else if aPass == false && cPass == true {
+		linkA.LinkIsPresentAtTheBottom(linkC.ContainerA, linkC.ContainerB)
+	} else if aPass == true && cPass == false {
+		linkA.LinkIsPresentAtTheTop(linkA.ContainerA, linkA.ContainerB)
+	} else if aPass == true && cPass == true {
+		linkA.LinkIsPresentAtTheTopAndBottom(linkA.ContainerA, linkA.ContainerB)
+	}
+	//containerB.Y = BY
+
+	// todo: must be a func
+	if dPass == false && bPass == false {
+		err = append(err, errors.New("this container can't be assembled. links b and d are not connected"))
+	} else if dPass == false && bPass == true {
+		linkA.LinkIsPresentAtTheRight(linkB.ContainerA, linkB.ContainerB)
+		/*containerA = linkB.ContainerA
+		  containerB = linkB.ContainerB
+
+		  AX      := containerA.X
+		  AWidth  := containerA.Width
+		  CWidth  := containerB.Width
+		  BX = AX + AWidth - CWidth*/
+	} else if dPass == true && bPass == false {
+		linkA.LinkIsPresentAtTheLeft(linkD.ContainerA, linkD.ContainerB)
+		/*containerA = linkD.ContainerA
+		  containerB = linkD.ContainerB
+
+		  AX := containerA.X
+		  BX  = AX*/
+	} else if dPass == true && bPass == true {
+		linkA.LinkIsPresentAtTheRightAndLeft(linkD.ContainerA, linkD.ContainerB)
+		/*containerA = linkD.ContainerA
+		  containerB = linkD.ContainerB
+
+		  AX      := containerA.X
+		  AWidth  := containerA.Width
+		  CWidth  := containerB.Width
+		  BX = AX + AWidth/2 - CWidth/2*/
+	}
+	//containerB.X = BX
 }
 
-func test() {
+func Test() (Dimensions, Dimensions) {
 	var err error
 
-	var linkFatherAtoContainerA *Link
-	var linkFatherBtoContainerB *Link
-	var linkFatherCtoContainerC *Link
-	var linkFatherDtoContainerD *Link
+	var linkFatherAtoContainerA = &Link{}
+	var linkFatherBtoContainerB = &Link{}
+	var linkFatherCtoContainerC = &Link{}
+	var linkFatherDtoContainerD = &Link{}
 
 	father := NewContainer(600, 300)
 	containerA := NewContainer(300, 100)
@@ -150,4 +328,6 @@ func test() {
 		linkFatherCtoContainerC,
 		linkFatherDtoContainerD,
 	)
+
+	return *father, *containerA
 }
