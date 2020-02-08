@@ -123,6 +123,45 @@ func (el *Link) LinkIsPresentAtTheRightAndLeft(containerA, containerB *Dimension
 	containerB.X = AX + AWidth/2 - CWidth/2
 }
 
+func (el *Link) SimpleLinkAssembly(linkA, linkB, linkC, linkD *Link) {
+
+	//                      A
+	//             +--------O-------+
+	//             |        |aPass  |
+	//             | +------O-----+ |
+	//           D O-O dPass      O-O B bPass
+	//             | +------O-----+ |
+	//             |        |cPass  |
+	//             +--------O-------+
+	//                      C
+	err := make([]error, 0)
+
+	aPass := !reflect.DeepEqual(*linkA, Link{})
+	bPass := !reflect.DeepEqual(*linkB, Link{})
+	cPass := !reflect.DeepEqual(*linkC, Link{})
+	dPass := !reflect.DeepEqual(*linkD, Link{})
+
+	if aPass == false && cPass == false {
+		err = append(err, errors.New("this container can't be assembled. links a and c are not connected"))
+	} else if aPass == false && cPass == true {
+		linkA.LinkIsPresentAtTheBottom(linkC.ContainerA, linkC.ContainerB)
+	} else if aPass == true && cPass == false {
+		linkA.LinkIsPresentAtTheTop(linkA.ContainerA, linkA.ContainerB)
+	} else if aPass == true && cPass == true {
+		linkA.LinkIsPresentAtTheTopAndBottom(linkA.ContainerA, linkA.ContainerB)
+	}
+
+	if dPass == false && bPass == false {
+		err = append(err, errors.New("this container can't be assembled. links b and d are not connected"))
+	} else if dPass == false && bPass == true {
+		linkA.LinkIsPresentAtTheRight(linkB.ContainerA, linkB.ContainerB)
+	} else if dPass == true && bPass == false {
+		linkA.LinkIsPresentAtTheLeft(linkD.ContainerA, linkD.ContainerB)
+	} else if dPass == true && bPass == true {
+		linkA.LinkIsPresentAtTheRightAndLeft(linkD.ContainerA, linkD.ContainerB)
+	}
+}
+
 //                A
 //     +----------O---------+
 //     |                    |
@@ -226,75 +265,6 @@ func NewLink(containerA, containerB *Dimensions, cornerFromA, cornerFromB Corner
 	return errors.New("corners a and c must be linked to corners a and c, and corners b and d must be linked to corners b and d"), &Link{}
 }
 
-func NewAssembly(linkA, linkB, linkC, linkD *Link) {
-
-	//                      A
-	//             +--------O-------+
-	//             |        |aPass  |
-	//             | +------O-----+ |
-	//           D O-O dPass      O-O B bPass
-	//             | +------O-----+ |
-	//             |        |cPass  |
-	//             +--------O-------+
-	//                      C
-
-	err := make([]error, 0)
-
-	aPass := !reflect.DeepEqual(*linkA, Link{})
-	bPass := !reflect.DeepEqual(*linkB, Link{})
-	cPass := !reflect.DeepEqual(*linkC, Link{})
-	dPass := !reflect.DeepEqual(*linkD, Link{})
-
-	//BX := 0
-	//BY := 0
-
-	//containerA := &Dimensions{}
-	//containerB := &Dimensions{}
-
-	// todo: must be a func
-	if aPass == false && cPass == false {
-		err = append(err, errors.New("this container can't be assembled. links a and c are not connected"))
-	} else if aPass == false && cPass == true {
-		linkA.LinkIsPresentAtTheBottom(linkC.ContainerA, linkC.ContainerB)
-	} else if aPass == true && cPass == false {
-		linkA.LinkIsPresentAtTheTop(linkA.ContainerA, linkA.ContainerB)
-	} else if aPass == true && cPass == true {
-		linkA.LinkIsPresentAtTheTopAndBottom(linkA.ContainerA, linkA.ContainerB)
-	}
-	//containerB.Y = BY
-
-	// todo: must be a func
-	if dPass == false && bPass == false {
-		err = append(err, errors.New("this container can't be assembled. links b and d are not connected"))
-	} else if dPass == false && bPass == true {
-		linkA.LinkIsPresentAtTheRight(linkB.ContainerA, linkB.ContainerB)
-		/*containerA = linkB.ContainerA
-		  containerB = linkB.ContainerB
-
-		  AX      := containerA.X
-		  AWidth  := containerA.Width
-		  CWidth  := containerB.Width
-		  BX = AX + AWidth - CWidth*/
-	} else if dPass == true && bPass == false {
-		linkA.LinkIsPresentAtTheLeft(linkD.ContainerA, linkD.ContainerB)
-		/*containerA = linkD.ContainerA
-		  containerB = linkD.ContainerB
-
-		  AX := containerA.X
-		  BX  = AX*/
-	} else if dPass == true && bPass == true {
-		linkA.LinkIsPresentAtTheRightAndLeft(linkD.ContainerA, linkD.ContainerB)
-		/*containerA = linkD.ContainerA
-		  containerB = linkD.ContainerB
-
-		  AX      := containerA.X
-		  AWidth  := containerA.Width
-		  CWidth  := containerB.Width
-		  BX = AX + AWidth/2 - CWidth/2*/
-	}
-	//containerB.X = BX
-}
-
 func Test() (Dimensions, Dimensions) {
 	var err error
 
@@ -322,7 +292,7 @@ func Test() (Dimensions, Dimensions) {
 		fmt.Printf("error: %v\n", err)
 	}
 
-	NewAssembly(
+	linkFatherAtoContainerA.SimpleLinkAssembly(
 		linkFatherAtoContainerA,
 		linkFatherBtoContainerB,
 		linkFatherCtoContainerC,
