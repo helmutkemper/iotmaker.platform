@@ -226,7 +226,7 @@ func (el *Link) SimpleLinkAssembly(father *Dimensions, container LinkCollection)
 //             +--------O-------+
 //                      C
 //
-//  Molde:
+//  Molde:teste
 //  +-father------------O-------------------+
 //  |                   |                   |
 //  |     +-containerA--O-------------+     |
