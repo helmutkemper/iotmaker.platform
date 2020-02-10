@@ -9,17 +9,23 @@ import (
 type Corner int
 
 const (
-	KCornerA Corner = iota
-	KCornerB
-	KCornerC
-	KCornerD
+	KContainerBLinkOnTopToContainerALinkOnTop Corner = iota
+	KContainerBLinkOnTopToContainerALinkOnBottom
+	KContainerBLinkOnBottomToContainerALinkOnBottom
+	KContainerBLinkOnLeftToContainerALinkOnLeft
+	KContainerBLinkOnRightToContainerALinkOnRight
 )
 
+type LinkCollection struct {
+	Top    *Link
+	Left   *Link
+	Right  *Link
+	Bottom *Link
+}
+
 type Link struct {
-	ContainerA  *Dimensions
-	CornerFromA Corner
-	ContainerB  *Dimensions
-	CornerFromB Corner
+	Container      *Dimensions
+	CornerToFather Corner
 }
 
 // en: It calculates the vertical position of the container when there is only the
@@ -37,7 +43,7 @@ type Link struct {
 //     |          |         |
 //     +----------O---------+
 //                C
-func (el *Link) LinkIsPresentAtTheBottom(containerA, containerB *Dimensions) {
+func (el *Dimensions) LinkIsPresentAtTheBottom(containerA, containerB *Dimensions) {
 	AY := containerA.Y
 	AHeight := containerA.Height
 	BHeight := containerB.Height
@@ -60,7 +66,7 @@ func (el *Link) LinkIsPresentAtTheBottom(containerA, containerB *Dimensions) {
 //     |                    |
 //     +----------O---------+
 //                C
-func (el *Link) LinkIsPresentAtTheTop(containerA, containerB *Dimensions) {
+func (el *Dimensions) LinkIsPresentAtTheTop(containerA, containerB *Dimensions) {
 	AY := containerA.Y
 	BTop := containerB.SpaceTop
 	containerB.Y = AY + BTop
@@ -81,7 +87,7 @@ func (el *Link) LinkIsPresentAtTheTop(containerA, containerB *Dimensions) {
 //     |          |         |
 //     +----------O---------+
 //                C
-func (el *Link) LinkIsPresentAtTheTopAndBottom(containerA, containerB *Dimensions) {
+func (el *Dimensions) LinkIsPresentAtTheTopAndBottom(containerA, containerB *Dimensions) {
 	AY := containerA.Y
 	AHeight := containerA.Height
 	CHeight := containerB.Height
@@ -110,7 +116,7 @@ func (el *Link) LinkIsPresentAtTheTopAndBottom(containerA, containerB *Dimension
 //     |                    |
 //     +----------O---------+
 //                C
-func (el *Link) LinkIsPresentAtTheRight(containerA, containerB *Dimensions) {
+func (el *Dimensions) LinkIsPresentAtTheRight(containerA, containerB *Dimensions) {
 	AX := containerA.X
 	AWidth := containerA.Width
 	CWidth := containerB.Width
@@ -132,7 +138,7 @@ func (el *Link) LinkIsPresentAtTheRight(containerA, containerB *Dimensions) {
 //     |                    |
 //     +----------O---------+
 //                C
-func (el *Link) LinkIsPresentAtTheLeft(containerA, containerB *Dimensions) {
+func (el *Dimensions) LinkIsPresentAtTheLeft(containerA, containerB *Dimensions) {
 	AX := containerA.X
 	containerB.X = AX
 }
@@ -152,61 +158,65 @@ func (el *Link) LinkIsPresentAtTheLeft(containerA, containerB *Dimensions) {
 //     |                    |
 //     +----------O---------+
 //                C
-func (el *Link) LinkIsPresentAtTheRightAndLeft(containerA, containerB *Dimensions) {
+func (el *Dimensions) LinkIsPresentAtTheRightAndLeft(containerA, containerB *Dimensions) {
 	AX := containerA.X
 	AWidth := containerA.Width
 	CWidth := containerB.Width
 	containerB.X = AX + AWidth/2 - CWidth/2
 }
 
-func (el *Link) SimpleLinkAssembly(linkA, linkB, linkC, linkD *Link) error {
+func (el *Link) LinkAssembly(father LinkCollection, list []LinkCollection) error {
 
-	//                      A
-	//             +--------O-------+
-	//             |        |aPass  |
-	//             | +------O-----+ |
-	//           D O-O dPass      O-O B bPass
-	//             | +------O-----+ |
-	//             |        |cPass  |
-	//             +--------O-------+
-	//                      C
-	aPass := !reflect.DeepEqual(*linkA, Link{})
-	bPass := !reflect.DeepEqual(*linkB, Link{})
-	cPass := !reflect.DeepEqual(*linkC, Link{})
-	dPass := !reflect.DeepEqual(*linkD, Link{})
+	return nil
+}
 
-	if aPass == false && cPass == false {
+func (el *Link) SimpleLinkAssembly(father *Dimensions, container LinkCollection) error {
+
+	//
+	// +-------------O------------+
+	// |             |topIsSet    |
+	// | +-----------O----------+ |
+	// O-O leftIsSet            O-O rightIsSet
+	// | +-----------O----------+ |
+	// |             |bottomIsSet |
+	// +-------------O------------+
+	topIsSet := !reflect.DeepEqual(*container.Top, Link{})
+	leftIsSet := !reflect.DeepEqual(*container.Left, Link{})
+	rightIsSet := !reflect.DeepEqual(*container.Right, Link{})
+	bottomIsSet := !reflect.DeepEqual(*container.Bottom, Link{})
+
+	if topIsSet == false && bottomIsSet == false {
 		return errors.New("this container can't be assembled. links a and c are not connected")
-	} else if aPass == false && cPass == true {
-		linkA.LinkIsPresentAtTheBottom(linkC.ContainerA, linkC.ContainerB)
-	} else if aPass == true && cPass == false {
-		linkA.LinkIsPresentAtTheTop(linkA.ContainerA, linkA.ContainerB)
-	} else if aPass == true && cPass == true {
-		linkA.LinkIsPresentAtTheTopAndBottom(linkA.ContainerA, linkA.ContainerB)
+	} else if topIsSet == false && bottomIsSet == true {
+		father.LinkIsPresentAtTheBottom(father, container.Bottom.Container)
+	} else if topIsSet == true && bottomIsSet == false {
+		father.LinkIsPresentAtTheTop(father, container.Top.Container)
+	} else if topIsSet == true && bottomIsSet == true {
+		father.LinkIsPresentAtTheTopAndBottom(father, container.Bottom.Container)
 	}
 
-	if dPass == false && bPass == false {
+	if leftIsSet == false && rightIsSet == false {
 		return errors.New("this container can't be assembled. links b and d are not connected")
-	} else if dPass == false && bPass == true {
-		linkA.LinkIsPresentAtTheRight(linkB.ContainerA, linkB.ContainerB)
-	} else if dPass == true && bPass == false {
-		linkA.LinkIsPresentAtTheLeft(linkD.ContainerA, linkD.ContainerB)
-	} else if dPass == true && bPass == true {
-		linkA.LinkIsPresentAtTheRightAndLeft(linkD.ContainerA, linkD.ContainerB)
+	} else if leftIsSet == false && rightIsSet == true {
+		father.LinkIsPresentAtTheRight(father, container.Right.Container)
+	} else if leftIsSet == true && rightIsSet == false {
+		father.LinkIsPresentAtTheLeft(father, container.Left.Container)
+	} else if leftIsSet == true && rightIsSet == true {
+		father.LinkIsPresentAtTheRightAndLeft(father, container.Right.Container)
 	}
 
 	return nil
 }
 
-//                A
-//     +----------O---------+
-//     |                    |
-//     |   +------O-----+   |
-//   D O   O            O   O B
-//     |   +------O-----+   |
-//     |                    |
-//     +----------O---------+
-//                C
+//                Top
+//      +----------O---------+
+//      |                    |
+//      |   +------O-----+   |
+// Left O   O            O   O Right
+//      |   +------O-----+   |
+//      |                    |
+//      +----------O---------+
+//               Bottom
 //
 //                      A
 //             +--------O-------+
@@ -216,23 +226,278 @@ func (el *Link) SimpleLinkAssembly(linkA, linkB, linkC, linkD *Link) error {
 //             +--------O-------+
 //                      C
 //
+//  Molde:
 //  +-father------------O-------------------+
 //  |                   |                   |
 //  |     +-containerA--O-------------+     |
 //  |     |                           |     |
-//  |  +--O                           O--+  |
-//  |  |  |                           |  |  |
-//  |  |  +-------------O-------------+  |  |
-//  O--+                |                +--O
-//  |  |  +-containerB--O-------------+  |  |
-//  |  |  |                           |  |  |
-//  |  +--O                           O--+  |
+//  O-----O                           O-----O
+//  |     |                           |     |
+//  |     +-------------O-------------+     |
+//  |                   |                   |
+//  |     +-containerB--O-------------+     |
+//  |     |                           |     |
+//  O-----O                           O-----O
 //  |     |                           |     |
 //  |     +-------------O-------------+     |
 //  |                   |                   |
 //  +-------------------O-------------------+
 //
+//  Ponto de vista horizontal
+//  Option: A - cada container é centralizado em relação ao pai
+//  Correto:
+//  +-father--------------------------------+
+//  |                                       |
+//  |     +-containerA----------------+     |
+//  |     |                           |     |
+//  O-----O                           O-----O
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  |     +-containerB----------------+     |
+//  |     |                           |     |
+//  O-----O                           O-----O
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  +---------------------------------------+
+//
+//  Ponto de vista horizontal
+//  Option: B - cada container é alinhado a direita em relação ao pai
+//  Correto:
+//  +-father--------------------------------+
+//  |                                       |
+//  |     +-containerA----------------+     |
+//  |     |                           |     |
+//  |     |                           O-----O
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  |     +-containerB----------------+     |
+//  |     |                           |     |
+//  |     |                           O-----O
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  +---------------------------------------+
+//
+//  Ponto de vista horizontal
+//  Option: C - cada container é alinhado a esquerda em relação ao pai
+//  Correto:
+//  +-father--------------------------------+
+//  |                                       |
+//  |     +-containerA----------------+     |
+//  |     |                           |     |
+//  O-----O                           |     |
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  |     +-containerB----------------+     |
+//  |     |                           |     |
+//  O-----O                           |     |
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  +---------------------------------------+
+//
+//  Ponto de vista horizontal
+//  Option: D - os containers a e b têm o seu tamanho ajustados pelo maior
+//              o container a é centralizado pelo pai
+//              o container b y é ajustado por a y
+//  Correto:
+//  +-father--------------------------------+
+//  |                                       |
+//  |     +-containerA----------------+     |
+//  |     |                           |     |
+//  O--+--O a link to father          O--+--O
+//  |  |  |                           |  |  |
+//  |  |  +---------------------------+  |  |
+//  |  |                                 |  |
+//  |  |  +-containerB----------------+  |  |
+//  |  |  |                           |  |  |
+//  |  +--O b link to a               O--+  |
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  +---------------------------------------+
+//
+//  Ponto de vista horizontal
+//  Option: E - o container a é ajustado a direita pelo pai
+//              o container b y+w é ajustado por a y+w
+//              w não é alterado nem em a nem em b
+//  Correto:
+//  +-father--------------------------------+
+//  |                                       |
+//  |     +-containerA----------------+     |
+//  |     |                           |     |
+//  |     | a link to father          O--+--O
+//  |     |                           |  |  |
+//  |     +---------------------------+  |  |
+//  |                                    |  |
+//  |     +-containerB----------------+  |  |
+//  |     |                           |  |  |
+//  |     | b link to a               O--+  |
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  +---------------------------------------+
+//
+//  Ponto de vista horizontal
+//  Option: F - o container a é ajustado a direita pelo pai
+//              o container b y+w é ajustado por a y+w
+//              w é alterado pelo maior
+//  Correto:
+//  +-father--------------------------------+
+//  |                                       |
+//  |     +-containerA----------------+     |
+//  |     |                           |     |
+//  |  +--O a link to father          O--+--O
+//  |  |  |                           |  |  |
+//  |  |  +---------------------------+  |  |
+//  |  |                                 |  |
+//  |  |  +-containerB----------------+  |  |
+//  |  |  |                           |  |  |
+//  |  +--O b link to a               O--+  |
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  +---------------------------------------+
+//
+//  Ponto de vista horizontal
+//  Option: G
+//  Correto:
+//  +-father--------------------------------+
+//  |                                       |
+//  |     +-containerA----------------+     |
+//  |     |                           |     |
+//  O--+--O a link to father          |     |
+//  |  |  |                           |     |
+//  |  |  +---------------------------+     |
+//  |  |                                    |
+//  |  |  +-containerB----------------+     |
+//  |  |  |                           |     |
+//  |  +--O b link to a               |     |
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  +---------------------------------------+
+//
+//  Ponto de vista horizontal
+//  Option: H
+//  Correto:
+//  +-father--------------------------------+
+//  |                                       |
+//  |     +-containerA----------------+     |
+//  |     |                           |     |
+//  O--+--O a link to father          O--+  |
+//  |  |  |                           |  |  |
+//  |  |  +---------------------------+  |  |
+//  |  |                                 |  |
+//  |  |  +-containerB----------------+  |  |
+//  |  |  |                           |  |  |
+//  |  +--O b link to a               O--+  |
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  +---------------------------------------+
+//
+//  Ponto de vista horizontal
+//  Option: I
+//  Correto:
+//  +-father--------------------------------+
+//  |                                       |
+//  |     +-containerA----------------+     |
+//  |     |                           |     |
+//  |  +--O                           O-----O
+//  |  |  |                           |     |
+//  |  |  +---------------------------+     |
+//  |  |                                    |
+//  |  |  +-containerB----------------+     |
+//  |  |  |                           |     |
+//  |  +--O                           O-----O
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  +---------------------------------------+
+//
+//  Ponto de vista horizontal
+//  Option: J
+//  Correto:
+//  +-father--------------------------------+
+//  |                                       |
+//  |     +-containerA----------------+     |
+//  |     |                           |     |
+//  O-----O                           O--+  |
+//  |     |                           |  |  |
+//  |     +---------------------------+  |  |
+//  |                                    |  |
+//  |     +-containerB----------------+  |  |
+//  |     |                           |  |  |
+//  O-----O                           O--+  |
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  +---------------------------------------+
+//
+//  Ponto de vista horizontal
+//  Errado:
+//  +-father--------------------------------+
+//  |                                       |
+//  |     +-containerA----------------+     |
+//  |     |                           |     |
+//  |  +--O                           O--+  |
+//  |  |  |                           |  |  |
+//  |  |  +---------------------------+  |  |
+//  X  |                                 |  X
+//  |  |  +-containerB----------------+  |  |
+//  |  |  |                           |  |  |
+//  |  +--O                           O--+  |
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  +---------------------------------------+
+//
+//  Ponto de vista horizontal
+//  Errado:
+//  +-father--------------------------------+
+//  |                                       |
+//  |     +-containerA----------------+     |
+//  |     |                           |     |
+//  |  +--O                           O-----O
+//  |  |  |                           |     |
+//  |  |  +---------------------------+     |
+//  X  |                                    |
+//  |  |  +-containerB----------------+     |
+//  |  |  |                           |     |
+//  |  +--O                           X     |
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  +---------------------------------------+
+//
+//  +-father--------------------------------O---------------------------------------+
+//  |                                       |                                       |
+//  |                   +-------------------+-------------------+                   |
+//  |                   |                                       |                   |
+//  |     +-containerA--O-------------+           +-containerB--O-------------+     |
+//  |     |                           |           |                           |     |
+//  |  +--O                           O-----------O                           O--+  |
+//  |  |  |                           |           |                           |  |  |
+//  |  |  +-------------O-------------+           +-------------O-------------+  |  |
+//  O--+                |                                       |                +--O
+//  |  |  +-containerC--O-------------+           +-containerD--O-------------+  |  |
+//  |  |  |                           |           |                           |  |  |
+//  |  +--O                           O-----------O                           O--+  |
+//  |     |                           |           |                           |     |
+//  |     +-------------O-------------+           +-------------O-------------+     |
+//  |                   |                                       |                   |
+//  |                   +-------------------+-------------------+                   |
+//  |                                       |                                       |
+//  +---------------------------------------O---------------------------------------+
+//
 type Dimensions struct {
+	Level int
+
 	X      int
 	Y      int
 	Width  int
@@ -302,79 +567,44 @@ func NewContainerWithSpace(width, height, left, right, top, bottom int) *Dimensi
 }
 
 // Warning: Father aways must be containerA
-func NewLink(containerA, containerB *Dimensions, cornerFromA, cornerFromB Corner) (error, *Link) {
-	switch cornerFromA {
-	case KCornerA:
-		fallthrough
-	case KCornerC:
-
-		if cornerFromB == KCornerB || cornerFromB == KCornerD {
-			return errors.New("corners b and d must be linked to corners a and c"), &Link{}
-		}
-
-		return nil, &Link{
-			ContainerA:  containerA,
-			CornerFromA: cornerFromA,
-			ContainerB:  containerB,
-			CornerFromB: cornerFromB,
-		}
-
-	case KCornerB:
-		fallthrough
-	case KCornerD:
-
-		if cornerFromB == KCornerA || cornerFromB == KCornerC {
-			return errors.New("corners a and c must be linked to corners a and c"), &Link{}
-		}
-
-		return nil, &Link{
-			ContainerA:  containerA,
-			CornerFromA: cornerFromA,
-			ContainerB:  containerB,
-			CornerFromB: cornerFromB,
-		}
+// Warning: The link should always be in the container children to be the container Father
+func NewLink(container *Dimensions, cornerBToA Corner) *Link {
+	return &Link{
+		Container:      container,
+		CornerToFather: cornerBToA,
 	}
-
-	return errors.New("corners a and c must be linked to corners a and c, and corners b and d must be linked to corners b and d"), &Link{}
 }
 
 func Test() []Dimensions {
 	var err error
 
-	var linkFatherAtoContainerA = &Link{}
-	var linkFatherBtoContainerB = &Link{}
-	var linkFatherCtoContainerC = &Link{}
-	var linkFatherDtoContainerD = &Link{}
+	var linkFatherTopToContainerATop = &Link{}
+	var linkFatherLeftToContainerALeft = &Link{}
+	var linkFatherRightToContainerARight = &Link{}
+	var linkFatherBottomToContainerABottom = &Link{}
 
-	father := NewContainer(600, 300)
-	containerA := NewContainerWidthXY(10, 10, 300, 100)
-	containerB := NewContainerWidthXY(10, 120, 300, 100)
-	err, linkFatherAtoContainerA = NewLink(father, containerA, KCornerA, KCornerA)
-	if err != nil {
-		fmt.Printf("error: %v\n", err)
-	}
-	err, linkFatherBtoContainerB = NewLink(father, containerA, KCornerB, KCornerB)
-	if err != nil {
-		fmt.Printf("error: %v\n", err)
-	}
-	err, linkFatherCtoContainerC = NewLink(father, containerA, KCornerC, KCornerC)
-	if err != nil {
-		fmt.Printf("error: %v\n", err)
-	}
-	err, linkFatherDtoContainerD = NewLink(father, containerA, KCornerD, KCornerD)
-	if err != nil {
-		fmt.Printf("error: %v\n", err)
+	containerA := NewContainerWidthXY(300, 100, 300, 150)
+	containerB := NewContainerWidthXY(300, 150, 600, 300)
+
+	linkFatherTopToContainerATop = NewLink(containerB, KContainerBLinkOnTopToContainerALinkOnTop)
+	linkFatherLeftToContainerALeft = NewLink(containerB, KContainerBLinkOnLeftToContainerALinkOnLeft)
+	linkFatherRightToContainerARight = NewLink(containerB, KContainerBLinkOnRightToContainerALinkOnRight)
+	linkFatherBottomToContainerABottom = NewLink(containerB, KContainerBLinkOnBottomToContainerALinkOnBottom)
+
+	collection := LinkCollection{
+		Top:    linkFatherTopToContainerATop,
+		Left:   linkFatherLeftToContainerALeft,
+		Right:  linkFatherRightToContainerARight,
+		Bottom: linkFatherBottomToContainerABottom,
 	}
 
-	err = linkFatherAtoContainerA.SimpleLinkAssembly(
-		linkFatherAtoContainerA,
-		linkFatherBtoContainerB,
-		linkFatherCtoContainerC,
-		linkFatherDtoContainerD,
+	err = linkFatherTopToContainerATop.SimpleLinkAssembly(
+		containerA,
+		collection,
 	)
 	if err != nil {
 		fmt.Printf("SimpleLinkAssembly().error: %v\n", err.Error())
 	}
 
-	return []Dimensions{*father, *containerA, *containerB}
+	return []Dimensions{*containerA, *containerB}
 }
