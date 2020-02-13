@@ -33,6 +33,7 @@ const (
 )
 
 type Link struct {
+	ToDebug          string
 	ContainerA       *Dimensions
 	ContainerAFather bool
 	ContainerB       *Dimensions
@@ -510,7 +511,8 @@ func (el *Link) LinkAssembly(father Link, list []Link) error {
 //  +---------------------------------------O---------------------------------------+
 //
 type Dimensions struct {
-	Level int
+	ToDebug string
+	Level   int
 
 	X      int
 	Y      int
@@ -524,8 +526,10 @@ type Dimensions struct {
 	SpaceBottom int
 }
 
-func NewContainer(width, height int) *Dimensions {
+func NewContainer(debug string, width, height int) *Dimensions {
 	return &Dimensions{
+		ToDebug: debug,
+
 		X:      0,
 		Y:      0,
 		Width:  width,
@@ -538,8 +542,10 @@ func NewContainer(width, height int) *Dimensions {
 	}
 }
 
-func NewContainerWidthXY(x, y, width, height int) *Dimensions {
+func NewContainerWidthXY(debug string, x, y, width, height int) *Dimensions {
 	return &Dimensions{
+		ToDebug: debug,
+
 		X:      x,
 		Y:      y,
 		Width:  width,
@@ -580,8 +586,9 @@ func NewContainerWithSpace(width, height, left, right, top, bottom int) *Dimensi
 	}
 }
 
-func NewLink(containerA, containerB *Dimensions, top CornerTop, left CornerLeft, right CornerRight, bottom CornerBottom) *Link {
+func NewLink(debug string, containerA, containerB *Dimensions, top CornerTop, left CornerLeft, right CornerRight, bottom CornerBottom) *Link {
 	return &Link{
+		ToDebug:          debug,
 		ContainerA:       containerA,
 		ContainerAFather: false,
 		ContainerB:       containerB,
@@ -592,8 +599,9 @@ func NewLink(containerA, containerB *Dimensions, top CornerTop, left CornerLeft,
 	}
 }
 
-func NewLinkWithFather(father, containerB *Dimensions, top CornerTop, left CornerLeft, right CornerRight, bottom CornerBottom) *Link {
+func NewLinkWithFather(debug string, father, containerB *Dimensions, top CornerTop, left CornerLeft, right CornerRight, bottom CornerBottom) *Link {
 	return &Link{
+		ToDebug:          debug,
 		ContainerA:       father,
 		ContainerAFather: true,
 		ContainerB:       containerB,
