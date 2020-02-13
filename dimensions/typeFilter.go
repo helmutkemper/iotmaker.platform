@@ -2,6 +2,17 @@ package dimensions
 
 type Filter struct{}
 
+func (el Filter) FilterContainerFather(list []*Link) []*Dimensions {
+	ret := make([]*Dimensions, 0)
+	for _, link := range list {
+		if link.ContainerAFather == true {
+			ret = append(ret, link.ContainerA)
+		}
+	}
+
+	return ret
+}
+
 func (el Filter) LinkAssemblyCheckIfFatherExistsAndHasOnlyOne(list []*Link) bool {
 	counter := 0
 	for _, link := range list {
@@ -11,39 +22,6 @@ func (el Filter) LinkAssemblyCheckIfFatherExistsAndHasOnlyOne(list []*Link) bool
 	}
 
 	return counter == 1
-}
-
-//  Ponto de vista horizontal
-//  Option: A - cada container é centralizado em relação ao pai
-//  Correto:
-//  +-father--------------------------------+
-//  |                                       |
-//  |     +-containerA----------------+     |
-//  |     |                           |     |
-//  O-----O                           O-----O
-//  |     |                           |     |
-//  |     +---------------------------+     |
-//  |                                       |
-//  |     +-containerB----------------+     |
-//  |     |                           |     |
-//  O-----O                           O-----O
-//  |     |                           |     |
-//  |     +---------------------------+     |
-//  |                                       |
-//  +---------------------------------------+
-func (el Filter) LinkAssemblyHorizontalCheckEachContainerIsCentralizedInRelationToTheFather(list []*Link) bool {
-	for _, link := range list {
-		fatherPass := link.ContainerAFather == true
-		rightPass := link.Right == KCornerRightContainerBLinkOnRightToContainerALinkOnRight
-		leftPass := link.Left == KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft
-
-		pass := rightPass && leftPass && fatherPass
-		if pass == false {
-			return false
-		}
-	}
-
-	return true
 }
 
 //  Ponto de vista horizontal
@@ -99,39 +77,6 @@ func (el Filter) LinkAssemblyHorizontalFilterContainerIsCentralizedInRelationToT
 //  |     +---------------------------+     |
 //  |                                       |
 //  +---------------------------------------+
-func (el Filter) LinkAssemblyHorizontalCheckEachContainerIsAlignsFromTheRightInRelationToTheFather(list []Link) bool {
-	for _, link := range list {
-		fatherPass := link.ContainerAFather == true
-		rightPass := link.Right == KCornerRightContainerBLinkOnRightToContainerALinkOnRight
-		leftPass := link.Left == KCornerLeftNotSet
-
-		pass := rightPass && leftPass && fatherPass
-		if pass == false {
-			return false
-		}
-	}
-
-	return true
-}
-
-//  Ponto de vista horizontal
-//  Option: B - cada container é alinhado a direita em relação ao pai
-//  Correto:
-//  +-father--------------------------------+
-//  |                                       |
-//  |     +-containerA----------------+     |
-//  |     |                           |     |
-//  |     |                           O-----O
-//  |     |                           |     |
-//  |     +---------------------------+     |
-//  |                                       |
-//  |     +-containerB----------------+     |
-//  |     |                           |     |
-//  |     |                           O-----O
-//  |     |                           |     |
-//  |     +---------------------------+     |
-//  |                                       |
-//  +---------------------------------------+
 func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheRightInRelationToTheFather(list []*Link) []*Link {
 	ret := make([]*Link, 0)
 
@@ -150,36 +95,87 @@ func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheRightIn
 }
 
 //  Ponto de vista horizontal
-//  Option: C - cada container é alinhado a esquerda em relação ao pai
+//  Option: cada container é alinhado a direita em relação ao container A
 //  Correto:
-//  +-father--------------------------------+
-//  |                                       |
-//  |     +-containerA----------------+     |
-//  |     |                           |     |
-//  O-----O                           |     |
-//  |     |                           |     |
-//  |     +---------------------------+     |
-//  |                                       |
-//  |     +-containerB----------------+     |
-//  |     |                           |     |
-//  O-----O                           |     |
-//  |     |                           |     |
-//  |     +---------------------------+     |
-//  |                                       |
-//  +---------------------------------------+
-func (el Filter) LinkAssemblyHorizontalCheckEachContainerIsAlignsFromTheLeftInRelationToTheFather(list []*Link) bool {
-	for _, link := range list {
-		fatherPass := link.ContainerAFather == true
-		rightPass := link.Right == KCornerRightNotSet
-		leftPass := link.Left == KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft
+//  +-father----------------------------------+
+//  |                                         |
+//  |     +-containerA----------------+       |
+//  |     |                           |       |
+//  |     |                           O--+-+  |
+//  |     |                           |  | |  |
+//  |     +---------------------------+  | |  |
+//  |                                    | |  |
+//  |     +-containerB----------------+  | |  |
+//  |     |                           |  | |  |
+//  |     |                           O--+ |  |
+//  |     |                           |    |  |
+//  |     +---------------------------+    |  |
+//  |                                      |  |
+//  |     +-containerC----------------+    |  |
+//  |     |                           |    |  |
+//  |     |                           O----+  |
+//  |     |                           |       |
+//  |     +---------------------------+       |
+//  |                                         |
+//  +-----------------------------------------+
+func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheRightInRelationToAnother(container *Dimensions, list []*Link) []*Link {
+	ret := make([]*Link, 0)
 
-		pass := rightPass && leftPass && fatherPass
-		if pass == false {
-			return false
+	for _, link := range list {
+		containerAPass := link.ContainerA == container
+		containerBPass := link.ContainerB == container
+		rightPass := link.Right == KCornerRightContainerBLinkOnRightToContainerALinkOnRight
+		leftPass := link.Left == KCornerLeftNotSet
+
+		pass := rightPass && leftPass && (containerAPass || containerBPass)
+		if pass == true {
+			ret = append(ret, link)
 		}
 	}
 
-	return true
+	return ret
+}
+
+//  Ponto de vista horizontal
+//  Option: cada container é alinhado a direita em relação ao container A
+//  Correto:
+//  +-father----------------------------------+
+//  |                                           |
+//  |       +-containerA----------------+       |
+//  |       |                           |       |
+//  |  +-+--O                           O--+-+  |
+//  |  | |  |                           |  | |  |
+//  |  | |  +---------------------------+  | |  |
+//  |  | |                                 | |  |
+//  |  | |  +-containerB----------------+  | |  |
+//  |  | |  |                           |  | |  |
+//  |  | +--O                           O--+ |  |
+//  |  |    |                           |    |  |
+//  |  |    +---------------------------+    |  |
+//  |  |                                     |  |
+//  |  |    +-containerC----------------+    |  |
+//  |  |    |                           |    |  |
+//  |  +----O                           O----+  |
+//  |       |                           |       |
+//  |       +---------------------------+       |
+//  |                                           |
+//  +-------------------------------------------+
+func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheRightAndTheLeftInRelationToAnother(container *Dimensions, list []*Link) []*Link {
+	ret := make([]*Link, 0)
+
+	for _, link := range list {
+		containerAPass := link.ContainerA == container
+		containerBPass := link.ContainerB == container
+		rightPass := link.Right == KCornerRightContainerBLinkOnRightToContainerALinkOnRight
+		leftPass := link.Left == KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft
+
+		pass := rightPass && leftPass && (containerAPass || containerBPass)
+		if pass == true {
+			ret = append(ret, link)
+		}
+	}
+
+	return ret
 }
 
 //  Ponto de vista horizontal
@@ -209,6 +205,48 @@ func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheLeftInR
 		leftPass := link.Left == KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft
 
 		pass := rightPass && leftPass && fatherPass
+		if pass == true {
+			ret = append(ret, link)
+		}
+	}
+
+	return ret
+}
+
+//  Ponto de vista horizontal
+//  Option: cada container é alinhado a direita em relação ao container A
+//  Correto:
+//  +-father--------------------------------+
+//  |                                       |
+//  |       +-containerA----------------+   |
+//  |       |                           |   |
+//  |  +-+--O                           |   |
+//  |  | |  |                           |   |
+//  |  | |  +---------------------------+   |
+//  |  | |                                  |
+//  |  | |  +-containerB----------------+   |
+//  |  | |  |                           |   |
+//  |  | +--O                           |   |
+//  |  |    |                           |   |
+//  |  |    +---------------------------+   |
+//  |  |                                    |
+//  |  |    +-containerC----------------+   |
+//  |  |    |                           |   |
+//  |  +----O                           |   |
+//  |       |                           |   |
+//  |       +---------------------------+   |
+//  |                                       |
+//  +---------------------------------------+
+func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheLeftInRelationToAnother(container *Dimensions, list []*Link) []*Link {
+	ret := make([]*Link, 0)
+
+	for _, link := range list {
+		containerAPass := link.ContainerA == container
+		containerBPass := link.ContainerB == container
+		rightPass := link.Right == KCornerRightNotSet
+		leftPass := link.Left == KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft
+
+		pass := rightPass && leftPass && (containerAPass || containerBPass)
 		if pass == true {
 			ret = append(ret, link)
 		}

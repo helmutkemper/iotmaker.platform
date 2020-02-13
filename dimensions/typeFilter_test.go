@@ -4,6 +4,51 @@ import (
 	"fmt"
 )
 
+func ExampleFilterContainerFather() {
+
+	father := NewContainer(300, 600)
+	containerA := NewContainerWidthXY(10, 10, 100, 100)
+	containerB := NewContainerWidthXY(10, 120, 100, 100)
+	containerC := NewContainerWidthXY(10, 240, 100, 100)
+
+	linkAToFather := NewLinkWithFather(
+		father,
+		containerA,
+		KCornerTopContainerBLinkOnTopToContainerALinkOnTop,
+		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
+		KCornerBottomContainerBLinkOnBottomToContainerALinkOnBottom,
+	)
+	linkAToB := NewLink(
+		containerA,
+		containerB,
+		KCornerTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
+		KCornerBottomNotSet,
+	)
+	linkAToC := NewLink(
+		containerA,
+		containerC,
+		KCornerTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
+		KCornerBottomNotSet,
+	)
+
+	listLink := []*Link{linkAToFather, linkAToB, linkAToC}
+
+	filter := Filter{}
+	retDimensions := filter.FilterContainerFather(listLink)
+
+	if len(retDimensions) == 1 && retDimensions[0] == father {
+		fmt.Println("passou")
+	}
+
+	// output:
+	// passou
+}
+
 //  +-father----------------------------------+
 //  |                                         |
 //  |      +-containerA----------------+      |
