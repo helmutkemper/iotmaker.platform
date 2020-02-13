@@ -1,113 +1,74 @@
 package dimensions
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
-// en: Explication:
-//
-// pt_br: Explicação
-//
-//  +-father----------O-----------------+
-//  |                 |                 |
-//  |   +-containerA--O-------------+   |
-//  |   |                           |   |
-//  O---O                           O---O
-//  |   |                           |   |
-//  |   +-------------O-------------+   |
-//  |                 |                 |
-//  +-----------------O-----------------+
-func ExampleLink_SimpleLinkAssembly_1() {
-	var err error
+func ExampleNewLink() {
 
-	var linkFatherTopToContainerATop = &Link{}
-	var linkFatherLeftToContainerALeft = &Link{}
-	var linkFatherRightToContainerARight = &Link{}
-	var linkFatherBottomToContainerABottom = &Link{}
+	father := NewContainer(300, 600)
+	containerA := NewContainerWidthXY(10, 10, 100, 100)
+	containerB := NewContainerWidthXY(10, 120, 100, 100)
+	containerC := NewContainerWidthXY(10, 240, 100, 100)
 
-	father := NewContainer(600, 300)
-	containerA := NewContainerWidthXY(10, 10, 300, 100)
-
-	linkFatherTopToContainerATop = NewLink(containerA, KContainerBLinkOnTopToContainerALinkOnTop)
-	linkFatherLeftToContainerALeft = NewLink(containerA, KContainerBLinkOnLeftToContainerALinkOnLeft)
-	linkFatherRightToContainerARight = NewLink(containerA, KContainerBLinkOnRightToContainerALinkOnRight)
-	linkFatherBottomToContainerABottom = NewLink(containerA, KContainerBLinkOnBottomToContainerALinkOnBottom)
-
-	collection := LinkCollection{
-		Top:    linkFatherTopToContainerATop,
-		Left:   linkFatherLeftToContainerALeft,
-		Right:  linkFatherRightToContainerARight,
-		Bottom: linkFatherBottomToContainerABottom,
-	}
-
-	err = linkFatherTopToContainerATop.SimpleLinkAssembly(
+	linkAToFather := NewLinkWithFather(
 		father,
-		collection,
-	)
-	if err != nil {
-		fmt.Printf("SimpleLinkAssembly().error: %v\n", err.Error())
-	}
-
-	fmt.Printf("father.X: %v\n", father.X)
-	fmt.Printf("father.Y: %v\n", father.Y)
-	fmt.Printf("father.W: %v\n", father.Width)
-	fmt.Printf("father.H: %v\n", father.Height)
-
-	fmt.Printf("containerA.X: %v\n", containerA.X)
-	fmt.Printf("containerA.Y: %v\n", containerA.Y)
-	fmt.Printf("containerA.W: %v\n", containerA.Width)
-	fmt.Printf("containerA.H: %v\n", containerA.Height)
-
-	// Output:
-	// father.X: 0
-	// father.Y: 0
-	// father.W: 600
-	// father.H: 300
-	// containerA.X: 150
-	// containerA.Y: 100
-	// containerA.W: 300
-	// containerA.H: 100
-}
-
-func ExampleLink_SimpleLinkAssembly_2() {
-	var err error
-
-	var linkFatherTopToContainerATop = &Link{}
-	var linkFatherLeftToContainerALeft = &Link{}
-	var linkFatherRightToContainerARight = &Link{}
-	var linkFatherBottomToContainerABottom = &Link{}
-
-	containerA := NewContainer(300, 150)
-	containerB := NewContainerWidthXY(10, 10, 600, 300)
-
-	linkFatherTopToContainerATop = NewLink(containerB, KContainerBLinkOnTopToContainerALinkOnTop)
-	linkFatherLeftToContainerALeft = NewLink(containerB, KContainerBLinkOnLeftToContainerALinkOnLeft)
-	linkFatherRightToContainerARight = NewLink(containerB, KContainerBLinkOnRightToContainerALinkOnRight)
-	linkFatherBottomToContainerABottom = NewLink(containerB, KContainerBLinkOnBottomToContainerALinkOnBottom)
-
-	collection := LinkCollection{
-		Top:    linkFatherTopToContainerATop,
-		Left:   linkFatherLeftToContainerALeft,
-		Right:  linkFatherRightToContainerARight,
-		Bottom: linkFatherBottomToContainerABottom,
-	}
-
-	err = linkFatherTopToContainerATop.SimpleLinkAssembly(
 		containerA,
-		collection,
+		KCornerTopContainerBLinkOnTopToContainerALinkOnTop,
+		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
+		KCornerBottomContainerBLinkOnBottomToContainerALinkOnBottom,
 	)
-	if err != nil {
-		fmt.Printf("SimpleLinkAssembly().error: %v\n", err.Error())
+	linkAToB := NewLink(
+		containerA,
+		containerB,
+		KCornerTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
+		KCornerBottomNotSet,
+	)
+	linkAToC := NewLink(
+		containerA,
+		containerC,
+		KCornerTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
+		KCornerBottomNotSet,
+	)
+
+	list := []*Link{linkAToFather, linkAToB, linkAToC}
+
+	filter := Filter{}
+	ret := filter.LinkAssemblyHorizontalFilterContainerIsCentralizedInRelationToTheFather(list)
+
+	if len(ret) == 1 && reflect.DeepEqual(ret[0], *linkAToFather) {
+		fmt.Println("passou")
 	}
 
-	fmt.Printf("containerA.X: %v\n", containerA.X)
-	fmt.Printf("containerA.Y: %v\n", containerA.Y)
-	fmt.Printf("containerA.W: %v\n", containerA.Width)
-	fmt.Printf("containerA.H: %v\n", containerA.Height)
+	ret = filter.LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheLeftAndTheRightInRelationToAnotherContainer(containerA, list)
+	if len(ret) == 3 {
 
-	fmt.Printf("containerB.X: %v\n", containerB.X)
-	fmt.Printf("containerB.Y: %v\n", containerB.Y)
-	fmt.Printf("containerB.W: %v\n", containerB.Width)
-	fmt.Printf("containerB.H: %v\n", containerB.Height)
+		afPass := reflect.DeepEqual(ret[0], *linkAToFather)
+		abPass := reflect.DeepEqual(ret[1], *linkAToB)
+		acPass := reflect.DeepEqual(ret[2], *linkAToC)
+		pass := afPass && abPass && acPass
+		if pass == true {
+			fmt.Println("passou")
+		}
+	}
 
-	// Output:
-	//
+	ret = filter.LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheLeftAndTheRightInRelationToAnotherContainer(containerB, list)
+	if len(ret) == 1 {
+
+		abPass := reflect.DeepEqual(ret[0], *linkAToB)
+		if abPass == true {
+			fmt.Println("passou")
+		}
+	}
+
+	// output:
+	// passou
+	// passou
+	// passou
 }

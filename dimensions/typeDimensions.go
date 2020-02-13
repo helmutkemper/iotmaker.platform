@@ -1,31 +1,45 @@
 package dimensions
 
-import (
-	"errors"
-	"fmt"
-	"reflect"
-)
-
-type Corner int
+type CornerTop int
 
 const (
-	KContainerBLinkOnTopToContainerALinkOnTop Corner = iota
-	KContainerBLinkOnTopToContainerALinkOnBottom
-	KContainerBLinkOnBottomToContainerALinkOnBottom
-	KContainerBLinkOnLeftToContainerALinkOnLeft
-	KContainerBLinkOnRightToContainerALinkOnRight
+	KCornerTopNotSet CornerTop = iota
+	KCornerTopContainerBLinkOnTopToContainerALinkOnTop
+	KCornerTopContainerBLinkOnTopToContainerALinkOnBottom
+	KCornerTopContainerBLinkOnBottomToContainerALinkOnBottom
 )
 
-type LinkCollection struct {
-	Top    *Link
-	Left   *Link
-	Right  *Link
-	Bottom *Link
-}
+type CornerBottom int
+
+const (
+	KCornerBottomNotSet CornerBottom = iota
+	KCornerBottomContainerBLinkOnTopToContainerALinkOnTop
+	KCornerBottomContainerBLinkOnTopToContainerALinkOnBottom
+	KCornerBottomContainerBLinkOnBottomToContainerALinkOnBottom
+)
+
+type CornerLeft int
+
+const (
+	KCornerLeftNotSet CornerLeft = iota
+	KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft
+)
+
+type CornerRight int
+
+const (
+	KCornerRightNotSet CornerRight = iota
+	KCornerRightContainerBLinkOnRightToContainerALinkOnRight
+)
 
 type Link struct {
-	Container      *Dimensions
-	CornerToFather Corner
+	ContainerA       *Dimensions
+	ContainerAFather bool
+	ContainerB       *Dimensions
+	Top              CornerTop
+	Left             CornerLeft
+	Right            CornerRight
+	Bottom           CornerBottom
 }
 
 // en: It calculates the vertical position of the container when there is only the
@@ -165,12 +179,310 @@ func (el *Dimensions) LinkIsPresentAtTheRightAndLeft(containerA, containerB *Dim
 	containerB.X = AX + AWidth/2 - CWidth/2
 }
 
-func (el *Link) LinkAssembly(father LinkCollection, list []LinkCollection) error {
+func (el *Link) LinkAssembly(father Link, list []Link) error {
 
 	return nil
 }
 
-func (el *Link) SimpleLinkAssembly(father *Dimensions, container LinkCollection) error {
+type Filter struct{}
+
+func (el Filter) LinkAssemblyCheckIfFatherExistsAndHasOnlyOne(list []Link) bool {
+	counter := 0
+	for _, link := range list {
+		if link.ContainerAFather == true {
+			counter += 1
+		}
+	}
+
+	return counter == 1
+}
+
+//  Ponto de vista horizontal
+//  Option: A - cada container é centralizado em relação ao pai
+//  Correto:
+//  +-father--------------------------------+
+//  |                                       |
+//  |     +-containerA----------------+     |
+//  |     |                           |     |
+//  O-----O                           O-----O
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  |     +-containerB----------------+     |
+//  |     |                           |     |
+//  O-----O                           O-----O
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  +---------------------------------------+
+func (el Filter) LinkAssemblyHorizontalCheckEachContainerIsCentralizedInRelationToTheFather(list []Link) bool {
+	for _, link := range list {
+		fatherPass := link.ContainerAFather == true
+		rightPass := link.Right == KCornerRightContainerBLinkOnRightToContainerALinkOnRight
+		leftPass := link.Left == KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft
+
+		pass := rightPass && leftPass && fatherPass
+		if pass == false {
+			return false
+		}
+	}
+
+	return true
+}
+
+//  Ponto de vista horizontal
+//  Option: A - cada container é centralizado em relação ao pai
+//  Correto:
+//  +-father--------------------------------+
+//  |                                       |
+//  |     +-containerA----------------+     |
+//  |     |                           |     |
+//  O-----O                           O-----O
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  |     +-containerB----------------+     |
+//  |     |                           |     |
+//  O-----O                           O-----O
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  +---------------------------------------+
+func (el Filter) LinkAssemblyHorizontalFilterContainerIsCentralizedInRelationToTheFather(list []*Link) []Link {
+
+	ret := make([]Link, 0)
+	for _, link := range list {
+		fatherPass := link.ContainerAFather == true
+		rightPass := link.Right == KCornerRightContainerBLinkOnRightToContainerALinkOnRight
+		leftPass := link.Left == KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft
+
+		pass := rightPass && leftPass && fatherPass
+		if pass == true {
+			ret = append(ret, *link)
+		}
+	}
+
+	return ret
+}
+
+//  Ponto de vista horizontal
+//  Option: B - cada container é alinhado a direita em relação ao pai
+//  Correto:
+//  +-father--------------------------------+
+//  |                                       |
+//  |     +-containerA----------------+     |
+//  |     |                           |     |
+//  |     |                           O-----O
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  |     +-containerB----------------+     |
+//  |     |                           |     |
+//  |     |                           O-----O
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  +---------------------------------------+
+func (el Filter) LinkAssemblyHorizontalCheckEachContainerIsAlignsFromTheRightInRelationToTheFather(list []Link) bool {
+	for _, link := range list {
+		fatherPass := link.ContainerAFather == true
+		rightPass := link.Right == KCornerRightContainerBLinkOnRightToContainerALinkOnRight
+		leftPass := link.Left == KCornerLeftNotSet
+
+		pass := rightPass && leftPass && fatherPass
+		if pass == false {
+			return false
+		}
+	}
+
+	return true
+}
+
+//  Ponto de vista horizontal
+//  Option: B - cada container é alinhado a direita em relação ao pai
+//  Correto:
+//  +-father--------------------------------+
+//  |                                       |
+//  |     +-containerA----------------+     |
+//  |     |                           |     |
+//  |     |                           O-----O
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  |     +-containerB----------------+     |
+//  |     |                           |     |
+//  |     |                           O-----O
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  +---------------------------------------+
+func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheRightInRelationToTheFather(list []Link) []Link {
+	ret := make([]Link, 0)
+
+	for _, link := range list {
+		fatherPass := link.ContainerAFather == true
+		rightPass := link.Right == KCornerRightContainerBLinkOnRightToContainerALinkOnRight
+		leftPass := link.Left == KCornerLeftNotSet
+
+		pass := rightPass && leftPass && fatherPass
+		if pass == true {
+			ret = append(ret, link)
+		}
+	}
+
+	return ret
+}
+
+//  Ponto de vista horizontal
+//  Option: C - cada container é alinhado a esquerda em relação ao pai
+//  Correto:
+//  +-father--------------------------------+
+//  |                                       |
+//  |     +-containerA----------------+     |
+//  |     |                           |     |
+//  O-----O                           |     |
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  |     +-containerB----------------+     |
+//  |     |                           |     |
+//  O-----O                           |     |
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  +---------------------------------------+
+func (el Filter) LinkAssemblyHorizontalCheckEachContainerIsAlignsFromTheLeftInRelationToTheFather(list []Link) bool {
+	for _, link := range list {
+		fatherPass := link.ContainerAFather == true
+		rightPass := link.Right == KCornerRightNotSet
+		leftPass := link.Left == KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft
+
+		pass := rightPass && leftPass && fatherPass
+		if pass == false {
+			return false
+		}
+	}
+
+	return true
+}
+
+//  Ponto de vista horizontal
+//  Option: C - cada container é alinhado a esquerda em relação ao pai
+//  Correto:
+//  +-father--------------------------------+
+//  |                                       |
+//  |     +-containerA----------------+     |
+//  |     |                           |     |
+//  O-----O                           |     |
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  |     +-containerB----------------+     |
+//  |     |                           |     |
+//  O-----O                           |     |
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  +---------------------------------------+
+func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheLeftInRelationToTheFather(list []Link) []Link {
+	ret := make([]Link, 0)
+
+	for _, link := range list {
+		fatherPass := link.ContainerAFather == true
+		rightPass := link.Right == KCornerRightNotSet
+		leftPass := link.Left == KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft
+
+		pass := rightPass && leftPass && fatherPass
+		if pass == true {
+			ret = append(ret, link)
+		}
+	}
+
+	return ret
+}
+
+//  Ponto de vista horizontal
+//  Option: D - os containers a e b têm o seu tamanho ajustados pelo maior
+//              o container a é centralizado pelo pai
+//              o container b y é ajustado por a y
+//  Correto:
+//  +-father--------------------------------+  +-father--------------------------------+
+//  |                                       |  |                                       |
+//  |  |  +-containerA----------------+  |  |  |  |  +-containerA----------------+  |  |
+//  |     |                           |     |  |     |                           |     |
+//  |  +--O a link to b               O--+  |  |  +>>O                           O<<+  |
+//  |  |  |                           |  |  |  |  |  |                           |  |  |
+//  |  |  +---------------------------+  |  |  |  |  +---------------------------+  |  |
+//  |  |                                 |  |  |  |                                 |  |
+//  |  |  +-containerB----------------+  |  |  |  |  +-containerB----------------+  |  |
+//  |  +--O                           O--+  |  |  |  |                           |  |  |
+//  |     | a link to b               |     |  |  |<<O b link to a               O>>|  |
+//  |     | b link to c               |     |  |  |  |                           |  |  |
+//  |  +--O                           O--+  |  |  |  +---------------------------+  |  |
+//  |  |  +---------------------------+  |  |  |  |                                 |  |
+//  |  |                                 |  |  |  |  +-containerC----------------+  |  |
+//  |  |  +-containerC----------------+  |  |  |  |  |                           |  |  |
+//  |  |  |                           |  |  |  |  +<<O c link to a               O>>+  |
+//  |  +--O b link to c               O--+  |  |     |                           |     |
+//  |     |                           |     |  |     +---------------------------+     |
+//  |     +---------------------------+     |  |                                       |
+//  |                                       |  |                                       |
+//  +---------------------------------------+  +---------------------------------------+
+func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheLeftAndTheRightInRelationToAnotherContainer(container *Dimensions, list []*Link) []Link {
+	ret := make([]Link, 0)
+
+	for _, link := range list {
+		containerAPass := link.ContainerA == container
+		containerBPass := link.ContainerB == container
+		rightPass := link.Right == KCornerRightContainerBLinkOnRightToContainerALinkOnRight
+		leftPass := link.Left == KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft
+
+		pass := rightPass && leftPass && (containerAPass || containerBPass)
+		if pass == true {
+			ret = append(ret, *link)
+		}
+	}
+
+	return ret
+}
+
+func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheLeftInRelationToAnotherContainer(container *Dimensions, list []Link) []Link {
+	ret := make([]Link, 0)
+
+	for _, link := range list {
+		containerAPass := link.ContainerA == container
+		containerBPass := link.ContainerB == container
+		rightPass := link.Right == KCornerRightNotSet
+		leftPass := link.Left == KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft
+
+		pass := rightPass && leftPass && (containerAPass || containerBPass)
+		if pass == true {
+			ret = append(ret, link)
+		}
+	}
+
+	return ret
+}
+
+func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheRightInRelationToAnotherContainer(container *Dimensions, list []Link) []Link {
+	ret := make([]Link, 0)
+
+	for _, link := range list {
+		containerAPass := link.ContainerA == container
+		containerBPass := link.ContainerB == container
+		rightPass := link.Right == KCornerRightContainerBLinkOnRightToContainerALinkOnRight
+		leftPass := link.Left == KCornerLeftNotSet
+
+		pass := rightPass && leftPass && (containerAPass || containerBPass)
+		if pass == true {
+			ret = append(ret, link)
+		}
+	}
+
+	return ret
+}
+
+/*func (el *Link) SimpleLinkAssembly(father *Dimensions, container LinkCollection) error {
 
 	//
 	// +-------------O------------+
@@ -206,7 +518,7 @@ func (el *Link) SimpleLinkAssembly(father *Dimensions, container LinkCollection)
 	}
 
 	return nil
-}
+}*/
 
 //                Top
 //      +----------O---------+
@@ -226,7 +538,7 @@ func (el *Link) SimpleLinkAssembly(father *Dimensions, container LinkCollection)
 //             +--------O-------+
 //                      C
 //
-//  Molde:teste
+//  Molde:
 //  +-father------------O-------------------+
 //  |                   |                   |
 //  |     +-containerA--O-------------+     |
@@ -566,45 +878,26 @@ func NewContainerWithSpace(width, height, left, right, top, bottom int) *Dimensi
 	}
 }
 
-// Warning: Father aways must be containerA
-// Warning: The link should always be in the container children to be the container Father
-func NewLink(container *Dimensions, cornerBToA Corner) *Link {
+func NewLink(containerA, containerB *Dimensions, top CornerTop, left CornerLeft, right CornerRight, bottom CornerBottom) *Link {
 	return &Link{
-		Container:      container,
-		CornerToFather: cornerBToA,
+		ContainerA:       containerA,
+		ContainerAFather: false,
+		ContainerB:       containerB,
+		Top:              top,
+		Left:             left,
+		Right:            right,
+		Bottom:           bottom,
 	}
 }
 
-func Test() []Dimensions {
-	var err error
-
-	var linkFatherTopToContainerATop = &Link{}
-	var linkFatherLeftToContainerALeft = &Link{}
-	var linkFatherRightToContainerARight = &Link{}
-	var linkFatherBottomToContainerABottom = &Link{}
-
-	containerA := NewContainerWidthXY(300, 100, 300, 150)
-	containerB := NewContainerWidthXY(300, 150, 600, 300)
-
-	linkFatherTopToContainerATop = NewLink(containerB, KContainerBLinkOnTopToContainerALinkOnTop)
-	linkFatherLeftToContainerALeft = NewLink(containerB, KContainerBLinkOnLeftToContainerALinkOnLeft)
-	linkFatherRightToContainerARight = NewLink(containerB, KContainerBLinkOnRightToContainerALinkOnRight)
-	linkFatherBottomToContainerABottom = NewLink(containerB, KContainerBLinkOnBottomToContainerALinkOnBottom)
-
-	collection := LinkCollection{
-		Top:    linkFatherTopToContainerATop,
-		Left:   linkFatherLeftToContainerALeft,
-		Right:  linkFatherRightToContainerARight,
-		Bottom: linkFatherBottomToContainerABottom,
+func NewLinkWithFather(father, containerB *Dimensions, top CornerTop, left CornerLeft, right CornerRight, bottom CornerBottom) *Link {
+	return &Link{
+		ContainerA:       father,
+		ContainerAFather: true,
+		ContainerB:       containerB,
+		Top:              top,
+		Left:             left,
+		Right:            right,
+		Bottom:           bottom,
 	}
-
-	err = linkFatherTopToContainerATop.SimpleLinkAssembly(
-		containerA,
-		collection,
-	)
-	if err != nil {
-		fmt.Printf("SimpleLinkAssembly().error: %v\n", err.Error())
-	}
-
-	return []Dimensions{*containerA, *containerB}
 }
