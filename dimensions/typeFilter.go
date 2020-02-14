@@ -321,47 +321,49 @@ func (el Filter) findLinkInList(link *Link, list []*Link) bool {
 
 func (el Filter) LinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked(container *Dimensions, listLinks []*Link) []*Link {
 
-	listToVerify := el.LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainer(container, listLinks)
+	listOfLinksToVerify := el.LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainer(container, listLinks)
 	containerTested := []*Dimensions{container}
+	containersToVerify := make([]*Dimensions, 0)
 
 	for {
-
-		pass := false
-		for _, link := range listToVerify {
-
-			if el.findDimensionsInList(link.ContainerA, containerTested) == false {
-				pass = true
-
-				containerTested = append(containerTested, link.ContainerA)
-
-				newList := el.LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainer(link.ContainerA, listToVerify)
-
-				for k := range newList {
-					if el.findLinkInList(newList[k], listToVerify) == false {
-						listToVerify = append(listToVerify, newList[k])
-					}
-				}
+		for k := range listOfLinksToVerify {
+			if el.findDimensionsInList(listOfLinksToVerify[k].ContainerA, containerTested) == false {
+				containersToVerify = append(containersToVerify, listOfLinksToVerify[k].ContainerA)
 			}
 
-			if el.findDimensionsInList(link.ContainerB, containerTested) == false {
-				pass = true
-				containerTested = append(containerTested, link.ContainerB)
+			if el.findDimensionsInList(listOfLinksToVerify[k].ContainerB, containerTested) == false {
+				containersToVerify = append(containersToVerify, listOfLinksToVerify[k].ContainerB)
+			}
+		}
 
-				newList := el.LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainer(link.ContainerB, listToVerify)
-				for k := range newList {
-					if el.findLinkInList(newList[k], listToVerify) == false {
-						listToVerify = append(listToVerify, newList[k])
-					}
-				}
+		if len(containersToVerify) == 0 {
+			break
+		}
+
+		pass := false
+		for k := range containersToVerify {
+			container = containersToVerify[k]
+			if el.findDimensionsInList(container, containerTested) == false {
+				pass = true
+				break
 			}
 		}
 
 		if pass == false {
 			break
 		}
+
+		containerTested = append(containerTested, container)
+		newLinkList := el.LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainer(container, listLinks)
+
+		for k := range newLinkList {
+			if el.findLinkInList(newLinkList[k], listOfLinksToVerify) == false {
+				listOfLinksToVerify = append(listOfLinksToVerify, newLinkList[k])
+			}
+		}
 	}
 
-	return listToVerify
+	return listOfLinksToVerify
 }
 
 func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainer(container *Dimensions, list []*Link) []*Link {
