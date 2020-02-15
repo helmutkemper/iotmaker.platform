@@ -1,67 +1,109 @@
 package dimensions
 
-type CornerTop int
+type WallTop int
 
 const (
-	KCornerTopNotSet CornerTop = iota
-
-	//  +-father--------------------------------+
+	// en: Wall top not set
+	//  +-father------------X-------------------+
 	//  |                                       |
-	//  |     +-containerA----------------+     |
-	//  |     |                           |     |
-	//  |     |                           |     |
-	//  |     |                           |     |
-	//  |     +---------------------------+     |
-	//  |                                       |
-	//  |     +-containerB----------------+     |
+	//  |     +-containerB--X-------------+     |
 	//  |     |                           |     |
 	//  |     |                           |     |
 	//  |     |                           |     |
 	//  |     +---------------------------+     |
 	//  |                                       |
 	//  +---------------------------------------+
-	KCornerTopContainerBLinkOnTopToContainerALinkOnTop
-
+	//
+	//  +-father--------------------------------+
+	//  |                                       |
+	//  |     +-containerB--X-------------+     |
+	//  |     |                           |     |
+	//  |     |                           |     |
+	//  |     |                           |     |
+	//  |     +---------------------------+     |
+	//  |                                       |
+	//  +-------------------X-------------------+
+	//
 	//  +-father--------------------------------+
 	//  |                                       |
 	//  |     +-containerA----------------+     |
 	//  |     |                           |     |
 	//  |     |                           |     |
 	//  |     |                           |     |
-	//  |     +---------------------------+     |
+	//  |     +-------------X-------------+     |
 	//  |                                       |
-	//  |     +-containerB----------------+     |
+	//  |     +-containerB--X-------------+     |
 	//  |     |                           |     |
 	//  |     |                           |     |
 	//  |     |                           |     |
 	//  |     +---------------------------+     |
 	//  |                                       |
 	//  +---------------------------------------+
-	KCornerTopContainerBLinkOnTopToContainerALinkOnBottom
+	KWallTopNotSet WallTop = iota
 
+	// en: Wall top container B link on top to container A link on top
+	//  +-father------------O-------------------+
+	//  |                   |                   |
+	//  |     +-containerB--O-------------+     |
+	//  |     |                           |     |
+	//  |     |                           |     |
+	//  |     |                           |     |
+	//  |     +---------------------------+     |
+	//  |                                       |
+	//  +---------------------------------------+
+	//
+	//  +-father--------------------------------+
+	//  |                                       |
+	//  |     +-containerA--O-------------+     |
+	//  |     |             |             |     |
+	//  |     |             |             |     |
+	//  |     |             |             |     |
+	//  |     +-------------+-------------+     |
+	//  |                   |                   |
+	//  |     +-containerB--O-------------+     |
+	//  |     |                           |     |
+	//  |     |                           |     |
+	//  |     |                           |     |
+	//  |     +---------------------------+     |
+	//  |                                       |
+	//  +---------------------------------------+
+	KWallTopContainerBLinkOnTopToContainerALinkOnTop
+
+	// en: Wall top from container B link on top to container A link on bottom
+	//  +-father--------------------------------+
+	//  |                                       |
+	//  |     +-containerB--O-------------+     |
+	//  |     |             |             |     |
+	//  |     |             |             |     |
+	//  |     |             |             |     |
+	//  |     +-------------+-------------+     |
+	//  |                   |                   |
+	//  +-------------------O-------------------+
+	//
 	//  +-father--------------------------------+
 	//  |                                       |
 	//  |     +-containerA----------------+     |
 	//  |     |                           |     |
 	//  |     |                           |     |
 	//  |     |                           |     |
-	//  |     +---------------------------+     |
-	//  |                                       |
-	//  |     +-containerB----------------+     |
+	//  |     +-------------O-------------+     |
+	//  |                   |                   |
+	//  |     +-containerB--O-------------+     |
 	//  |     |                           |     |
 	//  |     |                           |     |
 	//  |     |                           |     |
 	//  |     +---------------------------+     |
 	//  |                                       |
 	//  +---------------------------------------+
-	KCornerTopContainerBLinkOnBottomToContainerALinkOnBottom
+	KWallTopContainerBLinkOnTopToContainerALinkOnBottom
 )
 
-type CornerBottom int
+type WallBottom int
 
 const (
-	KCornerBottomNotSet CornerBottom = iota
+	KWallBottomNotSet WallBottom = iota
 
+	// en: Wall bottom from container B link on top to container A link on top
 	//  +-father--------------------------------+
 	//  |                                       |
 	//  |     +-containerA----------------+     |
@@ -77,8 +119,9 @@ const (
 	//  |     +---------------------------+     |
 	//  |                                       |
 	//  +---------------------------------------+
-	KCornerBottomContainerBLinkOnTopToContainerALinkOnTop
+	KWallBottomContainerBLinkOnTopToContainerALinkOnTop
 
+	// en: Wall bottom from container B link on top to container A link on bottom
 	//  +-father--------------------------------+
 	//  |                                       |
 	//  |     +-containerA----------------+     |
@@ -94,29 +137,41 @@ const (
 	//  |     +---------------------------+     |
 	//  |                                       |
 	//  +---------------------------------------+
-	KCornerBottomContainerBLinkOnTopToContainerALinkOnBottom
+	KWallBottomContainerBLinkOnTopToContainerALinkOnBottom
 
+	// en: Wall bottom from container B link on bottom to container A link on bottom
+	//  +-father--------------------------------+
+	//  |                                       |
+	//  |     +-containerB----------------+     |
+	//  |     |                           |     |
+	//  |     |                           |     |
+	//  |     |                           |     |
+	//  |     +-------------O-------------+     |
+	//  |                   |                   |
+	//  +-------------------O-------------------+
+	//
 	//  +-father--------------------------------+
 	//  |                                       |
 	//  |     +-containerA----------------+     |
 	//  |     |                           |     |
 	//  |     |                           |     |
 	//  |     |                           |     |
-	//  |     +---------------------------+     |
-	//  |                                       |
-	//  |     +-containerB----------------+     |
-	//  |     |                           |     |
-	//  |     |                           |     |
-	//  |     |                           |     |
-	//  |     +---------------------------+     |
+	//  |     +-------------O-------------+     |
+	//  |                   |                   |
+	//  |     +-containerB--+-------------+     |
+	//  |     |             |             |     |
+	//  |     |             |             |     |
+	//  |     |             |             |     |
+	//  |     +-------------O-------------+     |
 	//  |                                       |
 	//  +---------------------------------------+
-	KCornerBottomContainerBLinkOnBottomToContainerALinkOnBottom
+	KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom
 )
 
-type CornerLeft int
+type WallLeft int
 
 const (
+	// en: Wall left not set
 	//  +-father----------------------------+
 	//  |                                   |
 	//  |   +-containerB----------------+   |
@@ -136,8 +191,9 @@ const (
 	//  |   +---------------------------+   +---------------------------+   |
 	//  |                                                                   |
 	//  +-------------------------------------------------------------------+
-	KCornerLeftNotSet CornerLeft = iota
+	KWallLeftNotSet WallLeft = iota
 
+	// en: Wall left from container B link on left to container A link on right
 	//  +-father------------------------------------------------------------+
 	//  |                                                                   |
 	//  |   +-containerA----------------+   +-containerB----------------+   |
@@ -147,45 +203,77 @@ const (
 	//  |   +---------------------------+   +---------------------------+   |
 	//  |                                                                   |
 	//  +-------------------------------------------------------------------+
-	KCornerLeftContainerBLinkOnLeftToContainerALinkOnRight
+	KWallLeftContainerBLinkOnLeftToContainerALinkOnRight
 
+	// en: Wall left from container B link on left to container A link on left
 	//  +-father----------------------------+
 	//  |                                   |
-	//  |   +-containerA----------------+   |
+	//  |   +-containerB----------------+   |
 	//  |   |                           |   |
 	//  O---O                           |   |
 	//  |   |                           |   |
 	//  |   +---------------------------+   |
 	//  |                                   |
 	//  +-----------------------------------+
-	KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft
-)
-
-type CornerRight int
-
-const (
-	KCornerRightNotSet CornerRight = iota
-
+	//
 	//  +-father------------------------------------------------------------+
 	//  |                                                                   |
 	//  |   +-containerA----------------+   +-containerB----------------+   |
 	//  |   |                           |   |                           |   |
-	//  |   |                           |   |                           |   |
+	//  |   O---------------------------+---O                           |   |
 	//  |   |                           |   |                           |   |
 	//  |   +---------------------------+   +---------------------------+   |
 	//  |                                                                   |
 	//  +-------------------------------------------------------------------+
+	KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft
+)
 
+type WallRight int
+
+const (
+	// en: Wall right not set
+	//  +-father------------------------------------------------------------+
+	//  |                                                                   |
+	//  |   +-containerA----------------+   +-containerB----------------+   |
+	//  |   |                           |   |                           |   |
+	//  |   |                           X   |                           X   |
+	//  |   |                           |   |                           |   |
+	//  |   +---------------------------+   +---------------------------+   |
+	//  |                                                                   |
+	//  +-------------------------------------------------------------------+
+	//
 	//  +-father----------------------------+
 	//  |                                   |
-	//  |   +-containerA----------------+   |
+	//  |   +-containerB----------------+   |
+	//  |   |                           |   |
+	//  |   |                           X   X
+	//  |   |                           |   |
+	//  |   +---------------------------+   |
+	//  |                                   |
+	//  +-----------------------------------+
+	KWallRightNotSet WallRight = iota
+
+	// en: Wall right from container B lin on right to container A link on right
+	//  +-father------------------------------------------------------------+
+	//  |                                                                   |
+	//  |   +-containerA----------------+   +-containerB----------------+   |
+	//  |   |                           |   |                           |   |
+	//  |   |                           O---+---------------------------O   |
+	//  |   |                           |   |                           |   |
+	//  |   +---------------------------+   +---------------------------+   |
+	//  |                                                                   |
+	//  +-------------------------------------------------------------------+
+	//
+	//  +-father----------------------------+
+	//  |                                   |
+	//  |   +-containerB----------------+   |
 	//  |   |                           |   |
 	//  |   |                           O---O
 	//  |   |                           |   |
 	//  |   +---------------------------+   |
 	//  |                                   |
 	//  +-----------------------------------+
-	KCornerRightContainerBLinkOnRightToContainerALinkOnRight
+	KWallRightContainerBLinkOnRightToContainerALinkOnRight
 )
 
 type Link struct {
@@ -193,10 +281,10 @@ type Link struct {
 	ContainerA       *Dimensions
 	ContainerAFather bool
 	ContainerB       *Dimensions
-	Top              CornerTop
-	Left             CornerLeft
-	Right            CornerRight
-	Bottom           CornerBottom
+	Top              WallTop
+	Left             WallLeft
+	Right            WallRight
+	Bottom           WallBottom
 }
 
 // en: It calculates the vertical position of the container when there is only the
@@ -742,7 +830,7 @@ func NewContainerWithSpace(width, height, left, right, top, bottom int) *Dimensi
 	}
 }
 
-func NewLink(debug string, containerA, containerB *Dimensions, top CornerTop, left CornerLeft, right CornerRight, bottom CornerBottom) *Link {
+func NewLink(debug string, containerA, containerB *Dimensions, top WallTop, left WallLeft, right WallRight, bottom WallBottom) *Link {
 	return &Link{
 		ToDebug:          debug,
 		ContainerA:       containerA,
@@ -755,7 +843,7 @@ func NewLink(debug string, containerA, containerB *Dimensions, top CornerTop, le
 	}
 }
 
-func NewLinkWithFather(debug string, father, containerB *Dimensions, top CornerTop, left CornerLeft, right CornerRight, bottom CornerBottom) *Link {
+func NewLinkWithFather(debug string, father, containerB *Dimensions, top WallTop, left WallLeft, right WallRight, bottom WallBottom) *Link {
 	return &Link{
 		ToDebug:          debug,
 		ContainerA:       father,

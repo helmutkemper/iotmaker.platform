@@ -15,28 +15,28 @@ func ExampleFilterContainerFather() {
 		"linkAToFather",
 		father,
 		containerA,
-		KCornerTopContainerBLinkOnTopToContainerALinkOnTop,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomContainerBLinkOnBottomToContainerALinkOnBottom,
+		KWallTopContainerBLinkOnTopToContainerALinkOnTop,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
 	)
 	linkAToB := NewLink(
 		"linkAToB",
 		containerA,
 		containerB,
-		KCornerTopContainerBLinkOnTopToContainerALinkOnBottom,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 	linkAToC := NewLink(
 		"linkAToC",
 		containerA,
 		containerC,
-		KCornerTopContainerBLinkOnTopToContainerALinkOnBottom,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 
 	listLink := []*Link{linkAToFather, linkAToB, linkAToC}
@@ -348,28 +348,28 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsCentralizedInRelationToTheFat
 		"linkAToFather",
 		father,
 		containerA,
-		KCornerTopContainerBLinkOnTopToContainerALinkOnTop,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomContainerBLinkOnBottomToContainerALinkOnBottom,
+		KWallTopContainerBLinkOnTopToContainerALinkOnTop,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
 	)
 	linkAToB := NewLink(
 		"linkAToB",
 		containerA,
 		containerB,
-		KCornerTopContainerBLinkOnTopToContainerALinkOnBottom,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 	linkAToC := NewLink(
 		"linkAToC",
 		containerA,
 		containerC,
-		KCornerTopContainerBLinkOnTopToContainerALinkOnBottom,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 
 	listLink := []*Link{linkAToFather, linkAToB, linkAToC}
@@ -396,28 +396,28 @@ func ExampleLinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheLeftAndTheRi
 		"linkAToFather",
 		father,
 		containerA,
-		KCornerTopContainerBLinkOnTopToContainerALinkOnTop,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomContainerBLinkOnBottomToContainerALinkOnBottom,
+		KWallTopContainerBLinkOnTopToContainerALinkOnTop,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
 	)
 	linkAToB := NewLink(
 		"linkAToB",
 		containerA,
 		containerB,
-		KCornerTopContainerBLinkOnTopToContainerALinkOnBottom,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 	linkAToC := NewLink(
 		"linkAToC",
 		containerA,
 		containerC,
-		KCornerTopContainerBLinkOnTopToContainerALinkOnBottom,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 
 	//listDimensions := []*Dimensions{father, containerA, containerB, containerC}
@@ -461,28 +461,28 @@ func ExampleLinkAssemblyCheckIfFatherExistsAndHasOnlyOne() {
 		"linkAToFather",
 		father,
 		containerA,
-		KCornerTopContainerBLinkOnTopToContainerALinkOnTop,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomContainerBLinkOnBottomToContainerALinkOnBottom,
+		KWallTopContainerBLinkOnTopToContainerALinkOnTop,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
 	)
 	linkAToB := NewLink(
 		"linkAToB",
 		containerA,
 		containerB,
-		KCornerTopContainerBLinkOnTopToContainerALinkOnBottom,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 	linkAToC := NewLink(
 		"linkAToC",
 		containerA,
 		containerC,
-		KCornerTopContainerBLinkOnTopToContainerALinkOnBottom,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 
 	listLink := []*Link{linkAToFather, linkAToB, linkAToC}
@@ -511,50 +511,50 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 		"linkFToFather",
 		father,
 		containerF,
-		KCornerTopContainerBLinkOnTopToContainerALinkOnTop,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomContainerBLinkOnBottomToContainerALinkOnBottom,
+		KWallTopContainerBLinkOnTopToContainerALinkOnTop,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
 	)
 
 	linkAToB := NewLink(
 		"linkAToB",
 		containerA,
 		containerB,
-		KCornerTopContainerBLinkOnTopToContainerALinkOnBottom,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 
 	linkBToC := NewLink(
 		"linkBToC",
 		containerB,
 		containerC,
-		KCornerTopContainerBLinkOnTopToContainerALinkOnBottom,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 
 	linkCToD := NewLink(
 		"linkCToD",
 		containerC,
 		containerD,
-		KCornerTopContainerBLinkOnTopToContainerALinkOnBottom,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 
 	linkBToE := NewLink(
 		"linkBToE",
 		containerB,
 		containerE,
-		KCornerTopContainerBLinkOnTopToContainerALinkOnBottom,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 
 	listLink := []*Link{linkAToFather, linkAToB, linkBToC, linkCToD, linkBToE}
@@ -590,50 +590,50 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 		"linkFToFather",
 		father,
 		containerF,
-		KCornerTopContainerBLinkOnTopToContainerALinkOnTop,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomContainerBLinkOnBottomToContainerALinkOnBottom,
+		KWallTopContainerBLinkOnTopToContainerALinkOnTop,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
 	)
 
 	linkAToB := NewLink(
 		"linkAToB",
 		containerA,
 		containerB,
-		KCornerTopContainerBLinkOnTopToContainerALinkOnBottom,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 
 	linkBToC := NewLink(
 		"linkBToC",
 		containerB,
 		containerC,
-		KCornerTopContainerBLinkOnTopToContainerALinkOnBottom,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 
 	linkCToD := NewLink(
 		"linkCToD",
 		containerC,
 		containerD,
-		KCornerTopContainerBLinkOnTopToContainerALinkOnBottom,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 
 	linkBToE := NewLink(
 		"linkBToE",
 		containerB,
 		containerE,
-		KCornerTopContainerBLinkOnTopToContainerALinkOnBottom,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 
 	listLink := []*Link{linkAToFather, linkAToB, linkBToC, linkCToD, linkBToE}
@@ -662,50 +662,50 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 		"linkFToFather",
 		father,
 		containerF,
-		KCornerTopContainerBLinkOnTopToContainerALinkOnTop,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomContainerBLinkOnBottomToContainerALinkOnBottom,
+		KWallTopContainerBLinkOnTopToContainerALinkOnTop,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
 	)
 
 	linkAToB := NewLink(
 		"linkAToB",
 		containerA,
 		containerB,
-		KCornerTopContainerBLinkOnTopToContainerALinkOnBottom,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 
 	linkBToC := NewLink(
 		"linkBToC",
 		containerB,
 		containerC,
-		KCornerTopContainerBLinkOnTopToContainerALinkOnBottom,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 
 	linkCToD := NewLink(
 		"linkCToD",
 		containerC,
 		containerD,
-		KCornerTopContainerBLinkOnTopToContainerALinkOnBottom,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 
 	linkBToE := NewLink(
 		"linkBToE",
 		containerB,
 		containerE,
-		KCornerTopContainerBLinkOnTopToContainerALinkOnBottom,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 
 	listLink := []*Link{linkAToFather, linkAToB, linkBToC, linkCToD, linkBToE}
@@ -737,80 +737,80 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 		"linkFToFather",
 		father,
 		containerF,
-		KCornerTopContainerBLinkOnTopToContainerALinkOnTop,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomContainerBLinkOnBottomToContainerALinkOnBottom,
+		KWallTopContainerBLinkOnTopToContainerALinkOnTop,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
 	)
 
 	linkAToB := NewLink(
 		"linkAToB",
 		containerB,
 		containerA,
-		KCornerTopNotSet,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopNotSet,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 
 	linkBToC := NewLink(
 		"linkBToC",
 		containerC,
 		containerB,
-		KCornerTopNotSet,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopNotSet,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 
 	linkCToD := NewLink(
 		"linkCToD",
 		containerD,
 		containerC,
-		KCornerTopNotSet,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopNotSet,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 
 	linkBToE := NewLink(
 		"linkBToE",
 		containerE,
 		containerB,
-		KCornerTopNotSet,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopNotSet,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 
 	linkGToF := NewLink(
 		"linkGToF",
 		containerF,
 		containerG,
-		KCornerTopNotSet,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopNotSet,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 
 	linkGToH := NewLink(
 		"linkGToH",
 		containerH,
 		containerG,
-		KCornerTopNotSet,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopNotSet,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 
 	linkFToI := NewLink(
 		"linkFToI",
 		containerI,
 		containerF,
-		KCornerTopNotSet,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopNotSet,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 
 	listLink := []*Link{linkAToFather, linkAToB, linkBToC, linkCToD, linkBToE, linkGToF, linkGToH, linkFToI}
@@ -864,10 +864,10 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 		"linkAToFather",
 		father,
 		containerA,
-		KCornerTopNotSet,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightNotSet,
-		KCornerBottomNotSet,
+		KWallTopNotSet,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightNotSet,
+		KWallBottomNotSet,
 	)
 
 	// 2: c to a
@@ -875,10 +875,10 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 		"linkCToA",
 		containerA,
 		containerC,
-		KCornerTopNotSet,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightNotSet,
-		KCornerBottomNotSet,
+		KWallTopNotSet,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightNotSet,
+		KWallBottomNotSet,
 	)
 
 	// 3: a to f
@@ -886,10 +886,10 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 		"linkAToF",
 		containerA,
 		containerF,
-		KCornerTopNotSet,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnRight,
-		KCornerRightNotSet,
-		KCornerBottomNotSet,
+		KWallTopNotSet,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnRight,
+		KWallRightNotSet,
+		KWallBottomNotSet,
 	)
 
 	// 4: b to a
@@ -897,10 +897,10 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 		"linkBToA",
 		containerA,
 		containerB,
-		KCornerTopNotSet,
-		KCornerLeftNotSet,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopNotSet,
+		KWallLeftNotSet,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 
 	// 5: d to f
@@ -908,10 +908,10 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 		"linkDToF",
 		containerF,
 		containerD,
-		KCornerTopNotSet,
-		KCornerLeftNotSet,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopNotSet,
+		KWallLeftNotSet,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 
 	// 6: e to f
@@ -919,10 +919,10 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 		"linkEToF",
 		containerF,
 		containerE,
-		KCornerTopNotSet,
-		KCornerLeftNotSet,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopNotSet,
+		KWallLeftNotSet,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 
 	listLink := []*Link{linkAToFather, linkCToA, linkAToF, linkBToA, linkDToF, linkEToF}
@@ -978,10 +978,10 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 		"linkAToFather",
 		father,
 		containerA,
-		KCornerTopNotSet,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightNotSet,
-		KCornerBottomNotSet,
+		KWallTopNotSet,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightNotSet,
+		KWallBottomNotSet,
 	)
 
 	// 2: c to a
@@ -989,10 +989,10 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 		"linkCToA",
 		containerA,
 		containerC,
-		KCornerTopNotSet,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopNotSet,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 
 	// 3: a to f
@@ -1000,10 +1000,10 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 		"linkAToF",
 		containerF,
 		containerA,
-		KCornerTopNotSet,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnRight,
-		KCornerRightNotSet,
-		KCornerBottomNotSet,
+		KWallTopNotSet,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnRight,
+		KWallRightNotSet,
+		KWallBottomNotSet,
 	)
 
 	// 4: b to a
@@ -1011,10 +1011,10 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 		"linkBToA",
 		containerA,
 		containerB,
-		KCornerTopNotSet,
-		KCornerLeftNotSet,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopNotSet,
+		KWallLeftNotSet,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 
 	// 5: e to d
@@ -1022,10 +1022,10 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 		"linkEToD",
 		containerD,
 		containerE,
-		KCornerTopNotSet,
-		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
-		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
-		KCornerBottomNotSet,
+		KWallTopNotSet,
+		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
+		KWallBottomNotSet,
 	)
 
 	listLink := []*Link{linkAToFather, linkCToA, linkAToF, linkBToA, linkEToD}

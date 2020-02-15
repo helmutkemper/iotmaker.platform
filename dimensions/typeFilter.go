@@ -79,9 +79,9 @@ func (el Filter) LinkAssemblyHorizontalFilterContainerIsCentralizedInRelationToT
 	ret := make([]*Link, 0)
 	for _, link := range list {
 		fatherPass := link.ContainerAFather == true
-		bRightARightPass := link.Right == KCornerRightContainerBLinkOnRightToContainerALinkOnRight
-		bLeftALeftPass := link.Left == KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft
-		//bLeftARightPass := link.Left == KCornerLeftContainerBLinkOnLeftToContainerALinkOnRight
+		bRightARightPass := link.Right == KWallRightContainerBLinkOnRightToContainerALinkOnRight
+		bLeftALeftPass := link.Left == KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft
+		//bLeftARightPass := link.Left == KWallLeftContainerBLinkOnLeftToContainerALinkOnRight
 
 		pass := bRightARightPass && bLeftALeftPass && fatherPass
 		if pass == true {
@@ -115,8 +115,8 @@ func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheRightIn
 
 	for _, link := range list {
 		fatherPass := link.ContainerAFather == true
-		bRightARightPass := link.Right == KCornerRightContainerBLinkOnRightToContainerALinkOnRight
-		leftNotSetPass := link.Left == KCornerLeftNotSet
+		bRightARightPass := link.Right == KWallRightContainerBLinkOnRightToContainerALinkOnRight
+		leftNotSetPass := link.Left == KWallLeftNotSet
 
 		pass := bRightARightPass && leftNotSetPass && fatherPass
 		if pass == true {
@@ -157,8 +157,8 @@ func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheRightIn
 	for _, link := range list {
 		containerAPass := link.ContainerA == container
 		containerBPass := link.ContainerB == container
-		bRightARightPass := link.Right == KCornerRightContainerBLinkOnRightToContainerALinkOnRight
-		leftNotSetPass := link.Left == KCornerLeftNotSet
+		bRightARightPass := link.Right == KWallRightContainerBLinkOnRightToContainerALinkOnRight
+		leftNotSetPass := link.Left == KWallLeftNotSet
 
 		pass := bRightARightPass && leftNotSetPass && (containerAPass || containerBPass)
 		if pass == true {
@@ -199,9 +199,9 @@ func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheRightAn
 	for _, link := range list {
 		containerAPass := link.ContainerA == container
 		containerBPass := link.ContainerB == container
-		bRightARightPass := link.Right == KCornerRightContainerBLinkOnRightToContainerALinkOnRight
-		bLeftALeftPass := link.Left == KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft
-		//leftPass := link.Left == KCornerLeftContainerBLinkOnLeftToContainerALinkOnRight
+		bRightARightPass := link.Right == KWallRightContainerBLinkOnRightToContainerALinkOnRight
+		bLeftALeftPass := link.Left == KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft
+		//leftPass := link.Left == KWallLeftContainerBLinkOnLeftToContainerALinkOnRight
 
 		pass := bRightARightPass && bLeftALeftPass && (containerAPass || containerBPass)
 		if pass == true {
@@ -235,9 +235,9 @@ func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheLeftInR
 
 	for _, link := range list {
 		fatherPass := link.ContainerAFather == true
-		rightPass := link.Right == KCornerRightNotSet
-		bLeftALeftPass := link.Left == KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft
-		//leftPass := link.Left == KCornerLeftContainerBLinkOnLeftToContainerALinkOnRight
+		rightPass := link.Right == KWallRightNotSet
+		bLeftALeftPass := link.Left == KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft
+		//leftPass := link.Left == KWallLeftContainerBLinkOnLeftToContainerALinkOnRight
 
 		pass := rightPass && bLeftALeftPass && fatherPass
 		if pass == true {
@@ -278,8 +278,8 @@ func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheLeftInR
 	for _, link := range list {
 		containerAPass := link.ContainerA == container
 		containerBPass := link.ContainerB == container
-		rightNotSetPass := link.Right == KCornerRightNotSet
-		bLeftALeftPass := link.Left == KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft
+		rightNotSetPass := link.Right == KWallRightNotSet
+		bLeftALeftPass := link.Left == KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft
 
 		pass := rightNotSetPass && bLeftALeftPass && (containerAPass || containerBPass)
 		if pass == true {
@@ -430,9 +430,9 @@ func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheLeftOrT
 	for _, link := range list {
 		containerAPass := link.ContainerA == container
 		containerBPass := link.ContainerB == container
-		bRightARightPass := link.Right == KCornerRightContainerBLinkOnRightToContainerALinkOnRight
-		bLeftALeftPass := link.Left == KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft
-		bLeftBRightPass := link.Left == KCornerLeftContainerBLinkOnLeftToContainerALinkOnRight
+		bRightARightPass := link.Right == KWallRightContainerBLinkOnRightToContainerALinkOnRight
+		bLeftALeftPass := link.Left == KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft
+		bLeftBRightPass := link.Left == KWallLeftContainerBLinkOnLeftToContainerALinkOnRight
 
 		pass := (bRightARightPass || bLeftALeftPass || bLeftBRightPass) && (containerAPass || containerBPass)
 		if pass == true {
