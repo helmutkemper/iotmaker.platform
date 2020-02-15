@@ -828,3 +828,117 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 	// linkFToI
 	// linkGToH
 }
+
+//  +-father------------------------------------------------------------------+
+//  |                                                                         |
+//  |     +-containerA----------------+     +-containerD----------------+     |
+//  |     |                           |     |                           |     |
+//  O<-+->O 1: a to father            O<-+  |                 5: d to f O->+  |
+//  |  |  |                           |  |  |                           |  |  |
+//  |  |  +---------------------------+  |  +---------------------------+  |  |
+//  |  |                                 |                                 |  |
+//  |  |  +-containerB----------------+  |  +-containerE----------------+  |  |
+//  |  |  |                           |  |  |                           |  |  |
+//  |  |  |                 4: b to a O->+  |                 6: e to f O->+  |
+//  |  |  |                           |  |  |                           |  |  |
+//  |  |  +---------------------------+  |  +---------------------------+  |  |
+//  |  |                                 |                                 |  |
+//  |  |  +-containerC----------------+  |  +-containerF----------------+  |  |
+//  |  |  |                           |  |  |                           |  |  |
+//  |  +<-O 2: c to a          c to a O->+<-O 3: a to f                 O<-+  |
+//  |     |                           |     |                           |     |
+//  |     +---------------------------+     +---------------------------+     |
+//  |                                                                         |
+//  +-------------------------------------------------------------------------+
+func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked_5() {
+	father := NewContainer("father", 300, 600)
+	containerA := NewContainerWidthXY("containerA", 10, 10, 100, 100)
+	containerB := NewContainerWidthXY("containerB", 10, 120, 100, 100)
+	containerC := NewContainerWidthXY("containerC", 10, 230, 100, 100)
+	containerD := NewContainerWidthXY("containerD", 120, 10, 100, 100)
+	containerE := NewContainerWidthXY("containerE", 230, 120, 100, 100)
+	containerF := NewContainerWidthXY("containerF", 340, 230, 100, 100)
+
+	// 1: a to father
+	linkAToFather := NewLinkWithFather(
+		"linkAToFather",
+		father,
+		containerA,
+		KCornerTopNotSet,
+		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KCornerRightNotSet,
+		KCornerBottomNotSet,
+	)
+
+	// 2: c to a
+	linkCToA := NewLink(
+		"linkCToA",
+		containerC,
+		containerA,
+		KCornerTopNotSet,
+		KCornerLeftContainerBLinkOnLeftToContainerALinkOnLeft,
+		KCornerRightNotSet,
+		KCornerBottomNotSet,
+	)
+
+	// 3: a to f
+	linkAToF := NewLink(
+		"linkAToF",
+		containerA,
+		containerF,
+		KCornerTopNotSet,
+		KCornerLeftContainerBLinkOnLeftToContainerALinkOnRight,
+		KCornerRightNotSet,
+		KCornerBottomNotSet,
+	)
+
+	// 4: b to a
+	linkBToA := NewLink(
+		"linkBToA",
+		containerB,
+		containerA,
+		KCornerTopNotSet,
+		KCornerLeftNotSet,
+		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
+		KCornerBottomNotSet,
+	)
+
+	// 5: d to f
+	linkDToF := NewLink(
+		"linkDToF",
+		containerD,
+		containerF,
+		KCornerTopNotSet,
+		KCornerLeftNotSet,
+		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
+		KCornerBottomNotSet,
+	)
+
+	// 6: e to f
+	linkEToF := NewLink(
+		"linkEToF",
+		containerE,
+		containerF,
+		KCornerTopNotSet,
+		KCornerLeftNotSet,
+		KCornerRightContainerBLinkOnRightToContainerALinkOnRight,
+		KCornerBottomNotSet,
+	)
+
+	listLink := []*Link{linkAToFather, linkCToA, linkAToF, linkBToA, linkDToF, linkEToF}
+
+	filter := Filter{}
+	ret := filter.LinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked(father, listLink)
+
+	for k := range ret {
+		fmt.Printf("%v\n", ret[k].ToDebug)
+	}
+
+	// Output:
+	// linkAToFather
+	// linkCToA
+	// linkAToF
+	// linkBToA
+	// linkDToF
+	// linkEToF
+}
