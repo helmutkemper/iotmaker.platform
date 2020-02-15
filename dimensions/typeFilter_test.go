@@ -44,7 +44,7 @@ func ExampleFilterContainerFather() {
 	filter := Filter{}
 	retDimensions := filter.FilterContainerFather(listLink)
 
-	if len(retDimensions) == 1 && retDimensions[0] == father {
+	if retDimensions != nil && retDimensions == father {
 		fmt.Println("passou")
 	}
 
@@ -560,7 +560,11 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 	listLink := []*Link{linkAToFather, linkAToB, linkBToC, linkCToD, linkBToE}
 
 	filter := Filter{}
-	ret := filter.LinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked(containerA, listLink)
+	fatherFromFilter := filter.FilterContainerFather(listLink)
+	if fatherFromFilter == nil {
+		fmt.Println("Error!")
+	}
+	ret := filter.LinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked(fatherFromFilter, listLink)
 
 	for k := range ret {
 		fmt.Printf("%v\n", ret[k].ToDebug)
@@ -725,9 +729,9 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 	containerD := NewContainerWidthXY("containerD", 10, 340, 100, 100)
 	containerE := NewContainerWidthXY("containerE", 10, 450, 100, 100)
 	containerF := NewContainerWidthXY("containerF", 10, 560, 100, 100)
-	containerG := NewContainerWidthXY("containerF", 10, 670, 100, 100)
-	containerH := NewContainerWidthXY("containerF", 10, 780, 100, 100)
-	containerI := NewContainerWidthXY("containerF", 10, 890, 100, 100)
+	containerG := NewContainerWidthXY("containerG", 10, 670, 100, 100)
+	containerH := NewContainerWidthXY("containerG", 10, 780, 100, 100)
+	containerI := NewContainerWidthXY("containerI", 10, 890, 100, 100)
 
 	linkAToFather := NewLinkWithFather(
 		"linkFToFather",
