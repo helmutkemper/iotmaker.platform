@@ -12,7 +12,7 @@ func (el Filter) FilterContainerFather(list []*Link) *Dimensions {
 	return nil
 }
 
-func (el Filter) LinkCheckIfFatherExistsAndHasOnlyOne(list []*Link) bool {
+func (el Filter) CheckIfFatherExistsAndHasOnlyOne(list []*Link) bool {
 	counter := 0
 	for _, link := range list {
 		if link.ContainerAFather == true {
@@ -507,5 +507,53 @@ func (el Filter) LinkVerticalFilterContainerIsAlignsFromTheTopOrTheBottomInRelat
 		}
 	}
 
+	return listOfLinksToVerify
+}
+
+func (el Filter) LinkVerticalFilterContainersWithErrorAndFindContainersWithIsNotAlignsFromTheTopOrTheBottomInRelationToAnotherContainerDirectlyOrIndirectlyLinked(container *Dimensions, listLinks []*Link) []*Dimensions {
+
+	listOfLinksToVerify := el.LinkVerticalFilterEachContainerIsAlignsFromTheTopOrTheBottomInRelationToAnotherContainer(container, listLinks)
+	containerTested := []*Dimensions{container}
+	containersToVerify := make([]*Dimensions, 0)
+
+	for {
+		for k := range listOfLinksToVerify {
+			if el.findDimensionsInList(listOfLinksToVerify[k].ContainerA, containerTested) == false {
+				containersToVerify = append(containersToVerify, listOfLinksToVerify[k].ContainerA)
+			}
+
+			if el.findDimensionsInList(listOfLinksToVerify[k].ContainerB, containerTested) == false {
+				containersToVerify = append(containersToVerify, listOfLinksToVerify[k].ContainerB)
+			}
+		}
+
+		if len(containersToVerify) == 0 {
+			break
+		}
+
+		pass := false
+		for k := range containersToVerify {
+			container = containersToVerify[k]
+			if el.findDimensionsInList(container, containerTested) == false {
+				pass = true
+				break
+			}
+		}
+
+		if pass == false {
+			break
+		}
+
+		containerTested = append(containerTested, container)
+		newLinkList := el.LinkVerticalFilterEachContainerIsAlignsFromTheTopOrTheBottomInRelationToAnotherContainer(container, listLinks)
+
+		for k := range newLinkList {
+			if el.findLinkInList(newLinkList[k], listOfLinksToVerify) == false {
+				listOfLinksToVerify = append(listOfLinksToVerify, newLinkList[k])
+			}
+		}
+	}
+
+	//LinkCheckIfContainerIsFloating
 	return listOfLinksToVerify
 }
