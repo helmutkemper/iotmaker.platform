@@ -337,7 +337,7 @@ func ExampleFilterContainerFather() {
 //  |      +---------------------------+      |
 //  |                                         |
 //  +-----------------------------------------+
-func ExampleLinkAssemblyHorizontalFilterContainerIsCentralizedInRelationToTheFather() {
+func ExampleLinkHorizontalFilterContainerIsCentralizedInRelationToTheFather() {
 
 	father := NewContainer("father", 300, 600)
 	containerA := NewContainerWidthXY("containerA", 10, 10, 100, 100)
@@ -375,7 +375,7 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsCentralizedInRelationToTheFat
 	listLink := []*Link{linkAToFather, linkAToB, linkAToC}
 
 	filter := Filter{}
-	ret := filter.LinkAssemblyHorizontalFilterContainerIsCentralizedInRelationToTheFather(listLink)
+	ret := filter.LinkHorizontalFilterContainerIsCentralizedInRelationToTheFather(listLink)
 
 	if len(ret) == 1 && ret[0] == linkAToFather {
 		fmt.Println("passou")
@@ -385,7 +385,7 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsCentralizedInRelationToTheFat
 	// passou
 }
 
-func ExampleLinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheLeftAndTheRightInRelationToAnotherContainer() {
+func ExampleLinkHorizontalFilterEachContainerIsAlignsFromTheLeftAndTheRightInRelationToAnotherContainer() {
 
 	father := NewContainer("father", 300, 600)
 	containerA := NewContainerWidthXY("containerA", 10, 10, 100, 100)
@@ -424,7 +424,7 @@ func ExampleLinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheLeftAndTheRi
 	listLink := []*Link{linkAToFather, linkAToB, linkAToC}
 
 	filter := Filter{}
-	ret := filter.LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheRightAndTheLeftInRelationToAnother(containerA, listLink)
+	ret := filter.LinkHorizontalFilterEachContainerIsAlignsFromTheRightAndTheLeftInRelationToAnother(containerA, listLink)
 	if len(ret) == 3 {
 
 		afPass := ret[0] == linkAToFather
@@ -436,7 +436,7 @@ func ExampleLinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheLeftAndTheRi
 		}
 	}
 
-	ret = filter.LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheRightAndTheLeftInRelationToAnother(containerB, listLink)
+	ret = filter.LinkHorizontalFilterEachContainerIsAlignsFromTheRightAndTheLeftInRelationToAnother(containerB, listLink)
 	if len(ret) == 1 {
 
 		abPass := ret[0] == linkAToB
@@ -450,7 +450,7 @@ func ExampleLinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheLeftAndTheRi
 	// passou
 }
 
-func ExampleLinkAssemblyCheckIfFatherExistsAndHasOnlyOne() {
+func ExampleLinkCheckIfFatherExistsAndHasOnlyOne() {
 
 	father := NewContainer("father", 300, 600)
 	containerA := NewContainerWidthXY("containerA", 10, 10, 100, 100)
@@ -488,7 +488,7 @@ func ExampleLinkAssemblyCheckIfFatherExistsAndHasOnlyOne() {
 	listLink := []*Link{linkAToFather, linkAToB, linkAToC}
 
 	filter := Filter{}
-	ret := filter.LinkAssemblyCheckIfFatherExistsAndHasOnlyOne(listLink)
+	ret := filter.LinkCheckIfFatherExistsAndHasOnlyOne(listLink)
 
 	if ret == true {
 		fmt.Println("passou")
@@ -498,7 +498,7 @@ func ExampleLinkAssemblyCheckIfFatherExistsAndHasOnlyOne() {
 	// passou
 }
 
-func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked_1() {
+func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked_1() {
 	father := NewContainer("father", 300, 600)
 	containerA := NewContainerWidthXY("containerA", 10, 10, 100, 100)
 	containerB := NewContainerWidthXY("containerB", 10, 120, 100, 100)
@@ -509,19 +509,19 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 
 	linkAToFather := NewLinkWithFather(
 		"linkFToFather",
-		father,
 		containerF,
-		KWallTopContainerBLinkOnTopToContainerALinkOnTop,
+		father,
+		KWallTopNotSet,
 		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
 		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
-		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
+		KWallBottomNotSet,
 	)
 
 	linkAToB := NewLink(
 		"linkAToB",
 		containerA,
 		containerB,
-		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallTopNotSet,
 		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
 		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
 		KWallBottomNotSet,
@@ -531,7 +531,7 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 		"linkBToC",
 		containerB,
 		containerC,
-		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallTopNotSet,
 		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
 		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
 		KWallBottomNotSet,
@@ -541,7 +541,7 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 		"linkCToD",
 		containerC,
 		containerD,
-		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallTopNotSet,
 		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
 		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
 		KWallBottomNotSet,
@@ -551,7 +551,7 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 		"linkBToE",
 		containerB,
 		containerE,
-		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallTopNotSet,
 		KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft,
 		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
 		KWallBottomNotSet,
@@ -560,11 +560,7 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 	listLink := []*Link{linkAToFather, linkAToB, linkBToC, linkCToD, linkBToE}
 
 	filter := Filter{}
-	fatherFromFilter := filter.FilterContainerFather(listLink)
-	if fatherFromFilter == nil {
-		fmt.Println("Error!")
-	}
-	ret := filter.LinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked(fatherFromFilter, listLink)
+	ret := filter.LinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked(containerA, listLink)
 
 	for k := range ret {
 		fmt.Printf("%v\n", ret[k].ToDebug)
@@ -577,7 +573,7 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 	// linkCToD
 }
 
-func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked_2() {
+func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked_2() {
 	father := NewContainer("father", 300, 600)
 	containerA := NewContainerWidthXY("containerA", 10, 10, 100, 100)
 	containerB := NewContainerWidthXY("containerB", 10, 120, 100, 100)
@@ -639,7 +635,7 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 	listLink := []*Link{linkAToFather, linkAToB, linkBToC, linkCToD, linkBToE}
 
 	filter := Filter{}
-	ret := filter.LinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked(containerF, listLink)
+	ret := filter.LinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked(containerF, listLink)
 
 	for k := range ret {
 		fmt.Printf("%v\n", ret[k].ToDebug)
@@ -649,7 +645,7 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 	// linkFToFather
 }
 
-func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked_3() {
+func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked_3() {
 	father := NewContainer("father", 300, 600)
 	containerA := NewContainerWidthXY("containerA", 10, 10, 100, 100)
 	containerB := NewContainerWidthXY("containerB", 10, 120, 100, 100)
@@ -711,7 +707,7 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 	listLink := []*Link{linkAToFather, linkAToB, linkBToC, linkCToD, linkBToE}
 
 	filter := Filter{}
-	ret := filter.LinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked(father, listLink)
+	ret := filter.LinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked(father, listLink)
 
 	for k := range ret {
 		fmt.Printf("%v\n", ret[k].ToDebug)
@@ -721,7 +717,7 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 	// linkFToFather
 }
 
-func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked_4() {
+func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked_4() {
 	father := NewContainer("father", 300, 600)
 	containerA := NewContainerWidthXY("containerA", 10, 10, 100, 100)
 	containerB := NewContainerWidthXY("containerB", 10, 120, 100, 100)
@@ -816,7 +812,7 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 	listLink := []*Link{linkAToFather, linkAToB, linkBToC, linkCToD, linkBToE, linkGToF, linkGToH, linkFToI}
 
 	filter := Filter{}
-	ret := filter.LinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked(father, listLink)
+	ret := filter.LinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked(father, listLink)
 
 	for k := range ret {
 		fmt.Printf("%v\n", ret[k].ToDebug)
@@ -850,7 +846,7 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 //  |     +---------------------------+     +---------------------------+     |
 //  |                                                                         |
 //  +-------------------------------------------------------------------------+
-func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked_5() {
+func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked_5() {
 	father := NewContainer("father", 300, 600)
 	containerA := NewContainerWidthXY("containerA", 10, 10, 100, 100)
 	containerB := NewContainerWidthXY("containerB", 10, 120, 100, 100)
@@ -928,7 +924,7 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 	listLink := []*Link{linkAToFather, linkCToA, linkAToF, linkBToA, linkDToF, linkEToF}
 
 	filter := Filter{}
-	ret := filter.LinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked(father, listLink)
+	ret := filter.LinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked(father, listLink)
 
 	for k := range ret {
 		fmt.Printf("%v\n", ret[k].ToDebug)
@@ -964,7 +960,7 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 //  |     +---------------------------+     +---------------------------+     |
 //  |                                                                         |
 //  +-------------------------------------------------------------------------+
-func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked_6() {
+func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked_6() {
 	father := NewContainer("father", 300, 600)
 	containerA := NewContainerWidthXY("containerA", 10, 10, 100, 100)
 	containerB := NewContainerWidthXY("containerB", 10, 120, 100, 100)
@@ -1031,7 +1027,7 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 	listLink := []*Link{linkAToFather, linkCToA, linkAToF, linkBToA, linkEToD}
 
 	filter := Filter{}
-	ret := filter.LinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked(father, listLink)
+	ret := filter.LinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked(father, listLink)
 
 	for k := range ret {
 		fmt.Printf("%v\n", ret[k].ToDebug)
@@ -1042,4 +1038,148 @@ func ExampleLinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightIn
 	// linkCToA
 	// linkAToF
 	// linkBToA
+}
+
+//  +-father------------O-----------------------------------------------------+
+//  |                   | 1: a to d                                           |
+//  |                   +---------------------------------+                   |
+//  |                   |                                 |                   |
+//  |     +-containerA--O-------------+     +-containerD--O-------------+     |
+//  |     |      2: father to a       |     |                           |     |
+//  |     |                           |     |                           |     |
+//  |     |         3: a to b         |     |                           |     |
+//  |     +-------------O-------------+     +-------------O-------------+     |
+//  |                   | 1: a to d                       |                   |
+//  |                   +---------------------------------+                   |
+//  |                   |                                                     |
+//  |                   +---------------------------------+                   |
+//  |                   | 4: b to e                       |                   |
+//  |     +-containerB--O-------------+     +-containerE--O-------------+     |
+//  |     |                           |     |                           |     |
+//  |     |                           |     |                           |     |
+//  |     |         5: b to c         |     |         8: e to f         |     |
+//  |     +-------------O-------------+     +-------------O-------------+     |
+//  |                   |                                 |                   |
+//  |                   |                                 |                   |
+//  |                   |                                 |                   |
+//  |     +-containerC--O-------------+     +-containerF--O-------------+     |
+//  |     |                           |     |                           |     |
+//  |     |                           |     |                           |     |
+//  |     |       6: c to father      |     |                           |     |
+//  |     +-------------O-------------+     +-------------O-------------+     |
+//  |                   | 7: c to f                       |                   |
+//  |                   +---------------------------------+                   |
+//  |                   |                                                     |
+//  +-------------------O-----------------------------------------------------+
+func ExampleLinkHorizontalFilterContainerIsAlignsFromTheTopOrTheBottomInRelationToAnotherContainerDirectlyOrIndirectlyLinked_1() {
+	father := NewContainer("father", 300, 600)
+	containerA := NewContainerWidthXY("containerA", 10, 10, 100, 100)
+	containerB := NewContainerWidthXY("containerB", 10, 120, 100, 100)
+	containerC := NewContainerWidthXY("containerC", 10, 230, 100, 100)
+	containerD := NewContainerWidthXY("containerD", 120, 10, 100, 100)
+	containerE := NewContainerWidthXY("containerE", 230, 120, 100, 100)
+	containerF := NewContainerWidthXY("containerF", 340, 230, 100, 100)
+
+	linkAToD := NewLink(
+		"1:linkAToD",
+		containerA,
+		containerD,
+		KWallTopContainerBLinkOnTopToContainerALinkOnTop,
+		KWallLeftNotSet,
+		KWallRightNotSet,
+		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
+	)
+
+	linkFatherToA := NewLinkWithFather(
+		"2:linkFatherToA",
+		containerA,
+		father,
+		KWallTopContainerBLinkOnTopToContainerALinkOnTop,
+		KWallLeftNotSet,
+		KWallRightNotSet,
+		KWallBottomNotSet,
+	)
+
+	linkAToB := NewLink(
+		"3:linkAToB",
+		containerB,
+		containerA,
+		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallLeftNotSet,
+		KWallRightNotSet,
+		KWallBottomNotSet,
+	)
+
+	linkBToE := NewLink(
+		"4:linkBToE",
+		containerE,
+		containerB,
+		KWallTopContainerBLinkOnTopToContainerALinkOnTop,
+		KWallLeftNotSet,
+		KWallRightNotSet,
+		KWallBottomNotSet,
+	)
+
+	linkCToE := NewLink(
+		"5:linkCToB",
+		containerB,
+		containerC,
+		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallLeftNotSet,
+		KWallRightNotSet,
+		KWallBottomNotSet,
+	)
+
+	linkCToFather := NewLinkWithFather(
+		"6:linkCToFather",
+		containerC,
+		father,
+		KWallTopNotSet,
+		KWallLeftNotSet,
+		KWallRightNotSet,
+		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
+	)
+
+	linkFToC := NewLink(
+		"7:linkFToC",
+		containerC,
+		containerF,
+		KWallTopNotSet,
+		KWallLeftNotSet,
+		KWallRightNotSet,
+		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
+	)
+
+	linkFToE := NewLink(
+		"8:linkFToE",
+		containerE,
+		containerF,
+		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallLeftNotSet,
+		KWallRightNotSet,
+		KWallBottomNotSet,
+	)
+
+	listLink := []*Link{linkAToD, linkFatherToA, linkAToB, linkBToE, linkCToE, linkCToFather, linkFToC, linkFToE}
+	filter := Filter{}
+
+	fatherFound := filter.FilterContainerFather(listLink)
+	if fatherFound == nil && fatherFound != father {
+		fmt.Println("error")
+	}
+
+	ret := filter.LinkVerticalFilterContainerIsAlignsFromTheTopOrTheBottomInRelationToAnotherContainerDirectlyOrIndirectlyLinked(fatherFound, listLink)
+	for k := range ret {
+		fmt.Printf("%v\n", ret[k].ToDebug)
+	}
+
+	// Output:
+	// 2:linkFatherToA
+	// 6:linkCToFather
+	// 1:linkAToD
+	// 3:linkAToB
+	// 5:linkCToB
+	// 7:linkFToC
+	// 4:linkBToE
+	// 8:linkFToE
 }

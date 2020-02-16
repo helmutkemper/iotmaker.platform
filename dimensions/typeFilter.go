@@ -12,7 +12,7 @@ func (el Filter) FilterContainerFather(list []*Link) *Dimensions {
 	return nil
 }
 
-func (el Filter) LinkAssemblyCheckIfFatherExistsAndHasOnlyOne(list []*Link) bool {
+func (el Filter) LinkCheckIfFatherExistsAndHasOnlyOne(list []*Link) bool {
 	counter := 0
 	for _, link := range list {
 		if link.ContainerAFather == true {
@@ -32,7 +32,7 @@ func (el Filter) LinkAssemblyCheckIfFatherExistsAndHasOnlyOne(list []*Link) bool
 //  |     +-------------X-------------+     |
 //  |                                       |
 //  +---------------------------------------+
-func (el Filter) LinkAssemblyCheckIfContainerIsFloating(listLink []*Link, listDimensions []*Dimensions) []*Dimensions {
+func (el Filter) LinkCheckIfContainerIsFloating(listLink []*Link, listDimensions []*Dimensions) []*Dimensions {
 	ret := make([]*Dimensions, 0)
 
 	for _, dimension := range listDimensions {
@@ -74,7 +74,7 @@ func (el Filter) LinkAssemblyCheckIfContainerIsFloating(listLink []*Link, listDi
 //  |     +---------------------------+     |
 //  |                                       |
 //  +---------------------------------------+
-func (el Filter) LinkAssemblyHorizontalFilterContainerIsCentralizedInRelationToTheFather(list []*Link) []*Link {
+func (el Filter) LinkHorizontalFilterContainerIsCentralizedInRelationToTheFather(list []*Link) []*Link {
 
 	ret := make([]*Link, 0)
 	for _, link := range list {
@@ -110,7 +110,7 @@ func (el Filter) LinkAssemblyHorizontalFilterContainerIsCentralizedInRelationToT
 //  |     +---------------------------+     |
 //  |                                       |
 //  +---------------------------------------+
-func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheRightInRelationToTheFather(list []*Link) []*Link {
+func (el Filter) LinkHorizontalFilterEachContainerIsAlignsFromTheRightInRelationToTheFather(list []*Link) []*Link {
 	ret := make([]*Link, 0)
 
 	for _, link := range list {
@@ -151,7 +151,7 @@ func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheRightIn
 //  |     +---------------------------+       |
 //  |                                         |
 //  +-----------------------------------------+
-func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheRightInRelationToAnother(container *Dimensions, list []*Link) []*Link {
+func (el Filter) LinkHorizontalFilterEachContainerIsAlignsFromTheRightInRelationToAnother(container *Dimensions, list []*Link) []*Link {
 	ret := make([]*Link, 0)
 
 	for _, link := range list {
@@ -193,7 +193,7 @@ func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheRightIn
 //  |       +---------------------------+       |
 //  |                                           |
 //  +-------------------------------------------+
-func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheRightAndTheLeftInRelationToAnother(container *Dimensions, list []*Link) []*Link {
+func (el Filter) LinkHorizontalFilterEachContainerIsAlignsFromTheRightAndTheLeftInRelationToAnother(container *Dimensions, list []*Link) []*Link {
 	ret := make([]*Link, 0)
 
 	for _, link := range list {
@@ -230,7 +230,7 @@ func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheRightAn
 //  |     +---------------------------+     |
 //  |                                       |
 //  +---------------------------------------+
-func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheLeftInRelationToTheFather(list []*Link) []*Link {
+func (el Filter) LinkHorizontalFilterEachContainerIsAlignsFromTheLeftInRelationToTheFather(list []*Link) []*Link {
 	ret := make([]*Link, 0)
 
 	for _, link := range list {
@@ -272,7 +272,7 @@ func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheLeftInR
 //  |       +---------------------------+   |
 //  |                                       |
 //  +---------------------------------------+
-func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheLeftInRelationToAnother(container *Dimensions, list []*Link) []*Link {
+func (el Filter) LinkHorizontalFilterEachContainerIsAlignsFromTheLeftInRelationToAnother(container *Dimensions, list []*Link) []*Link {
 	ret := make([]*Link, 0)
 
 	for _, link := range list {
@@ -290,7 +290,7 @@ func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheLeftInR
 	return ret
 }
 
-func (el Filter) LinkAssemblyErrorFilterContainerIsLinkedInRelationToItSelf(container *Dimensions, list []*Link) []*Link {
+func (el Filter) LinkErrorFilterContainerIsLinkedInRelationToItSelf(container *Dimensions, list []*Link) []*Link {
 	ret := make([]*Link, 0)
 
 	for _, link := range list {
@@ -353,9 +353,9 @@ func (el Filter) findLinkInList(link *Link, list []*Link) bool {
 //  |     +---------------------------+     |  |                                       |
 //  |                                       |  |                                       |
 //  +---------------------------------------+  +---------------------------------------+
-func (el Filter) LinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked(container *Dimensions, listLinks []*Link) []*Link {
+func (el Filter) LinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked(container *Dimensions, listLinks []*Link) []*Link {
 
-	listOfLinksToVerify := el.LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainer(container, listLinks)
+	listOfLinksToVerify := el.LinkHorizontalFilterEachContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainer(container, listLinks)
 	containerTested := []*Dimensions{container}
 	containersToVerify := make([]*Dimensions, 0)
 
@@ -388,7 +388,7 @@ func (el Filter) LinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRi
 		}
 
 		containerTested = append(containerTested, container)
-		newLinkList := el.LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainer(container, listLinks)
+		newLinkList := el.LinkHorizontalFilterEachContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainer(container, listLinks)
 
 		for k := range newLinkList {
 			if el.findLinkInList(newLinkList[k], listOfLinksToVerify) == false {
@@ -424,7 +424,7 @@ func (el Filter) LinkAssemblyHorizontalFilterContainerIsAlignsFromTheLeftOrTheRi
 //  |     +---------------------------+   +---------------------------+    |
 //  |                                                                      |
 //  +----------------------------------------------------------------------+
-func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainer(container *Dimensions, list []*Link) []*Link {
+func (el Filter) LinkHorizontalFilterEachContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainer(container *Dimensions, list []*Link) []*Link {
 	ret := make([]*Link, 0)
 
 	for _, link := range list {
@@ -441,4 +441,71 @@ func (el Filter) LinkAssemblyHorizontalFilterEachContainerIsAlignsFromTheLeftOrT
 	}
 
 	return ret
+}
+
+func (el Filter) LinkVerticalFilterEachContainerIsAlignsFromTheTopOrTheBottomInRelationToAnotherContainer(container *Dimensions, list []*Link) []*Link {
+	ret := make([]*Link, 0)
+
+	for _, link := range list {
+		containerAPass := link.ContainerA == container
+		containerBPass := link.ContainerB == container
+		topBTopATopPass := link.Top == KWallTopContainerBLinkOnTopToContainerALinkOnTop
+		topBTopABottomPass := link.Top == KWallTopContainerBLinkOnTopToContainerALinkOnBottom
+		bottomBTopABottomPass := link.Bottom == KWallBottomContainerBLinkOnTopToContainerALinkOnBottom
+		bottomBBottomABottomPass := link.Bottom == KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom
+
+		pass := (topBTopATopPass || topBTopABottomPass || bottomBTopABottomPass || bottomBBottomABottomPass) && (containerAPass || containerBPass)
+		if pass == true {
+			ret = append(ret, link)
+		}
+	}
+
+	return ret
+}
+
+func (el Filter) LinkVerticalFilterContainerIsAlignsFromTheTopOrTheBottomInRelationToAnotherContainerDirectlyOrIndirectlyLinked(container *Dimensions, listLinks []*Link) []*Link {
+
+	listOfLinksToVerify := el.LinkVerticalFilterEachContainerIsAlignsFromTheTopOrTheBottomInRelationToAnotherContainer(container, listLinks)
+	containerTested := []*Dimensions{container}
+	containersToVerify := make([]*Dimensions, 0)
+
+	for {
+		for k := range listOfLinksToVerify {
+			if el.findDimensionsInList(listOfLinksToVerify[k].ContainerA, containerTested) == false {
+				containersToVerify = append(containersToVerify, listOfLinksToVerify[k].ContainerA)
+			}
+
+			if el.findDimensionsInList(listOfLinksToVerify[k].ContainerB, containerTested) == false {
+				containersToVerify = append(containersToVerify, listOfLinksToVerify[k].ContainerB)
+			}
+		}
+
+		if len(containersToVerify) == 0 {
+			break
+		}
+
+		pass := false
+		for k := range containersToVerify {
+			container = containersToVerify[k]
+			if el.findDimensionsInList(container, containerTested) == false {
+				pass = true
+				break
+			}
+		}
+
+		if pass == false {
+			break
+		}
+
+		containerTested = append(containerTested, container)
+		newLinkList := el.LinkVerticalFilterEachContainerIsAlignsFromTheTopOrTheBottomInRelationToAnotherContainer(container, listLinks)
+
+		for k := range newLinkList {
+			if el.findLinkInList(newLinkList[k], listOfLinksToVerify) == false {
+				listOfLinksToVerify = append(listOfLinksToVerify, newLinkList[k])
+			}
+		}
+	}
+
+	return listOfLinksToVerify
 }
