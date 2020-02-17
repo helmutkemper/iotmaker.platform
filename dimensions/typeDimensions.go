@@ -1,5 +1,7 @@
 package dimensions
 
+import "errors"
+
 type WallTop int
 
 const (
@@ -786,25 +788,25 @@ func (el *Link) LinkAssembly(father Link, list []Link) error {
 //  |                                       |
 //  +---------------------------------------+
 //
-//  +-father--------------------------------O---------------------------------------+
-//  |                                       |                                       |
-//  |                   +-------------------+-------------------+                   |
-//  |                   |                                       |                   |
-//  |     +-containerA--O-------------+           +-containerB--O-------------+     |
-//  |     |                           |           |                           |     |
-//  |  +--O                           O-----------O                           O--+  |
-//  |  |  |                           |           |                           |  |  |
-//  |  |  +-------------O-------------+           +-------------O-------------+  |  |
-//  O--+                |                                       |                +--O
-//  |  |  +-containerC--O-------------+           +-containerD--O-------------+  |  |
-//  |  |  |                           |           |                           |  |  |
-//  |  +--O                           O-----------O                           O--+  |
-//  |     |                           |           |                           |     |
-//  |     +-------------O-------------+           +-------------O-------------+     |
-//  |                   |                                       |                   |
-//  |                   +-------------------+-------------------+                   |
-//  |                                       |                                       |
-//  +---------------------------------------O---------------------------------------+
+//  +-father-----------------------------O------------------------------------+
+//  |                                    |                                    |
+//  |                   +----------------+----------------+                   |
+//  |                   |                                 |                   |
+//  |     +-containerA--O-------------+     +-containerB--O-------------+     |
+//  |     |                           |     |                           |     |
+//  |  +--O                           O-----O                           O--+  |
+//  |  |  |                           |     |                           |  |  |
+//  |  |  +-------------O-------------+     +-------------O-------------+  |  |
+//  O--+                |                                 |                +--O
+//  |  |  +-containerC--O-------------+     +-containerD--O-------------+  |  |
+//  |  |  |                           |     |                           |  |  |
+//  |  +--O                           O-----O                           O--+  |
+//  |     |                           |     |                           |     |
+//  |     +-------------O-------------+     +-------------O-------------+     |
+//  |                   |                                 |                   |
+//  |                   +----------------+----------------+                   |
+//  |                                    |                                    |
+//  +------------------------------------O------------------------------------+
 //
 type Dimensions struct {
 	ToDebug string
@@ -882,8 +884,12 @@ func NewContainerWithSpace(width, height, left, right, top, bottom int) *Dimensi
 	}
 }
 
-func NewLink(debug string, containerA, containerB *Dimensions, top WallTop, left WallLeft, right WallRight, bottom WallBottom) *Link {
-	return &Link{
+func NewLink(debug string, containerA, containerB *Dimensions, top WallTop, left WallLeft, right WallRight, bottom WallBottom) (error, *Link) {
+	if containerA == containerB {
+		return errors.New("container is linked to it self"), nil
+	}
+
+	return nil, &Link{
 		ToDebug:          debug,
 		ContainerA:       containerA,
 		ContainerAFather: false,
@@ -895,8 +901,12 @@ func NewLink(debug string, containerA, containerB *Dimensions, top WallTop, left
 	}
 }
 
-func NewLinkWithFather(debug string, containerB, father *Dimensions, top WallTop, left WallLeft, right WallRight, bottom WallBottom) *Link {
-	return &Link{
+func NewLinkWithFather(debug string, containerB, father *Dimensions, top WallTop, left WallLeft, right WallRight, bottom WallBottom) (error, *Link) {
+	if father == containerB {
+		return errors.New("container is linked to it self"), nil
+	}
+
+	return nil, &Link{
 		ToDebug:          debug,
 		ContainerA:       father,
 		ContainerAFather: true,

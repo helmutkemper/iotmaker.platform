@@ -26,7 +26,7 @@ func (el Filter) findLinkInList(link *Link, list []*Link) bool {
 	return false
 }
 
-func (el Filter) FilterContainerFather(list []*Link) *Dimensions {
+func (el Filter) SearchContainerFather(list []*Link) *Dimensions {
 	for _, link := range list {
 		if link.ContainerAFather == true {
 			return link.ContainerA
@@ -56,7 +56,7 @@ func (el Filter) CheckIfFatherExistsAndHasOnlyOne(list []*Link) bool {
 //  |     +-------------X-------------+     |
 //  |                                       |
 //  +---------------------------------------+
-func (el Filter) LinkCheckIfContainerIsFloating(listLink []*Link, listDimensions []*Dimensions) []*Dimensions {
+func (el Filter) SearchForFloatingContainers(listLink []*Link, listDimensions []*Dimensions) []*Dimensions {
 	notFoundList := make([]*Dimensions, 0)
 	foundList := make([]*Dimensions, 0)
 
@@ -319,6 +319,15 @@ func (el Filter) LinkHorizontalFilterEachContainerIsAlignsFromTheLeftInRelationT
 	return ret
 }
 
+//  +-father--------------------------------+
+//  |                                       |
+//  |     +-containerA----------------+     |
+//  |  +<-O                           O->+  |
+//  |  |  |                           |  |  |
+//  |  +->O                           O<-+  |
+//  |     +---------------------------+     |
+//  |                                       |
+//  +---------------------------------------+
 func (el Filter) LinkErrorFilterContainerIsLinkedInRelationToItSelf(container *Dimensions, list []*Link) []*Link {
 	ret := make([]*Link, 0)
 
@@ -474,12 +483,12 @@ func (el Filter) LinkVerticalFilterEachContainerIsAlignsFromTheTopOrTheBottomInR
 
 func (el Filter) LinkHorizontalFilterContainersWithErrorAndFindContainersWithIsNotAlignsFromTheTopOrTheBottomInRelationToFatherDirectlyOrIndirectlyLinked(listOfContainers []*Dimensions, listOfLinks []*Link) (error, []*Dimensions) {
 
-	fatherContainer := el.FilterContainerFather(listOfLinks)
+	fatherContainer := el.SearchContainerFather(listOfLinks)
 	if fatherContainer == nil {
 		return errors.New("father containers not found in containers list"), []*Dimensions{}
 	}
 	listOfLinksToVerify := el.LinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked(fatherContainer, listOfLinks)
-	return nil, el.LinkCheckIfContainerIsFloating(listOfLinksToVerify, listOfContainers)
+	return nil, el.SearchForFloatingContainers(listOfLinksToVerify, listOfContainers)
 }
 
 func (el Filter) LinkVerticalFilterContainerIsAlignsFromTheTopOrTheBottomInRelationToAnotherContainerDirectlyOrIndirectlyLinked(container *Dimensions, listLinks []*Link) []*Link {
@@ -531,10 +540,98 @@ func (el Filter) LinkVerticalFilterContainerIsAlignsFromTheTopOrTheBottomInRelat
 
 func (el Filter) LinkVerticalFilterContainersWithErrorAndFindContainersWithIsNotAlignsFromTheTopOrTheBottomInRelationToFatherDirectlyOrIndirectlyLinked(listOfContainers []*Dimensions, listOfLinks []*Link) (error, []*Dimensions) {
 
-	fatherContainer := el.FilterContainerFather(listOfLinks)
+	fatherContainer := el.SearchContainerFather(listOfLinks)
 	if fatherContainer == nil {
 		return errors.New("father containers not found in containers list"), []*Dimensions{}
 	}
 	listOfLinksToVerify := el.LinkVerticalFilterContainerIsAlignsFromTheTopOrTheBottomInRelationToAnotherContainerDirectlyOrIndirectlyLinked(fatherContainer, listOfLinks)
-	return nil, el.LinkCheckIfContainerIsFloating(listOfLinksToVerify, listOfContainers)
+	return nil, el.SearchForFloatingContainers(listOfLinksToVerify, listOfContainers)
 }
+
+//todo: filters
+//  +-father------------------------------------------------------------+
+//  |                                                                   |
+//  |  +-containerA--X-------------+     +-containerB--X-------------+  |
+//  |  |                           |     |                           |  |
+//  |  |                           |     |                           |  |
+//  |  |                           |     |                           |  |
+//  |  +-------------O-------------+     +-------------O-------------+  |
+//  |                |                                 |                |
+//  |                +---------------------------------+                |
+//  |                                                                   |
+//  +-------------------------------------------------------------------+
+//
+//  +-father------------------------------------------------------------+
+//  |                                                                   |
+//  |                +---------------------------------+                |
+//  |                |                                 |                |
+//  |  +-containerA--O-------------+     +-containerB--O-------------+  |
+//  |  |                           |     |                           |  |
+//  |  |                           |     |                           |  |
+//  |  |                           |     |                           |  |
+//  |  +-------------X-------------+     +-------------X-------------+  |
+//  |                                                                   |
+//  +-------------------------------------------------------------------+
+//
+//  +-father------------------------------------------------------------+
+//  |                                                                   |
+//  |                +---------------------------------+                |
+//  |                |                                 |                |
+//  |  +-containerA--O-------------+     +-containerB--O-------------+  |
+//  |  |                           |     |                           |  |
+//  |  |                           |     |                           |  |
+//  |  |                           |     |                           |  |
+//  |  +-------------O-------------+     +-------------O-------------+  |
+//  |                |                                 |                |
+//  |                +---------------------------------+                |
+//  |                                                                   |
+//  +-------------------------------------------------------------------+
+//
+//  +-father--------------------------------+
+//  |                                       |
+//  |     +-containerA----------------+     |
+//  |     |                           |     |
+//  |  +--O                           O--+  |
+//  |  |  |                           |  |  |
+//  |  |  +---------------------------+  |  |
+//  |  |                                 |  |
+//  |  |  +-containerB----------------+  |  |
+//  |  |  |                           |  |  |
+//  |  +--O                           O--+  |
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  +---------------------------------------+
+//
+//  +-father--------------------------------+
+//  |                                       |
+//  |     +-containerA----------------+     |
+//  |     |                           |     |
+//  |     X                           O--+  |
+//  |     |                           |  |  |
+//  |     +---------------------------+  |  |
+//  |                                    |  |
+//  |     +-containerB----------------+  |  |
+//  |     |                           |  |  |
+//  |     X                           O--+  |
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  +---------------------------------------+
+//
+//  +-father--------------------------------+
+//  |                                       |
+//  |     +-containerA----------------+     |
+//  |     |                           |     |
+//  |  +--O                           X     |
+//  |  |  |                           |     |
+//  |  |  +---------------------------+     |
+//  |  |                                    |
+//  |  |  +-containerB----------------+     |
+//  |  |  |                           |     |
+//  |  +--O                           X     |
+//  |     |                           |     |
+//  |     +---------------------------+     |
+//  |                                       |
+//  +---------------------------------------+
+//

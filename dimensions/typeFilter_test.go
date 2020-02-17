@@ -11,7 +11,7 @@ func ExampleFilterContainerFather() {
 	containerB := NewContainerWidthXY("containerB", 10, 120, 100, 100)
 	containerC := NewContainerWidthXY("containerC", 10, 240, 100, 100)
 
-	linkAToFather := NewLinkWithFather(
+	_, linkAToFather := NewLinkWithFather(
 		"linkAToFather",
 		father,
 		containerA,
@@ -20,7 +20,8 @@ func ExampleFilterContainerFather() {
 		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
 		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
 	)
-	linkAToB := NewLink(
+
+	_, linkAToB := NewLink(
 		"linkAToB",
 		containerA,
 		containerB,
@@ -29,7 +30,8 @@ func ExampleFilterContainerFather() {
 		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
 		KWallBottomNotSet,
 	)
-	linkAToC := NewLink(
+
+	_, linkAToC := NewLink(
 		"linkAToC",
 		containerA,
 		containerC,
@@ -42,7 +44,7 @@ func ExampleFilterContainerFather() {
 	listLink := []*Link{linkAToFather, linkAToB, linkAToC}
 
 	filter := Filter{}
-	retDimensions := filter.FilterContainerFather(listLink)
+	retDimensions := filter.SearchContainerFather(listLink)
 
 	if retDimensions != nil && retDimensions == father {
 		fmt.Println("passou")
@@ -344,7 +346,7 @@ func ExampleLinkHorizontalFilterContainerIsCentralizedInRelationToTheFather() {
 	containerB := NewContainerWidthXY("containerB", 10, 120, 100, 100)
 	containerC := NewContainerWidthXY("containerC", 10, 240, 100, 100)
 
-	linkAToFather := NewLinkWithFather(
+	_, linkAToFather := NewLinkWithFather(
 		"linkAToFather",
 		father,
 		containerA,
@@ -353,7 +355,8 @@ func ExampleLinkHorizontalFilterContainerIsCentralizedInRelationToTheFather() {
 		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
 		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
 	)
-	linkAToB := NewLink(
+
+	_, linkAToB := NewLink(
 		"linkAToB",
 		containerA,
 		containerB,
@@ -362,7 +365,8 @@ func ExampleLinkHorizontalFilterContainerIsCentralizedInRelationToTheFather() {
 		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
 		KWallBottomNotSet,
 	)
-	linkAToC := NewLink(
+
+	_, linkAToC := NewLink(
 		"linkAToC",
 		containerA,
 		containerC,
@@ -392,7 +396,7 @@ func ExampleLinkHorizontalFilterEachContainerIsAlignsFromTheLeftAndTheRightInRel
 	containerB := NewContainerWidthXY("containerB", 10, 120, 100, 100)
 	containerC := NewContainerWidthXY("containerC", 10, 240, 100, 100)
 
-	linkAToFather := NewLinkWithFather(
+	_, linkAToFather := NewLinkWithFather(
 		"linkAToFather",
 		father,
 		containerA,
@@ -401,7 +405,8 @@ func ExampleLinkHorizontalFilterEachContainerIsAlignsFromTheLeftAndTheRightInRel
 		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
 		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
 	)
-	linkAToB := NewLink(
+
+	_, linkAToB := NewLink(
 		"linkAToB",
 		containerA,
 		containerB,
@@ -410,7 +415,8 @@ func ExampleLinkHorizontalFilterEachContainerIsAlignsFromTheLeftAndTheRightInRel
 		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
 		KWallBottomNotSet,
 	)
-	linkAToC := NewLink(
+
+	_, linkAToC := NewLink(
 		"linkAToC",
 		containerA,
 		containerC,
@@ -457,7 +463,7 @@ func ExampleLinkCheckIfFatherExistsAndHasOnlyOne() {
 	containerB := NewContainerWidthXY("containerB", 10, 120, 100, 100)
 	containerC := NewContainerWidthXY("containerC", 10, 240, 100, 100)
 
-	linkAToFather := NewLinkWithFather(
+	_, linkAToFather := NewLinkWithFather(
 		"linkAToFather",
 		father,
 		containerA,
@@ -466,7 +472,8 @@ func ExampleLinkCheckIfFatherExistsAndHasOnlyOne() {
 		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
 		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
 	)
-	linkAToB := NewLink(
+
+	_, linkAToB := NewLink(
 		"linkAToB",
 		containerA,
 		containerB,
@@ -475,7 +482,8 @@ func ExampleLinkCheckIfFatherExistsAndHasOnlyOne() {
 		KWallRightContainerBLinkOnRightToContainerALinkOnRight,
 		KWallBottomNotSet,
 	)
-	linkAToC := NewLink(
+
+	_, linkAToC := NewLink(
 		"linkAToC",
 		containerA,
 		containerC,
@@ -507,7 +515,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 	containerE := NewContainerWidthXY("containerE", 10, 450, 100, 100)
 	containerF := NewContainerWidthXY("containerF", 10, 560, 100, 100)
 
-	linkAToFather := NewLinkWithFather(
+	_, linkAToFather := NewLinkWithFather(
 		"linkFToFather",
 		containerF,
 		father,
@@ -517,7 +525,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 		KWallBottomNotSet,
 	)
 
-	linkAToB := NewLink(
+	_, linkAToB := NewLink(
 		"linkAToB",
 		containerA,
 		containerB,
@@ -527,7 +535,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 		KWallBottomNotSet,
 	)
 
-	linkBToC := NewLink(
+	_, linkBToC := NewLink(
 		"linkBToC",
 		containerB,
 		containerC,
@@ -537,7 +545,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 		KWallBottomNotSet,
 	)
 
-	linkCToD := NewLink(
+	_, linkCToD := NewLink(
 		"linkCToD",
 		containerC,
 		containerD,
@@ -547,7 +555,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 		KWallBottomNotSet,
 	)
 
-	linkBToE := NewLink(
+	_, linkBToE := NewLink(
 		"linkBToE",
 		containerB,
 		containerE,
@@ -582,7 +590,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 	containerE := NewContainerWidthXY("containerE", 10, 450, 100, 100)
 	containerF := NewContainerWidthXY("containerF", 10, 560, 100, 100)
 
-	linkAToFather := NewLinkWithFather(
+	_, linkAToFather := NewLinkWithFather(
 		"linkFToFather",
 		father,
 		containerF,
@@ -592,7 +600,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
 	)
 
-	linkAToB := NewLink(
+	_, linkAToB := NewLink(
 		"linkAToB",
 		containerA,
 		containerB,
@@ -602,7 +610,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 		KWallBottomNotSet,
 	)
 
-	linkBToC := NewLink(
+	_, linkBToC := NewLink(
 		"linkBToC",
 		containerB,
 		containerC,
@@ -612,7 +620,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 		KWallBottomNotSet,
 	)
 
-	linkCToD := NewLink(
+	_, linkCToD := NewLink(
 		"linkCToD",
 		containerC,
 		containerD,
@@ -622,7 +630,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 		KWallBottomNotSet,
 	)
 
-	linkBToE := NewLink(
+	_, linkBToE := NewLink(
 		"linkBToE",
 		containerB,
 		containerE,
@@ -654,7 +662,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 	containerE := NewContainerWidthXY("containerE", 10, 450, 100, 100)
 	containerF := NewContainerWidthXY("containerF", 10, 560, 100, 100)
 
-	linkAToFather := NewLinkWithFather(
+	_, linkAToFather := NewLinkWithFather(
 		"linkFToFather",
 		father,
 		containerF,
@@ -664,7 +672,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
 	)
 
-	linkAToB := NewLink(
+	_, linkAToB := NewLink(
 		"linkAToB",
 		containerA,
 		containerB,
@@ -674,7 +682,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 		KWallBottomNotSet,
 	)
 
-	linkBToC := NewLink(
+	_, linkBToC := NewLink(
 		"linkBToC",
 		containerB,
 		containerC,
@@ -684,7 +692,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 		KWallBottomNotSet,
 	)
 
-	linkCToD := NewLink(
+	_, linkCToD := NewLink(
 		"linkCToD",
 		containerC,
 		containerD,
@@ -694,7 +702,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 		KWallBottomNotSet,
 	)
 
-	linkBToE := NewLink(
+	_, linkBToE := NewLink(
 		"linkBToE",
 		containerB,
 		containerE,
@@ -729,7 +737,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 	containerH := NewContainerWidthXY("containerG", 10, 780, 100, 100)
 	containerI := NewContainerWidthXY("containerI", 10, 890, 100, 100)
 
-	linkAToFather := NewLinkWithFather(
+	_, linkAToFather := NewLinkWithFather(
 		"linkFToFather",
 		father,
 		containerF,
@@ -739,7 +747,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
 	)
 
-	linkAToB := NewLink(
+	_, linkAToB := NewLink(
 		"linkAToB",
 		containerB,
 		containerA,
@@ -749,7 +757,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 		KWallBottomNotSet,
 	)
 
-	linkBToC := NewLink(
+	_, linkBToC := NewLink(
 		"linkBToC",
 		containerC,
 		containerB,
@@ -759,7 +767,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 		KWallBottomNotSet,
 	)
 
-	linkCToD := NewLink(
+	_, linkCToD := NewLink(
 		"linkCToD",
 		containerD,
 		containerC,
@@ -769,7 +777,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 		KWallBottomNotSet,
 	)
 
-	linkBToE := NewLink(
+	_, linkBToE := NewLink(
 		"linkBToE",
 		containerE,
 		containerB,
@@ -779,7 +787,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 		KWallBottomNotSet,
 	)
 
-	linkGToF := NewLink(
+	_, linkGToF := NewLink(
 		"linkGToF",
 		containerF,
 		containerG,
@@ -789,7 +797,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 		KWallBottomNotSet,
 	)
 
-	linkGToH := NewLink(
+	_, linkGToH := NewLink(
 		"linkGToH",
 		containerH,
 		containerG,
@@ -799,7 +807,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 		KWallBottomNotSet,
 	)
 
-	linkFToI := NewLink(
+	_, linkFToI := NewLink(
 		"linkFToI",
 		containerI,
 		containerF,
@@ -856,7 +864,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 	containerF := NewContainerWidthXY("containerF", 340, 230, 100, 100)
 
 	// 1: a to father
-	linkAToFather := NewLinkWithFather(
+	_, linkAToFather := NewLinkWithFather(
 		"linkAToFather",
 		father,
 		containerA,
@@ -867,7 +875,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 	)
 
 	// 2: c to a
-	linkCToA := NewLink(
+	_, linkCToA := NewLink(
 		"linkCToA",
 		containerA,
 		containerC,
@@ -878,7 +886,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 	)
 
 	// 3: a to f
-	linkAToF := NewLink(
+	_, linkAToF := NewLink(
 		"linkAToF",
 		containerA,
 		containerF,
@@ -889,7 +897,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 	)
 
 	// 4: b to a
-	linkBToA := NewLink(
+	_, linkBToA := NewLink(
 		"linkBToA",
 		containerA,
 		containerB,
@@ -900,7 +908,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 	)
 
 	// 5: d to f
-	linkDToF := NewLink(
+	_, linkDToF := NewLink(
 		"linkDToF",
 		containerF,
 		containerD,
@@ -911,7 +919,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 	)
 
 	// 6: e to f
-	linkEToF := NewLink(
+	_, linkEToF := NewLink(
 		"linkEToF",
 		containerF,
 		containerE,
@@ -970,7 +978,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 	containerF := NewContainerWidthXY("containerF", 340, 230, 100, 100)
 
 	// 1: a to father
-	linkAToFather := NewLinkWithFather(
+	_, linkAToFather := NewLinkWithFather(
 		"linkAToFather",
 		father,
 		containerA,
@@ -981,7 +989,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 	)
 
 	// 2: c to a
-	linkCToA := NewLink(
+	_, linkCToA := NewLink(
 		"linkCToA",
 		containerA,
 		containerC,
@@ -992,7 +1000,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 	)
 
 	// 3: a to f
-	linkAToF := NewLink(
+	_, linkAToF := NewLink(
 		"linkAToF",
 		containerF,
 		containerA,
@@ -1003,7 +1011,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 	)
 
 	// 4: b to a
-	linkBToA := NewLink(
+	_, linkBToA := NewLink(
 		"linkBToA",
 		containerA,
 		containerB,
@@ -1014,7 +1022,7 @@ func ExampleLinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelation
 	)
 
 	// 5: e to d
-	linkEToD := NewLink(
+	_, linkEToD := NewLink(
 		"linkEToD",
 		containerD,
 		containerE,
@@ -1080,7 +1088,7 @@ func ExampleLinkVerticalFilterContainerIsAlignsFromTheTopOrTheBottomInRelationTo
 	containerE := NewContainerWidthXY("containerE", 230, 120, 100, 100)
 	containerF := NewContainerWidthXY("containerF", 340, 230, 100, 100)
 
-	linkAToD := NewLink(
+	_, linkAToD := NewLink(
 		"1:linkAToD",
 		containerA,
 		containerD,
@@ -1090,7 +1098,7 @@ func ExampleLinkVerticalFilterContainerIsAlignsFromTheTopOrTheBottomInRelationTo
 		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
 	)
 
-	linkFatherToA := NewLinkWithFather(
+	_, linkFatherToA := NewLinkWithFather(
 		"2:linkFatherToA",
 		containerA,
 		father,
@@ -1100,7 +1108,7 @@ func ExampleLinkVerticalFilterContainerIsAlignsFromTheTopOrTheBottomInRelationTo
 		KWallBottomNotSet,
 	)
 
-	linkAToB := NewLink(
+	_, linkAToB := NewLink(
 		"3:linkAToB",
 		containerB,
 		containerA,
@@ -1110,7 +1118,7 @@ func ExampleLinkVerticalFilterContainerIsAlignsFromTheTopOrTheBottomInRelationTo
 		KWallBottomNotSet,
 	)
 
-	linkBToE := NewLink(
+	_, linkBToE := NewLink(
 		"4:linkBToE",
 		containerE,
 		containerB,
@@ -1120,7 +1128,7 @@ func ExampleLinkVerticalFilterContainerIsAlignsFromTheTopOrTheBottomInRelationTo
 		KWallBottomNotSet,
 	)
 
-	linkCToE := NewLink(
+	_, linkCToE := NewLink(
 		"5:linkCToB",
 		containerB,
 		containerC,
@@ -1130,7 +1138,7 @@ func ExampleLinkVerticalFilterContainerIsAlignsFromTheTopOrTheBottomInRelationTo
 		KWallBottomNotSet,
 	)
 
-	linkCToFather := NewLinkWithFather(
+	_, linkCToFather := NewLinkWithFather(
 		"6:linkCToFather",
 		containerC,
 		father,
@@ -1140,7 +1148,7 @@ func ExampleLinkVerticalFilterContainerIsAlignsFromTheTopOrTheBottomInRelationTo
 		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
 	)
 
-	linkFToC := NewLink(
+	_, linkFToC := NewLink(
 		"7:linkFToC",
 		containerC,
 		containerF,
@@ -1150,7 +1158,7 @@ func ExampleLinkVerticalFilterContainerIsAlignsFromTheTopOrTheBottomInRelationTo
 		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
 	)
 
-	linkFToE := NewLink(
+	_, linkFToE := NewLink(
 		"8:linkFToE",
 		containerE,
 		containerF,
@@ -1163,7 +1171,7 @@ func ExampleLinkVerticalFilterContainerIsAlignsFromTheTopOrTheBottomInRelationTo
 	listLink := []*Link{linkAToD, linkFatherToA, linkAToB, linkBToE, linkCToE, linkCToFather, linkFToC, linkFToE}
 	filter := Filter{}
 
-	fatherFound := filter.FilterContainerFather(listLink)
+	fatherFound := filter.SearchContainerFather(listLink)
 	if fatherFound == nil && fatherFound != father {
 		fmt.Println("error")
 	}
@@ -1222,7 +1230,7 @@ func ExampleLinkVerticalFilterContainerIsAlignsFromTheTopOrTheBottomInRelationTo
 	containerE := NewContainerWidthXY("containerE", 230, 120, 100, 100)
 	containerF := NewContainerWidthXY("containerF", 340, 230, 100, 100)
 
-	linkAToD := NewLink(
+	_, linkAToD := NewLink(
 		"1:linkAToD",
 		containerA,
 		containerD,
@@ -1232,7 +1240,7 @@ func ExampleLinkVerticalFilterContainerIsAlignsFromTheTopOrTheBottomInRelationTo
 		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
 	)
 
-	linkFatherToA := NewLinkWithFather(
+	_, linkFatherToA := NewLinkWithFather(
 		"2:linkFatherToA",
 		containerA,
 		father,
@@ -1242,7 +1250,7 @@ func ExampleLinkVerticalFilterContainerIsAlignsFromTheTopOrTheBottomInRelationTo
 		KWallBottomNotSet,
 	)
 
-	linkAToB := NewLink(
+	_, linkAToB := NewLink(
 		"3:linkAToB",
 		containerB,
 		containerA,
@@ -1252,7 +1260,7 @@ func ExampleLinkVerticalFilterContainerIsAlignsFromTheTopOrTheBottomInRelationTo
 		KWallBottomNotSet,
 	)
 
-	linkCToE := NewLink(
+	_, linkCToE := NewLink(
 		"4:linkCToB",
 		containerB,
 		containerC,
@@ -1262,7 +1270,7 @@ func ExampleLinkVerticalFilterContainerIsAlignsFromTheTopOrTheBottomInRelationTo
 		KWallBottomNotSet,
 	)
 
-	linkCToFather := NewLinkWithFather(
+	_, linkCToFather := NewLinkWithFather(
 		"5:linkCToFather",
 		containerC,
 		father,
@@ -1272,7 +1280,7 @@ func ExampleLinkVerticalFilterContainerIsAlignsFromTheTopOrTheBottomInRelationTo
 		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
 	)
 
-	linkFToE := NewLink(
+	_, linkFToE := NewLink(
 		"6:linkFToE",
 		containerE,
 		containerF,
@@ -1285,7 +1293,7 @@ func ExampleLinkVerticalFilterContainerIsAlignsFromTheTopOrTheBottomInRelationTo
 	listLink := []*Link{linkAToD, linkFatherToA, linkAToB, linkCToE, linkCToFather, linkFToE}
 	filter := Filter{}
 
-	fatherFound := filter.FilterContainerFather(listLink)
+	fatherFound := filter.SearchContainerFather(listLink)
 	if fatherFound == nil && fatherFound != father {
 		fmt.Println("error")
 	}
@@ -1341,7 +1349,7 @@ func ExampleLinkVerticalFilterContainersWithErrorAndFindContainersWithIsNotAlign
 	containerE := NewContainerWidthXY("containerE", 230, 120, 100, 100)
 	containerF := NewContainerWidthXY("containerF", 340, 230, 100, 100)
 
-	linkAToD := NewLink(
+	err, linkAToD := NewLink(
 		"1:linkAToD",
 		containerA,
 		containerD,
@@ -1351,7 +1359,7 @@ func ExampleLinkVerticalFilterContainersWithErrorAndFindContainersWithIsNotAlign
 		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
 	)
 
-	linkFatherToA := NewLinkWithFather(
+	err, linkFatherToA := NewLinkWithFather(
 		"2:linkFatherToA",
 		containerA,
 		father,
@@ -1361,7 +1369,7 @@ func ExampleLinkVerticalFilterContainersWithErrorAndFindContainersWithIsNotAlign
 		KWallBottomNotSet,
 	)
 
-	linkAToB := NewLink(
+	err, linkAToB := NewLink(
 		"3:linkAToB",
 		containerB,
 		containerA,
@@ -1371,7 +1379,7 @@ func ExampleLinkVerticalFilterContainersWithErrorAndFindContainersWithIsNotAlign
 		KWallBottomNotSet,
 	)
 
-	linkCToE := NewLink(
+	err, linkCToE := NewLink(
 		"4:linkCToB",
 		containerB,
 		containerC,
@@ -1381,7 +1389,7 @@ func ExampleLinkVerticalFilterContainersWithErrorAndFindContainersWithIsNotAlign
 		KWallBottomNotSet,
 	)
 
-	linkCToFather := NewLinkWithFather(
+	err, linkCToFather := NewLinkWithFather(
 		"5:linkCToFather",
 		containerC,
 		father,
@@ -1391,7 +1399,7 @@ func ExampleLinkVerticalFilterContainersWithErrorAndFindContainersWithIsNotAlign
 		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
 	)
 
-	linkFToE := NewLink(
+	err, linkFToE := NewLink(
 		"6:linkFToE",
 		containerE,
 		containerF,
@@ -1449,7 +1457,7 @@ func ExampleLinkHorizontalFilterContainersWithErrorAndFindContainersWithIsNotAli
 	containerF := NewContainerWidthXY("containerF", 340, 230, 100, 100)
 
 	// 1: a to father
-	linkAToFather := NewLinkWithFather(
+	err, linkAToFather := NewLinkWithFather(
 		"linkAToFather",
 		father,
 		containerA,
@@ -1460,7 +1468,7 @@ func ExampleLinkHorizontalFilterContainersWithErrorAndFindContainersWithIsNotAli
 	)
 
 	// 2: c to a
-	linkCToA := NewLink(
+	err, linkCToA := NewLink(
 		"linkCToA",
 		containerA,
 		containerC,
@@ -1471,7 +1479,7 @@ func ExampleLinkHorizontalFilterContainersWithErrorAndFindContainersWithIsNotAli
 	)
 
 	// 4: b to a
-	linkBToA := NewLink(
+	err, linkBToA := NewLink(
 		"linkBToA",
 		containerA,
 		containerB,
@@ -1482,7 +1490,7 @@ func ExampleLinkHorizontalFilterContainersWithErrorAndFindContainersWithIsNotAli
 	)
 
 	// 5: e to d
-	linkEToD := NewLink(
+	err, linkEToD := NewLink(
 		"linkEToD",
 		containerD,
 		containerE,
