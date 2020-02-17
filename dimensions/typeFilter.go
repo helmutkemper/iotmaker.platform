@@ -1,6 +1,30 @@
 package dimensions
 
+import (
+	"errors"
+)
+
 type Filter struct{}
+
+func (el Filter) findDimensionsInList(valueToFind *Dimensions, list []*Dimensions) bool {
+	for _, valueInList := range list {
+		if valueToFind == valueInList {
+			return true
+		}
+	}
+
+	return false
+}
+
+func (el Filter) findLinkInList(link *Link, list []*Link) bool {
+	for k := range list {
+		if list[k].ContainerA == link.ContainerA && list[k].ContainerB == link.ContainerB {
+			return true
+		}
+	}
+
+	return false
+}
 
 func (el Filter) FilterContainerFather(list []*Link) *Dimensions {
 	for _, link := range list {
@@ -33,27 +57,32 @@ func (el Filter) CheckIfFatherExistsAndHasOnlyOne(list []*Link) bool {
 //  |                                       |
 //  +---------------------------------------+
 func (el Filter) LinkCheckIfContainerIsFloating(listLink []*Link, listDimensions []*Dimensions) []*Dimensions {
-	ret := make([]*Dimensions, 0)
+	notFoundList := make([]*Dimensions, 0)
+	foundList := make([]*Dimensions, 0)
 
 	for _, dimension := range listDimensions {
-		dimensionPass := false
 		for _, link := range listLink {
-			aPass := link.ContainerA == dimension
-			bPass := link.ContainerA == dimension
-
-			pass := aPass || bPass
-			if pass == true {
-				dimensionPass = true
-				break
+			if link.ContainerA == dimension && !el.findDimensionsInList(link.ContainerA, foundList) {
+				foundList = append(foundList, link.ContainerA)
 			}
-		}
 
-		if dimensionPass == false {
-			ret = append(ret, dimension)
+			if link.ContainerB == dimension && !el.findDimensionsInList(link.ContainerB, foundList) {
+				foundList = append(foundList, link.ContainerB)
+			}
 		}
 	}
 
-	return ret
+	for _, dimension := range listDimensions {
+		if !el.findDimensionsInList(dimension, foundList) {
+
+			if !el.findDimensionsInList(dimension, notFoundList) {
+				notFoundList = append(notFoundList, dimension)
+			}
+
+		}
+	}
+
+	return notFoundList
 }
 
 //  Ponto de vista horizontal
@@ -306,26 +335,6 @@ func (el Filter) LinkErrorFilterContainerIsLinkedInRelationToItSelf(container *D
 	return ret
 }
 
-func (el Filter) findDimensionsInList(valueToFind *Dimensions, list []*Dimensions) bool {
-	for _, valueInList := range list {
-		if valueToFind == valueInList {
-			return true
-		}
-	}
-
-	return false
-}
-
-func (el Filter) findLinkInList(link *Link, list []*Link) bool {
-	for k := range list {
-		if list[k].ContainerA == link.ContainerA && list[k].ContainerB == link.ContainerB {
-			return true
-		}
-	}
-
-	return false
-}
-
 //  Ponto de vista horizontal
 //  Option: D - os containers a e b têm o seu tamanho ajustados pelo maior
 //              o container a é centralizado pelo pai
@@ -463,6 +472,16 @@ func (el Filter) LinkVerticalFilterEachContainerIsAlignsFromTheTopOrTheBottomInR
 	return ret
 }
 
+func (el Filter) LinkHorizontalFilterContainersWithErrorAndFindContainersWithIsNotAlignsFromTheTopOrTheBottomInRelationToFatherDirectlyOrIndirectlyLinked(listOfContainers []*Dimensions, listOfLinks []*Link) (error, []*Dimensions) {
+
+	fatherContainer := el.FilterContainerFather(listOfLinks)
+	if fatherContainer == nil {
+		return errors.New("father containers not found in containers list"), []*Dimensions{}
+	}
+	listOfLinksToVerify := el.LinkHorizontalFilterContainerIsAlignsFromTheLeftOrTheRightInRelationToAnotherContainerDirectlyOrIndirectlyLinked(fatherContainer, listOfLinks)
+	return nil, el.LinkCheckIfContainerIsFloating(listOfLinksToVerify, listOfContainers)
+}
+
 func (el Filter) LinkVerticalFilterContainerIsAlignsFromTheTopOrTheBottomInRelationToAnotherContainerDirectlyOrIndirectlyLinked(container *Dimensions, listLinks []*Link) []*Link {
 
 	listOfLinksToVerify := el.LinkVerticalFilterEachContainerIsAlignsFromTheTopOrTheBottomInRelationToAnotherContainer(container, listLinks)
@@ -510,50 +529,12 @@ func (el Filter) LinkVerticalFilterContainerIsAlignsFromTheTopOrTheBottomInRelat
 	return listOfLinksToVerify
 }
 
-func (el Filter) LinkVerticalFilterContainersWithErrorAndFindContainersWithIsNotAlignsFromTheTopOrTheBottomInRelationToAnotherContainerDirectlyOrIndirectlyLinked(container *Dimensions, listLinks []*Link) []*Dimensions {
+func (el Filter) LinkVerticalFilterContainersWithErrorAndFindContainersWithIsNotAlignsFromTheTopOrTheBottomInRelationToFatherDirectlyOrIndirectlyLinked(listOfContainers []*Dimensions, listOfLinks []*Link) (error, []*Dimensions) {
 
-	listOfLinksToVerify := el.LinkVerticalFilterEachContainerIsAlignsFromTheTopOrTheBottomInRelationToAnotherContainer(container, listLinks)
-	containerTested := []*Dimensions{container}
-	containersToVerify := make([]*Dimensions, 0)
-
-	for {
-		for k := range listOfLinksToVerify {
-			if el.findDimensionsInList(listOfLinksToVerify[k].ContainerA, containerTested) == false {
-				containersToVerify = append(containersToVerify, listOfLinksToVerify[k].ContainerA)
-			}
-
-			if el.findDimensionsInList(listOfLinksToVerify[k].ContainerB, containerTested) == false {
-				containersToVerify = append(containersToVerify, listOfLinksToVerify[k].ContainerB)
-			}
-		}
-
-		if len(containersToVerify) == 0 {
-			break
-		}
-
-		pass := false
-		for k := range containersToVerify {
-			container = containersToVerify[k]
-			if el.findDimensionsInList(container, containerTested) == false {
-				pass = true
-				break
-			}
-		}
-
-		if pass == false {
-			break
-		}
-
-		containerTested = append(containerTested, container)
-		newLinkList := el.LinkVerticalFilterEachContainerIsAlignsFromTheTopOrTheBottomInRelationToAnotherContainer(container, listLinks)
-
-		for k := range newLinkList {
-			if el.findLinkInList(newLinkList[k], listOfLinksToVerify) == false {
-				listOfLinksToVerify = append(listOfLinksToVerify, newLinkList[k])
-			}
-		}
+	fatherContainer := el.FilterContainerFather(listOfLinks)
+	if fatherContainer == nil {
+		return errors.New("father containers not found in containers list"), []*Dimensions{}
 	}
-
-	//LinkCheckIfContainerIsFloating
-	return listOfLinksToVerify
+	listOfLinksToVerify := el.LinkVerticalFilterContainerIsAlignsFromTheTopOrTheBottomInRelationToAnotherContainerDirectlyOrIndirectlyLinked(fatherContainer, listOfLinks)
+	return nil, el.LinkCheckIfContainerIsFloating(listOfLinksToVerify, listOfContainers)
 }
