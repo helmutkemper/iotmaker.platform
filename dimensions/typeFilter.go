@@ -548,7 +548,7 @@ func (el Filter) LinkVerticalFilterContainersWithErrorAndFindContainersWithIsNot
 	return nil, el.SearchForFloatingContainers(listOfLinksToVerify, listOfContainers)
 }
 
-//todo: filters
+//
 //  +-father------------------------------------------------------------+
 //  |                                                                   |
 //  |  +-containerA--X-------------+     +-containerB--X-------------+  |
@@ -560,6 +560,22 @@ func (el Filter) LinkVerticalFilterContainersWithErrorAndFindContainersWithIsNot
 //  |                +---------------------------------+                |
 //  |                                                                   |
 //  +-------------------------------------------------------------------+
+func (el Filter) SearchForBBottomToABottomLinksBetweenContainers(container *Dimensions, list []*Link) []*Link {
+
+	ret := make([]*Link, 0)
+	for _, link := range list {
+		containerAPass := link.ContainerA == container
+		containerBPass := link.ContainerB == container
+		containerBBottomABottomPass := link.Bottom == KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom
+
+		if containerBBottomABottomPass && (containerAPass || containerBPass) == true {
+			ret = append(ret, link)
+		}
+	}
+
+	return ret
+}
+
 //
 //  +-father------------------------------------------------------------+
 //  |                                                                   |
@@ -572,6 +588,22 @@ func (el Filter) LinkVerticalFilterContainersWithErrorAndFindContainersWithIsNot
 //  |  +-------------X-------------+     +-------------X-------------+  |
 //  |                                                                   |
 //  +-------------------------------------------------------------------+
+func (el Filter) SearchForBTopToATopLinksBetweenContainers(container *Dimensions, list []*Link) []*Link {
+
+	ret := make([]*Link, 0)
+	for _, link := range list {
+		containerAPass := link.ContainerA == container
+		containerBPass := link.ContainerB == container
+		containerBTopATopPass := link.Top == KWallTopContainerBLinkOnTopToContainerALinkOnTop
+
+		if containerBTopATopPass && (containerAPass || containerBPass) == true {
+			ret = append(ret, link)
+		}
+	}
+
+	return ret
+}
+
 //
 //  +-father------------------------------------------------------------+
 //  |                                                                   |
@@ -586,52 +618,19 @@ func (el Filter) LinkVerticalFilterContainersWithErrorAndFindContainersWithIsNot
 //  |                +---------------------------------+                |
 //  |                                                                   |
 //  +-------------------------------------------------------------------+
-//
-//  +-father--------------------------------+
-//  |                                       |
-//  |     +-containerA----------------+     |
-//  |     |                           |     |
-//  |  +--O                           O--+  |
-//  |  |  |                           |  |  |
-//  |  |  +---------------------------+  |  |
-//  |  |                                 |  |
-//  |  |  +-containerB----------------+  |  |
-//  |  |  |                           |  |  |
-//  |  +--O                           O--+  |
-//  |     |                           |     |
-//  |     +---------------------------+     |
-//  |                                       |
-//  +---------------------------------------+
-//
-//  +-father--------------------------------+
-//  |                                       |
-//  |     +-containerA----------------+     |
-//  |     |                           |     |
-//  |     X                           O--+  |
-//  |     |                           |  |  |
-//  |     +---------------------------+  |  |
-//  |                                    |  |
-//  |     +-containerB----------------+  |  |
-//  |     |                           |  |  |
-//  |     X                           O--+  |
-//  |     |                           |     |
-//  |     +---------------------------+     |
-//  |                                       |
-//  +---------------------------------------+
-//
-//  +-father--------------------------------+
-//  |                                       |
-//  |     +-containerA----------------+     |
-//  |     |                           |     |
-//  |  +--O                           X     |
-//  |  |  |                           |     |
-//  |  |  +---------------------------+     |
-//  |  |                                    |
-//  |  |  +-containerB----------------+     |
-//  |  |  |                           |     |
-//  |  +--O                           X     |
-//  |     |                           |     |
-//  |     +---------------------------+     |
-//  |                                       |
-//  +---------------------------------------+
-//
+func (el Filter) SearchForBTopAndBottomToATopAndBottomLinksBetweenContainers(container *Dimensions, list []*Link) []*Link {
+
+	ret := make([]*Link, 0)
+	for _, link := range list {
+		containerAPass := link.ContainerA == container
+		containerBPass := link.ContainerB == container
+		containerBTopATopPass := link.Top == KWallTopContainerBLinkOnTopToContainerALinkOnTop
+		containerBBottomABottomPass := link.Bottom == KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom
+
+		if (containerBTopATopPass && containerBBottomABottomPass) && (containerAPass || containerBPass) == true {
+			ret = append(ret, link)
+		}
+	}
+
+	return ret
+}

@@ -1349,7 +1349,7 @@ func ExampleLinkVerticalFilterContainersWithErrorAndFindContainersWithIsNotAlign
 	containerE := NewContainerWidthXY("containerE", 230, 120, 100, 100)
 	containerF := NewContainerWidthXY("containerF", 340, 230, 100, 100)
 
-	err, linkAToD := NewLink(
+	_, linkAToD := NewLink(
 		"1:linkAToD",
 		containerA,
 		containerD,
@@ -1359,7 +1359,7 @@ func ExampleLinkVerticalFilterContainersWithErrorAndFindContainersWithIsNotAlign
 		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
 	)
 
-	err, linkFatherToA := NewLinkWithFather(
+	_, linkFatherToA := NewLinkWithFather(
 		"2:linkFatherToA",
 		containerA,
 		father,
@@ -1369,7 +1369,7 @@ func ExampleLinkVerticalFilterContainersWithErrorAndFindContainersWithIsNotAlign
 		KWallBottomNotSet,
 	)
 
-	err, linkAToB := NewLink(
+	_, linkAToB := NewLink(
 		"3:linkAToB",
 		containerB,
 		containerA,
@@ -1379,7 +1379,7 @@ func ExampleLinkVerticalFilterContainersWithErrorAndFindContainersWithIsNotAlign
 		KWallBottomNotSet,
 	)
 
-	err, linkCToE := NewLink(
+	_, linkCToE := NewLink(
 		"4:linkCToB",
 		containerB,
 		containerC,
@@ -1389,7 +1389,7 @@ func ExampleLinkVerticalFilterContainersWithErrorAndFindContainersWithIsNotAlign
 		KWallBottomNotSet,
 	)
 
-	err, linkCToFather := NewLinkWithFather(
+	_, linkCToFather := NewLinkWithFather(
 		"5:linkCToFather",
 		containerC,
 		father,
@@ -1399,7 +1399,7 @@ func ExampleLinkVerticalFilterContainersWithErrorAndFindContainersWithIsNotAlign
 		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
 	)
 
-	err, linkFToE := NewLink(
+	_, linkFToE := NewLink(
 		"6:linkFToE",
 		containerE,
 		containerF,
@@ -1457,7 +1457,7 @@ func ExampleLinkHorizontalFilterContainersWithErrorAndFindContainersWithIsNotAli
 	containerF := NewContainerWidthXY("containerF", 340, 230, 100, 100)
 
 	// 1: a to father
-	err, linkAToFather := NewLinkWithFather(
+	_, linkAToFather := NewLinkWithFather(
 		"linkAToFather",
 		father,
 		containerA,
@@ -1468,7 +1468,7 @@ func ExampleLinkHorizontalFilterContainersWithErrorAndFindContainersWithIsNotAli
 	)
 
 	// 2: c to a
-	err, linkCToA := NewLink(
+	_, linkCToA := NewLink(
 		"linkCToA",
 		containerA,
 		containerC,
@@ -1479,7 +1479,7 @@ func ExampleLinkHorizontalFilterContainersWithErrorAndFindContainersWithIsNotAli
 	)
 
 	// 4: b to a
-	err, linkBToA := NewLink(
+	_, linkBToA := NewLink(
 		"linkBToA",
 		containerA,
 		containerB,
@@ -1490,7 +1490,7 @@ func ExampleLinkHorizontalFilterContainersWithErrorAndFindContainersWithIsNotAli
 	)
 
 	// 5: e to d
-	err, linkEToD := NewLink(
+	_, linkEToD := NewLink(
 		"linkEToD",
 		containerD,
 		containerE,
@@ -1514,6 +1514,121 @@ func ExampleLinkHorizontalFilterContainersWithErrorAndFindContainersWithIsNotAli
 
 	// Output:
 	// containerD
+	// containerE
+	// containerF
+}
+
+//  +-father------------O-----------------------------------------------------+
+//  |                   | 1: a to d                                           |
+//  |                   +---------------------------------+                   |
+//  |                   |                                 |                   |
+//  |     +-containerA--O-------------+     +-containerD--O-------------+     |
+//  |     |      2: father to a       |     |                           |     |
+//  |     X                           X     X                           X     X
+//  |     |         3: a to b         |     |                           |     |
+//  |     +-------------O-------------+     +-------------O-------------+     |
+//  |                   | 1: a to d                       |                   |
+//  |                   +---------------------------------+                   |
+//  |                                                                         |
+//  |     +-containerB--X-------------+     +-containerE--X-------------+     |
+//  |     |                           |     |                           |     |
+//  O-----O 7: b to father  8: b to e O-----O 11: e to b 12:e to father O--+--O
+//  |     |         4: b to c         |     |         6: e to f         |  |  |
+//  |     +-------------O-------------+     +-------------O-------------+  |  |
+//  |                   |                                 |                |  |
+//  |                   |                                 |                |  |
+//  |                   |                                 |                |  |
+//  |     +-containerC--O-------------+     +-containerF--O-------------+  |  |
+//  |     |                           |     |                           |  |  |
+//  O-----O 9: c to father 10: c to f O-----O 13: c to f     14: f to e O--+  |
+//  |     |       5: c to father      |     |                           |     |
+//  |     +-------------O-------------+     +-------------X-------------+     |
+//  |                   |                                                     |
+//  |                   |                                                     |
+//  |                   |                                                     |
+//  +-------------------O-----------------------------------------------------+
+func fazer() {
+	father := NewContainer("father", 300, 600)
+	containerA := NewContainerWidthXY("containerA", 10, 10, 100, 100)
+	containerB := NewContainerWidthXY("containerB", 10, 120, 100, 100)
+	containerC := NewContainerWidthXY("containerC", 10, 230, 100, 100)
+	containerD := NewContainerWidthXY("containerD", 120, 10, 100, 100)
+	containerE := NewContainerWidthXY("containerE", 230, 120, 100, 100)
+	containerF := NewContainerWidthXY("containerF", 340, 230, 100, 100)
+
+	_, linkAToD := NewLink(
+		"1:linkAToD",
+		containerA,
+		containerD,
+		KWallTopContainerBLinkOnTopToContainerALinkOnTop,
+		KWallLeftNotSet,
+		KWallRightNotSet,
+		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
+	)
+
+	_, linkFatherToA := NewLinkWithFather(
+		"2:linkFatherToA",
+		containerA,
+		father,
+		KWallTopContainerBLinkOnTopToContainerALinkOnTop,
+		KWallLeftNotSet,
+		KWallRightNotSet,
+		KWallBottomNotSet,
+	)
+
+	_, linkAToB := NewLink(
+		"3:linkAToB",
+		containerB,
+		containerA,
+		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallLeftNotSet,
+		KWallRightNotSet,
+		KWallBottomNotSet,
+	)
+
+	_, linkCToE := NewLink(
+		"4:linkCToB",
+		containerB,
+		containerC,
+		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallLeftNotSet,
+		KWallRightNotSet,
+		KWallBottomNotSet,
+	)
+
+	_, linkCToFather := NewLinkWithFather(
+		"5:linkCToFather",
+		containerC,
+		father,
+		KWallTopNotSet,
+		KWallLeftNotSet,
+		KWallRightNotSet,
+		KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom,
+	)
+
+	_, linkFToE := NewLink(
+		"6:linkFToE",
+		containerE,
+		containerF,
+		KWallTopContainerBLinkOnTopToContainerALinkOnBottom,
+		KWallLeftNotSet,
+		KWallRightNotSet,
+		KWallBottomNotSet,
+	)
+
+	listOfContainers := []*Dimensions{father, containerA, containerB, containerC, containerD, containerE, containerF}
+	listOfLinks := []*Link{linkAToD, linkFatherToA, linkAToB, linkCToE, linkCToFather, linkFToE}
+	filter := Filter{}
+
+	err, ret := filter.LinkVerticalFilterContainersWithErrorAndFindContainersWithIsNotAlignsFromTheTopOrTheBottomInRelationToFatherDirectlyOrIndirectlyLinked(listOfContainers, listOfLinks)
+	if err != nil {
+		fmt.Println("error")
+	}
+	for k := range ret {
+		fmt.Printf("%v\n", ret[k].ToDebug)
+	}
+
+	// Output:
 	// containerE
 	// containerF
 }
