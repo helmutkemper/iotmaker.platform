@@ -1,10 +1,10 @@
 package independentDraw
 
-//package independentDraw
-
 import (
-	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
+	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
 )
+
+// esta função deve ser apagada (obsoleta)
 
 // en: This function create a path of a box with rounded corners into the platform
 //
