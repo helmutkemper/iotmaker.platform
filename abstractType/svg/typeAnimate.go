@@ -1,10 +1,10 @@
 package svg
 
 import (
-	"github.com/helmutkemper/iotmaker.platform/abstractType/svgDur"
-	"github.com/helmutkemper/iotmaker.platform/abstractType/svgRepeatCount"
-	"github.com/helmutkemper/iotmaker.platform/abstractType/svgRepeatDur"
-	"github.com/helmutkemper/iotmaker.platform/abstractType/svgRestart"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/svgDur"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/svgRepeatCount"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/svgRepeatDur"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/svgRestart"
 	"time"
 )
 

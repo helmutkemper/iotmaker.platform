@@ -9,7 +9,6 @@ import (
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/mouse"
 	iotmaker_threadsafe "github.com/helmutkemper/iotmaker.threadsafe"
 	"image/color"
-	"iotmaker.santa_isabel_theater.platform/abstractType/simple"
 	"reflect"
 )
 

@@ -1,10 +1,10 @@
 package factoryDraw
 
 import (
-	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.platform.coordinate"
-	"github.com/helmutkemper/iotmaker.platform/abstractType/draw"
-	"github.com/helmutkemper/iotmaker.platform/abstractType/genericTypes"
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
+	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.coordinate"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/draw"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/genericTypes"
 )
 
 func NewBasicBox(
