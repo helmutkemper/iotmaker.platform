@@ -3,10 +3,13 @@ package draw
 import (
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/genericTypes"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/dimensions"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/independentDraw"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/ink"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/mouse"
 	iotmaker_threadsafe "github.com/helmutkemper/iotmaker.threadsafe"
 	"image/color"
+	"iotmaker.santa_isabel_theater.platform/abstractType/simple"
 	"reflect"
 )
 
@@ -14,9 +17,9 @@ type BasicBox struct {
 	Platform   iotmaker_platform_IDraw.IDraw
 	ScratchPad iotmaker_platform_IDraw.IDraw
 	Id         string
-	Dimensions genericTypes.Dimensions
+	Dimensions dimensions.Dimensions
 
-	Ink genericTypes.Ink
+	Ink ink.Ink
 
 	imageDataMethod           genericTypes.ImageDataCaptureMethod
 	imageDataComplete         interface{}
@@ -27,7 +30,7 @@ type BasicBox struct {
 	prepareGradientFilterFunctionPointer func(iotmaker_platform_IDraw.ICanvasGradient)
 
 	// see clearRectangle() and getCompleteImageData() - start
-	OutBoxDimensions genericTypes.Dimensions
+	OutBoxDimensions dimensions.Dimensions
 	// see clearRectangle() and getCompleteImageData() - end
 
 	alphaChannelSensibility  uint8
@@ -228,7 +231,7 @@ func (el *BasicBox) GetMouseOverFunctionsList() map[string][]mouse.PointerCollis
 	return ret
 }
 
-func (el *BasicBox) GetOutBoxDimensions() genericTypes.Dimensions {
+func (el *BasicBox) GetOutBoxDimensions() dimensions.Dimensions {
 	return el.OutBoxDimensions
 }
 
@@ -276,10 +279,10 @@ func (el *BasicBox) GetId() string {
 	return el.Id
 }
 
-func (el *BasicBox) GetDimensions() genericTypes.Dimensions {
+func (el *BasicBox) GetDimensions() dimensions.Dimensions {
 	return el.Dimensions
 }
 
-func (el *BasicBox) GetInk() genericTypes.Ink {
+func (el *BasicBox) GetInk() ink.Ink {
 	return el.Ink
 }

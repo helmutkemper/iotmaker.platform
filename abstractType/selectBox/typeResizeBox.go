@@ -1,10 +1,11 @@
 package selectBox
 
 import (
-	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.platform.IDraw"
-	webBrowserMouse "github.com/helmutkemper/iotmaker.platform.webbrowser/mouse"
-	"github.com/helmutkemper/iotmaker.platform/abstractType/genericTypes"
-	"github.com/helmutkemper/iotmaker.platform/independentDraw"
+	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
+	webBrowserMouse "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/mouse"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/genericTypes"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/dimensions"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/independentDraw"
 	"image/color"
 )
 
@@ -12,9 +13,9 @@ type ResizeBoxes struct {
 	Platform   iotmaker_platform_IDraw.IDraw
 	ScratchPad iotmaker_platform_IDraw.IDraw
 
-	Dimensions             genericTypes.Dimensions
-	FatherOutBoxDimensions genericTypes.Dimensions
-	outBoxDimensions       genericTypes.Dimensions
+	Dimensions             dimensions.Dimensions
+	FatherOutBoxDimensions dimensions.Dimensions
+	outBoxDimensions       dimensions.Dimensions
 
 	CornerFillColor  interface{}
 	CornerLineWidth  float64
