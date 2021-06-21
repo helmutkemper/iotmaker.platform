@@ -1,28 +1,33 @@
 package factoryDimensions
 
-import iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.coordinate"
+import (
+	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.coordinate"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/dimensions"
+)
 
-func NewDimensions(dm Dimensions, x, y, width, height, border float64, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) Dimensions {
+// fixme:
+
+func NewDimensions(dm dimensions.Dimensions, x, y, width, height, border float64, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) dimensions.Dimensions {
 
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 
-	densityCalc.SetInt(x)
-	x = densityCalc.Int()
+	densityCalc.Set(x)
+	x = densityCalc.Float()
 
-	densityCalc.SetInt(y)
-	y = densityCalc.Int()
+	densityCalc.Set(y)
+	y = densityCalc.Float()
 
-	densityCalc.SetInt(width)
-	width = densityCalc.Int()
+	densityCalc.Set(width)
+	width = densityCalc.Float()
 
-	densityCalc.SetInt(height)
-	height = densityCalc.Int()
+	densityCalc.Set(height)
+	height = densityCalc.Float()
 
-	densityCalc.SetInt(border)
-	border = densityCalc.Int()
+	densityCalc.Set(border)
+	border = densityCalc.Float()
 
-	dm.Set(x, y, width, height, border)
+	//dm.Set(x, y, width, height, border)
 
 	return dm
 }

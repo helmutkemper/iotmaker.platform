@@ -4,9 +4,10 @@ import (
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
 	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.coordinate"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/draw"
-	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/fps"
 	"image/color"
 )
+
+//fixme:
 
 func NewChartLinear(platform iotmaker_platform_IDraw.IDraw, x, y, width, height float64, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) *draw.ChartLinear {
 	d := &draw.ChartLinear{
@@ -35,7 +36,8 @@ func NewChartLinear(platform iotmaker_platform_IDraw.IDraw, x, y, width, height 
 		YSubAxisColor: color.RGBA{R: 0xBF, G: 0xBF, B: 0xFF, A: 0x01},
 	}
 	d.Create()
-	fps.AddToRunner(d.Create)
+	//add to engine
+	//fps.AddToRunner(d.Create)
 
 	return d
 }

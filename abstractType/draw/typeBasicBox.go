@@ -105,7 +105,9 @@ func (el *BasicBox) calculateCoordinates() {
 	width := el.Dimensions.Width + el.Ink.LineWidth
 	height := el.Dimensions.Height + el.Ink.LineWidth
 
-	el.OutBoxDimensions.Set(x, y, width, height, 0)
+	dm := dimensions.NewContainerWidthXY("calculate", x, y, width, height)
+	el.OutBoxDimensions = *dm
+	//el.OutBoxDimensions.Set(x, y, width, height, 0)
 }
 
 func (el *BasicBox) getCompleteImageData(platform iotmaker_platform_IDraw.IDraw) {
@@ -126,7 +128,14 @@ func (el *BasicBox) clearRectangle(platform iotmaker_platform_IDraw.IDraw) {
 func (el *BasicBox) drawInvisible(platform iotmaker_platform_IDraw.IDraw) {
 	platform.SetLineWidth(el.Ink.LineWidth)
 	el.prepareGradientFilter(el.Platform)
-	independentDraw.DrawBoxWithRoundedCornersIntoThePath(platform, el.Dimensions.X, el.Dimensions.Y, el.Dimensions.Width, el.Dimensions.Height, el.Dimensions.Border)
+	independentDraw.DrawBoxWithRoundedCornersIntoThePath(
+		platform,
+		float64(el.Dimensions.X),
+		float64(el.Dimensions.Y),
+		float64(el.Dimensions.Width),
+		float64(el.Dimensions.Height),
+		float64(el.Dimensions.Border),
+	)
 }
 
 func (el *BasicBox) drawVisible() {
@@ -158,6 +167,7 @@ func (el *BasicBox) Create() {
 	el.Platform.ResetLineWidth()
 }
 
+// CalculateImageData
 // see SetEnableDataImageCalculate()
 // see SetAlphaChannelSensibility()
 // see SetImageDataCalculateMethod()
@@ -195,6 +205,7 @@ func (el *BasicBox) CalculateImageData() {
 	el.ScratchPad.ClearRect(el.OutBoxDimensions.X, el.OutBoxDimensions.Y, el.OutBoxDimensions.Width, el.OutBoxDimensions.Height)
 }
 
+// SetImageDataCalculateMethod
 // pt_br: Define o método usado para calcular os dados da imagem usado para detectar colisão
 //     KImageDataCaptureMethodBooleanSensibility: Arquiva um mapa de booleanos no formato mapa[x][y]bool
 //     KImageDataCaptureMethodCompleteData: Arquiva um mapa de RGBA no formato mapa[x][y]RGBA
@@ -217,8 +228,8 @@ func (el *BasicBox) GetCollisionByAlphaChannel(x, y int) bool {
 }
 
 func (el *BasicBox) GetCollisionBox(xEvent, yEvent float64) bool {
-	return el.OutBoxDimensions.X <= xEvent && el.OutBoxDimensions.X+el.OutBoxDimensions.Width >= xEvent &&
-		el.OutBoxDimensions.Y <= yEvent && el.OutBoxDimensions.Y+el.OutBoxDimensions.Height >= yEvent
+	return float64(el.OutBoxDimensions.X) <= xEvent && float64(el.OutBoxDimensions.X+el.OutBoxDimensions.Width) >= xEvent &&
+		float64(el.OutBoxDimensions.Y) <= yEvent && float64(el.OutBoxDimensions.Y+el.OutBoxDimensions.Height) >= yEvent
 }
 
 func (el *BasicBox) GetMouseOverFunctionsList() map[string][]mouse.PointerCollisionFunction {
@@ -239,15 +250,20 @@ func (el *BasicBox) GetPixelAlphaChannel(x, y float64) uint8 {
 		return 0
 	}
 
-	if x < el.OutBoxDimensions.X || x > el.OutBoxDimensions.X+el.OutBoxDimensions.Width {
+	if x < float64(el.OutBoxDimensions.X) || x > float64(el.OutBoxDimensions.X+el.OutBoxDimensions.Width) {
 		return 0
 	}
 
-	if y < el.OutBoxDimensions.Y || y > el.OutBoxDimensions.Y+el.OutBoxDimensions.Height {
+	if y < float64(el.OutBoxDimensions.Y) || y > float64(el.OutBoxDimensions.Y+el.OutBoxDimensions.Height) {
 		return 0
 	}
 
-	return el.Platform.GetImageDataAlphaChannelByCoordinate(el.imageDataComplete, int(x-el.OutBoxDimensions.X), int(y-el.OutBoxDimensions.Y), int(el.OutBoxDimensions.Width))
+	return el.Platform.GetImageDataAlphaChannelByCoordinate(
+		el.imageDataComplete,
+		int(x)-el.OutBoxDimensions.X,
+		int(y)-el.OutBoxDimensions.Y,
+		int(el.OutBoxDimensions.Width),
+	)
 }
 
 func (el *BasicBox) GetPixelColor(x, y float64) color.RGBA {
@@ -255,15 +271,20 @@ func (el *BasicBox) GetPixelColor(x, y float64) color.RGBA {
 		return color.RGBA{}
 	}
 
-	if x < el.OutBoxDimensions.X || x > el.OutBoxDimensions.X+el.OutBoxDimensions.Width {
+	if x < float64(el.OutBoxDimensions.X) || x > float64(el.OutBoxDimensions.X+el.OutBoxDimensions.Width) {
 		return color.RGBA{}
 	}
 
-	if y < el.OutBoxDimensions.Y || y > el.OutBoxDimensions.Y+el.OutBoxDimensions.Height {
+	if y < float64(el.OutBoxDimensions.Y) || y > float64(el.OutBoxDimensions.Y+el.OutBoxDimensions.Height) {
 		return color.RGBA{}
 	}
 
-	return el.Platform.GetImageDataPixelByCoordinate(el.imageDataComplete, int(x-el.OutBoxDimensions.X), int(y-el.OutBoxDimensions.Y), int(el.OutBoxDimensions.Width))
+	return el.Platform.GetImageDataPixelByCoordinate(
+		el.imageDataComplete,
+		int(x)-el.OutBoxDimensions.X,
+		int(y)-el.OutBoxDimensions.Y,
+		int(el.OutBoxDimensions.Width),
+	)
 }
 
 func (el *BasicBox) GetPlatform() iotmaker_platform_IDraw.IDraw {

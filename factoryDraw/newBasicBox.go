@@ -4,7 +4,10 @@ import (
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
 	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.coordinate"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/draw"
-	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/genericTypes"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/dimensions"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/factoryDimensions"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/factoryInk"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/ink"
 )
 
 func NewBasicBox(
@@ -24,11 +27,11 @@ func NewBasicBox(
 	iDensity iotmaker_platform_coordinate.IDensity,
 ) *draw.BasicBox {
 
-	dm := genericTypes.Dimensions{}
-	dm = genericTypes.NewDimensions(dm, x, y, width, height, border, density, iDensity)
+	dm := dimensions.Dimensions{}
+	dm = factoryDimensions.NewDimensions(dm, x, y, width, height, border, density, iDensity)
 
-	ik := genericTypes.Ink{}
-	ik = genericTypes.NewInc(ik, lineWidth, color, shadow, gradient, density, iDensity)
+	ik := ink.Ink{}
+	ik = factoryInk.NewInk(ik, int(lineWidth), color, shadow, gradient, density, iDensity)
 
 	bb := &draw.BasicBox{
 		Platform:   platform,
