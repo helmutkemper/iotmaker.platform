@@ -3,27 +3,24 @@
 package main
 
 import (
-	iotmakerPlatformIDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
-	coordinateManager "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.coordinate"
-	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/Html"
-	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/canvas"
-	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/factoryBrowserDocument"
-	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/factoryBrowserStage"
-	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/fontFamily"
-	webBrowserMouse "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/mouse"
-	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/basicBox"
-	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/colornames"
-	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/selectBox"
-	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/factoryBasicBox"
-	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/factoryColor"
-	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/factoryFont"
-	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/factoryGradient"
-	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/factoryImage"
-	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/factoryPoint"
-	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/factoryShadow"
-	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/factoryText"
-	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/mouse"
-	"time"
+  iotmakerPlatformIDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
+  coordinateManager "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.coordinate"
+  "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/canvas"
+  "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/factoryBrowserDocument"
+  "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/factoryBrowserStage"
+  "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/fontFamily"
+  webBrowserMouse "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/mouse"
+  "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/colornames"
+  "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/selectBox"
+  "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/factoryColor"
+  "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/factoryFont"
+  "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/factoryGradient"
+  "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/factoryImage"
+  "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/factoryPoint"
+  "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/factoryShadow"
+  "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/factoryText"
+  "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/mouse"
+  "time"
 )
 
 var (
@@ -41,7 +38,7 @@ func main() {
 
 	done := make(chan struct{}, 0)
 
-	html = &Html.Html{}
+	html = &html.Html{}
 	browserDocument := factoryBrowserDocument.NewDocument()
 
 	var colorShadow = colornames.BlackHalfTransparent

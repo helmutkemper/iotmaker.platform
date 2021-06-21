@@ -8,6 +8,6 @@ require (
 	github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw v0.0.0-20210620211627-aedad0d3ca18
 	github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.coordinate v0.0.0-20210620194652-f7df0a8bb189
 	github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.textMetrics v0.0.0-20191210235158-9eb9854a60fe
-	github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser v0.0.0-20210620205615-faa7b4400e64
+	github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser v0.0.0-20210621001347-3856afddbc37
 	github.com/helmutkemper/iotmaker.threadsafe v0.0.0-20210620234632-1a603bd2be2f
 )
