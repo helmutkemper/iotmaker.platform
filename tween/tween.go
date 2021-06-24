@@ -27,7 +27,6 @@ type Tween struct {
 }
 
 func (el *Tween) Start() {
-	el.Engine.Init()
 	el.startTime = time.Now()
 	el.invert = true
 
