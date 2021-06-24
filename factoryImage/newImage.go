@@ -8,7 +8,6 @@ import (
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/basic"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/dimensions"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/ink"
-	"log"
 )
 
 func NewImage(
@@ -30,10 +29,10 @@ func NewImage(
 
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
-	log.Printf("xb: %v", x)
+
 	densityCalc.SetInt(x)
 	x = densityCalc.Int()
-	log.Printf("xa: %v", x)
+
 	densityCalc.SetInt(y)
 	y = densityCalc.Int()
 
