@@ -146,7 +146,7 @@ func (el *Sprite) MoveX(x int) {
 	el.Dimensions.X = x + el.MovieDeltaX
 }
 
-func (el *Sprite) MoveY(x, y int) {
+func (el *Sprite) MoveY(y int) {
 	el.OutBoxDimensions.Y = y + el.MovieDeltaY
 	el.Dimensions.Y = y + el.MovieDeltaY
 }
