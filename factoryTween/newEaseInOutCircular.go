@@ -1,13 +1,14 @@
 package factoryTween
 
 import (
-	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/engine"
+	global "github.com/helmutkemper/iotmaker.santa_isabel_theater.globalConfig"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/tween"
 	"time"
 )
 
-// en: Ease tween in out circular
-//     engine: IEngine interface
+// NewEaseInOutCircular
+//
+// English: Ease tween in out circular
 //     duration: animation duration
 //     startValue: initial value
 //     endValue: final value
@@ -21,8 +22,7 @@ import (
 //     arguments: array of arguments passed for functions onStart, onEnd, onInvert and onStep.
 //                Example: ..., [arguments] x, y) will be onStartFunc(value, args...) { args[0]: x; args[1]: y}
 //
-// pt_br: Facilitador de interpolação in out circular
-//     engine: IEngine interface
+// Português: Facilitador de interpolação in out circular
 //     duration: duração da animação
 //     startValue: valor inicial
 //     endValue: valor final
@@ -36,7 +36,6 @@ import (
 //     arguments: array de argumentos passados para as funções onStart, onEnd, onInvert e onStep.
 //                Exemplo: ..., [argumentos] x, y) será onStartFunc(value, args...) { args[0]: x; args[1]: y}
 func NewEaseInOutCircular(
-	engine engine.IEngine,
 	duration time.Duration,
 	startValue,
 	endValue float64,
@@ -51,7 +50,7 @@ func NewEaseInOutCircular(
 ) *tween.Tween {
 
 	t := &tween.Tween{
-		Engine:       engine,
+		Engine:       global.Global.Engine,
 		OnStart:      onStartFunc,
 		OnEnd:        onEndFunc,
 		OnCycleStart: onCycleStartFunc,
