@@ -1,7 +1,7 @@
 github.com/helmutkemper/iotmaker.platform.webbrowser v0.0.0-20200208001228-b665b1f435bb/go.mod h1:QUbS2Rmofhi8TU3QHKxdbydS0e3bOzOMKlKNY5F1zmM=
 github.com/helmutkemper/iotmaker.santa_isabel_theater.channels-go v0.0.0-20200120233119-9d62fed13020/go.mod h1:HA3lnQ50R+4hrCjx5MYkUvvHFX7WJjTBjJ5+0xqxW1I=
-github.com/helmutkemper/iotmaker.santa_isabel_theater.channels-go v0.0.0-20210626173635-a754015571e1 h1:3qiV8UmW/ktWzksRdIelqZgaaoKQx4lSAoFxyCjRag0=
-github.com/helmutkemper/iotmaker.santa_isabel_theater.channels-go v0.0.0-20210626173635-a754015571e1/go.mod h1:HA3lnQ50R+4hrCjx5MYkUvvHFX7WJjTBjJ5+0xqxW1I=
+github.com/helmutkemper/iotmaker.santa_isabel_theater.channels-go v0.0.0-20210626181330-090ff97f89e5 h1:L58byX5/tAlpnNc8ot0T/w4JLBBZqwrxmqKaMy5AM20=
+github.com/helmutkemper/iotmaker.santa_isabel_theater.channels-go v0.0.0-20210626181330-090ff97f89e5/go.mod h1:HA3lnQ50R+4hrCjx5MYkUvvHFX7WJjTBjJ5+0xqxW1I=
 github.com/helmutkemper/iotmaker.santa_isabel_theater.globalConfig v0.0.0-20210626132318-c33958e83e03 h1:88HzRM1Qc0IaJRLyQ1/9UnhA544cslYnJZHZiJXjHoo=
 github.com/helmutkemper/iotmaker.santa_isabel_theater.globalConfig v0.0.0-20210626132318-c33958e83e03/go.mod h1:Sk58yTH6YFrbHz56PN4zynuXuL3a77MM2QYQTna9V0w=
 github.com/helmutkemper/iotmaker.santa_isabel_theater.interfaces v0.0.0-20200130010342-66d246a51491/go.mod h1:dusDmSs8K/xDdrSJdQsWtOqi8yDYT9wh7c33ZI0TYx4=
