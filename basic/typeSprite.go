@@ -83,6 +83,7 @@ type Sprite struct {
 }
 
 // GetId
+//
 // English: Get a unique element id
 //
 // Português: Retorna o id único do elemento
@@ -91,6 +92,7 @@ func (el *Sprite) GetId() string {
 }
 
 // Draw
+//
 // English: Draw function to re draw element at every frame
 //     note: Shadowing function Draw must be implemented into parent struct
 //
@@ -292,6 +294,7 @@ func (el *Sprite) setDraggable(enable bool) {
 }
 
 // GetCollisionBox
+//
 // English: Get an information if (x, y) is in element box
 //
 // Português: Retorna a informação se (x, y) está dentro da caxa do elemento
