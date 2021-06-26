@@ -12,7 +12,7 @@ import (
 //     duration: animation duration
 //     startValue: initial value
 //     endValue: final value
-//     doNotReverseMotion: não inverter o movimento para loops
+//     doNotReverseMotion: don't reverse motion into loop
 //     onStartFunc: on start function
 //     onEndFunc: on end function
 //     onCycleStartFunc: on tween cycle start function
