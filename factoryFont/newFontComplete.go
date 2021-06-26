@@ -1,11 +1,13 @@
 package factoryFont
 
 import (
-	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.coordinate"
+	global "github.com/helmutkemper/iotmaker.santa_isabel_theater.globalConfig"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/font"
 )
 
-// en: Create a new font struct
+// NewFontComplete
+//
+// English: Create a new font struct
 //     size: size of the font
 //     sizeUnit: size unit of the font
 //     fontColor: a color.RGBA struct used with text
@@ -14,7 +16,7 @@ import (
 //     density: Please, see a density methods
 //     iDensity: Please, see a density methods
 //
-// pt_br: Cria um novo struct de fonte
+// Português: Cria um struct de fonte
 //     size: tamanho da fonte
 //     sizeUnit: unidade do tamanho da fonte, exemplo: 'px'
 //     fontColor: um struct color.RGBA usado com texto
@@ -30,12 +32,10 @@ func NewFontComplete(
 	style string,
 	variant string,
 	weight string,
-	density interface{},
-	iDensity iotmaker_platform_coordinate.IDensity,
 
 ) font.Font {
-	densityCalc := iDensity
-	densityCalc.SetDensityFactor(density)
+	densityCalc := global.Global.DensityManager
+	densityCalc.SetDensityFactor(global.Global.Density)
 
 	densityCalc.SetInt(size)
 	size = densityCalc.Int()
