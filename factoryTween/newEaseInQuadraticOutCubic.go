@@ -27,7 +27,7 @@ import (
 //     duration: duração da animação
 //     startValue: valor inicial
 //     endValue: valor final
-//     doNotReverseMotion: don't reverse motion into loop
+//     doNotReverseMotion: não inverter o movimento quando no loops
 //     onStartFunc: função do evento início
 //     onEndFunc: função do evento fim
 //     onCycleStartFunc: função para o início do ciclo de interpolação
