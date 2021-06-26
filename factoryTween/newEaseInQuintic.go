@@ -41,7 +41,7 @@ func NewEaseInQuintic(
 	duration time.Duration,
 	startValue,
 	endValue float64,
-	DoNotReverseMotion bool,
+	doNotReverseMotion bool,
 	onStartFunc,
 	onEndFunc,
 	onCycleStartFunc,
@@ -66,7 +66,7 @@ func NewEaseInQuintic(
 		OnInvert:           onInvertFunc,
 		Repeat:             loop,
 		Func:               tween.KEaseInQuintic,
-		DoNotReverseMotion: DoNotReverseMotion,
+		DoNotReverseMotion: doNotReverseMotion,
 	}
 	t.Start()
 

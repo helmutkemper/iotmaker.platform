@@ -41,7 +41,7 @@ func NewEaseInLinearOutExponential(
 	duration time.Duration,
 	startValue,
 	endValue float64,
-	DoNotReverseMotion bool,
+	doNotReverseMotion bool,
 	onStartFunc,
 	onEndFunc,
 	onCycleStartFunc,
@@ -66,7 +66,7 @@ func NewEaseInLinearOutExponential(
 		OnInvert:           onInvertFunc,
 		Repeat:             loop,
 		Func:               tween.KEaseInLinearOutExponential,
-		DoNotReverseMotion: DoNotReverseMotion,
+		DoNotReverseMotion: doNotReverseMotion,
 	}
 	t.Start()
 

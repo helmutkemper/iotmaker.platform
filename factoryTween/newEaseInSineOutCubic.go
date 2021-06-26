@@ -41,7 +41,7 @@ func NewEaseInSineOutCubic(
 	duration time.Duration,
 	startValue,
 	endValue float64,
-	DoNotReverseMotion bool,
+	doNotReverseMotion bool,
 	onStartFunc,
 	onEndFunc,
 	onCycleStartFunc,
@@ -66,7 +66,7 @@ func NewEaseInSineOutCubic(
 		OnInvert:           onInvertFunc,
 		Repeat:             loop,
 		Func:               tween.KEaseInSineOutCubic,
-		DoNotReverseMotion: DoNotReverseMotion,
+		DoNotReverseMotion: doNotReverseMotion,
 	}
 	t.Start()
 

@@ -41,7 +41,7 @@ func NewSelectRandom(
 	duration time.Duration,
 	startValue,
 	endValue float64,
-	DoNotReverseMotion bool,
+	doNotReverseMotion bool,
 	onStartFunc,
 	onEndFunc,
 	onCycleStartFunc,
@@ -66,7 +66,7 @@ func NewSelectRandom(
 		OnInvert:           onInvertFunc,
 		Repeat:             loop,
 		Func:               tween.SelectRandom(),
-		DoNotReverseMotion: DoNotReverseMotion,
+		DoNotReverseMotion: doNotReverseMotion,
 	}
 	t.Start()
 
