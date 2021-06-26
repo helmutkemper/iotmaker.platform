@@ -5,7 +5,9 @@ import "errors"
 type WallTop int
 
 const (
-	// en: Wall top not set
+	// KWallTopNotSet
+	//
+	// English: Wall top not set
 	//   +-father--------------------------------+
 	//   |                                       |
 	//   |     +-containerB--X-------------+     |
@@ -33,6 +35,8 @@ const (
 	//   +---------------------------------------+
 	KWallTopNotSet WallTop = iota
 
+	// KWallTopContainerBLinkOnTopToContainerALinkOnTop
+	//
 	// en: Wall top container B link on top to container A link on top
 	//   +-father------------O-------------------+
 	//   |                   |                   |
@@ -73,6 +77,8 @@ const (
 	//  +-------------------------------------------------------------------+
 	KWallTopContainerBLinkOnTopToContainerALinkOnTop
 
+	// KWallTopContainerBLinkOnTopToContainerALinkOnBottom
+	//
 	// en: Wall top from container B link on top to container A link on bottom
 	//   +-father--------------------------------+
 	//   |                                       |
@@ -123,6 +129,8 @@ const (
 type WallBottom int
 
 const (
+	// KWallBottomNotSet
+	//
 	// en: Wall bottom not set
 	//
 	//   +-father--------------------------------+
@@ -152,6 +160,8 @@ const (
 	//   +---------------------------------------+
 	KWallBottomNotSet WallBottom = iota
 
+	// KWallBottomContainerBLinkOnTopToContainerALinkOnBottom
+	//
 	// en: Wall bottom from container B link on top to container A link on bottom
 	//
 	//   +-father--------------------------------+
@@ -181,6 +191,8 @@ const (
 	//   +---------------------------------------+
 	KWallBottomContainerBLinkOnTopToContainerALinkOnBottom
 
+	// KWallBottomContainerBLinkOnBottomToContainerALinkOnBottom
+	//
 	// en: Wall bottom from container B link on bottom to container A link on bottom
 	//  +-father--------------------------------+
 	//  |                                       |
@@ -225,6 +237,8 @@ const (
 type WallLeft int
 
 const (
+	// KWallLeftNotSet
+	//
 	// en: Wall left not set
 	//  +-father----------------------------+
 	//  |                                   |
@@ -247,6 +261,8 @@ const (
 	//  +-------------------------------------------------------------------+
 	KWallLeftNotSet WallLeft = iota
 
+	// KWallLeftContainerBLinkOnLeftToContainerALinkOnRight
+	//
 	// en: Wall left from container B link on left to container A link on right
 	//  +-father------------------------------------------------------------+
 	//  |                                                                   |
@@ -259,6 +275,8 @@ const (
 	//  +-------------------------------------------------------------------+
 	KWallLeftContainerBLinkOnLeftToContainerALinkOnRight
 
+	// KWallLeftContainerBLinkOnLeftToContainerALinkOnLeft
+	//
 	// en: Wall left from container B link on left to container A link on left
 	//  +-father----------------------------+
 	//  |                                   |
@@ -285,6 +303,8 @@ const (
 type WallRight int
 
 const (
+	// KWallRightNotSet
+	//
 	// en: Wall right not set
 	//  +-father------------------------------------------------------------+
 	//  |                                                                   |
@@ -307,6 +327,8 @@ const (
 	//  +-----------------------------------+
 	KWallRightNotSet WallRight = iota
 
+	// KWallRightContainerBLinkOnRightToContainerALinkOnRight
+	//
 	// en: Wall right from container B lin on right to container A link on right
 	//  +-father------------------------------------------------------------+
 	//  |                                                                   |
@@ -341,6 +363,8 @@ type Link struct {
 	Bottom           WallBottom
 }
 
+// LinkIsPresentAtTheBottom
+//
 // en: It calculates the vertical position of the container when there is only the
 // link on the bottom are connected to
 //
@@ -364,6 +388,8 @@ func (el *Dimensions) LinkIsPresentAtTheBottom(containerA, containerB *Dimension
 	containerB.Y = AY + AHeight - BHeight + BBottom
 }
 
+// LinkIsPresentAtTheTop
+//
 // en: It calculates the vertical position of the container when there is only the
 // link on the top are connected to
 //
@@ -385,6 +411,8 @@ func (el *Dimensions) LinkIsPresentAtTheTop(containerA, containerB *Dimensions) 
 	containerB.Y = AY + BTop
 }
 
+// LinkIsPresentAtTheTopAndBottom
+//
 // en: Calculates the vertical position of the container when the links to the top
 // and bottom are connected
 //
@@ -414,6 +442,8 @@ func (el *Dimensions) LinkIsPresentAtTheTopAndBottom(containerA, containerB *Dim
 	containerB.Y = BY
 }
 
+// LinkIsPresentAtTheRight
+//
 // en: It calculates the horizontal position of the container when there is only the
 // link on the right are connected to
 //
@@ -436,6 +466,8 @@ func (el *Dimensions) LinkIsPresentAtTheRight(containerA, containerB *Dimensions
 	containerB.X = AX + AWidth - CWidth
 }
 
+// LinkIsPresentAtTheLeft
+//
 // en: It calculates the horizontal position of the container when there is only the
 // link on the left are connected to
 //
@@ -456,6 +488,8 @@ func (el *Dimensions) LinkIsPresentAtTheLeft(containerA, containerB *Dimensions)
 	containerB.X = AX
 }
 
+// LinkIsPresentAtTheRightAndLeft
+//
 // en: Calculates the horizontal position of the container when the links to the
 // right and the left are connected
 //
@@ -521,6 +555,8 @@ func (el *Link) LinkAssembly(father Link, list []Link) error {
 	return nil
 }*/
 
+// Dimensions
+//
 //                Top
 //      +----------O---------+
 //      |                    |
