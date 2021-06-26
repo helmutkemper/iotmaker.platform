@@ -39,6 +39,7 @@ func NewEaseInExponentialOutQuartic(
 	duration time.Duration,
 	startValue,
 	endValue float64,
+	DoNotReverseMotion bool,
 	onStartFunc,
 	onEndFunc,
 	onCycleStartFunc,
