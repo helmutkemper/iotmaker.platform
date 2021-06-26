@@ -51,19 +51,20 @@ func NewEaseInQuarticOutLinear(
 ) *tween.Tween {
 
 	t := &tween.Tween{
-		Engine:       global.Global.Engine,
-		OnStart:      onStartFunc,
-		OnEnd:        onEndFunc,
-		OnCycleStart: onCycleStartFunc,
-		OnCycleEnd:   onCycleEndFunc,
-		Arguments:    arguments,
-		Duration:     duration,
-		StartValue:   startValue,
-		EndValue:     endValue,
-		Interaction:  onStepFunc,
-		OnInvert:     onInvertFunc,
-		Repeat:       loop,
-		Func:         tween.KEaseInQuarticOutLinear,
+		Engine:             global.Global.Engine,
+		OnStart:            onStartFunc,
+		OnEnd:              onEndFunc,
+		OnCycleStart:       onCycleStartFunc,
+		OnCycleEnd:         onCycleEndFunc,
+		Arguments:          arguments,
+		Duration:           duration,
+		StartValue:         startValue,
+		EndValue:           endValue,
+		Interaction:        onStepFunc,
+		OnInvert:           onInvertFunc,
+		Repeat:             loop,
+		Func:               tween.KEaseInQuarticOutLinear,
+		DoNotReverseMotion: DoNotReverseMotion,
 	}
 	t.Start()
 

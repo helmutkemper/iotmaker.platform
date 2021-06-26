@@ -51,19 +51,20 @@ func NewEaseInCircularOutQuadratic(
 ) *tween.Tween {
 
 	t := &tween.Tween{
-		Engine:       global.Global.Engine,
-		OnStart:      onStartFunc,
-		OnEnd:        onEndFunc,
-		OnCycleStart: onCycleStartFunc,
-		OnCycleEnd:   onCycleEndFunc,
-		Arguments:    arguments,
-		Duration:     duration,
-		StartValue:   startValue,
-		EndValue:     endValue,
-		Interaction:  onStepFunc,
-		OnInvert:     onInvertFunc,
-		Repeat:       loop,
-		Func:         tween.KEaseInCircularOutQuadratic,
+		Engine:             global.Global.Engine,
+		OnStart:            onStartFunc,
+		OnEnd:              onEndFunc,
+		OnCycleStart:       onCycleStartFunc,
+		OnCycleEnd:         onCycleEndFunc,
+		Arguments:          arguments,
+		Duration:           duration,
+		StartValue:         startValue,
+		EndValue:           endValue,
+		Interaction:        onStepFunc,
+		OnInvert:           onInvertFunc,
+		Repeat:             loop,
+		Func:               tween.KEaseInCircularOutQuadratic,
+		DoNotReverseMotion: DoNotReverseMotion,
 	}
 	t.Start()
 

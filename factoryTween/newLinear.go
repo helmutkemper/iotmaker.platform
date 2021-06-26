@@ -64,7 +64,7 @@ func NewLinear(
 		OnInvert:           onInvertFunc,
 		Repeat:             loop,
 		Func:               tween.KLinear,
-		DoNotReverseMotion: true,
+		DoNotReverseMotion: DoNotReverseMotion,
 	}
 	t.Start()
 

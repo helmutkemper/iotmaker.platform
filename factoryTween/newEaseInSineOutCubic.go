@@ -51,19 +51,20 @@ func NewEaseInSineOutCubic(
 ) *tween.Tween {
 
 	t := &tween.Tween{
-		Engine:       global.Global.Engine,
-		OnStart:      onStartFunc,
-		OnEnd:        onEndFunc,
-		OnCycleStart: onCycleStartFunc,
-		OnCycleEnd:   onCycleEndFunc,
-		Arguments:    arguments,
-		Duration:     duration,
-		StartValue:   startValue,
-		EndValue:     endValue,
-		Interaction:  onStepFunc,
-		OnInvert:     onInvertFunc,
-		Repeat:       loop,
-		Func:         tween.KEaseInSineOutCubic,
+		Engine:             global.Global.Engine,
+		OnStart:            onStartFunc,
+		OnEnd:              onEndFunc,
+		OnCycleStart:       onCycleStartFunc,
+		OnCycleEnd:         onCycleEndFunc,
+		Arguments:          arguments,
+		Duration:           duration,
+		StartValue:         startValue,
+		EndValue:           endValue,
+		Interaction:        onStepFunc,
+		OnInvert:           onInvertFunc,
+		Repeat:             loop,
+		Func:               tween.KEaseInSineOutCubic,
+		DoNotReverseMotion: DoNotReverseMotion,
 	}
 	t.Start()
 

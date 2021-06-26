@@ -51,19 +51,20 @@ func NewEaseInCircular(
 ) *tween.Tween {
 
 	t := &tween.Tween{
-		Engine:       global.Global.Engine,
-		OnStart:      onStartFunc,
-		OnEnd:        onEndFunc,
-		OnCycleStart: onCycleStartFunc,
-		OnCycleEnd:   onCycleEndFunc,
-		Arguments:    arguments,
-		Duration:     duration,
-		StartValue:   startValue,
-		EndValue:     endValue,
-		Interaction:  onStepFunc,
-		OnInvert:     onInvertFunc,
-		Repeat:       loop,
-		Func:         tween.KEaseInCircular,
+		Engine:             global.Global.Engine,
+		OnStart:            onStartFunc,
+		OnEnd:              onEndFunc,
+		OnCycleStart:       onCycleStartFunc,
+		OnCycleEnd:         onCycleEndFunc,
+		Arguments:          arguments,
+		Duration:           duration,
+		StartValue:         startValue,
+		EndValue:           endValue,
+		Interaction:        onStepFunc,
+		OnInvert:           onInvertFunc,
+		Repeat:             loop,
+		Func:               tween.KEaseInCircular,
+		DoNotReverseMotion: DoNotReverseMotion,
 	}
 	t.Start()
 
