@@ -39,7 +39,7 @@ func (el *Tween) Start() {
 		el.OnStart(el.StartValue, el.Arguments)
 	}
 
-	go el.tickerRunnerPrepare(el.StartValue, el.EndValue)
+	el.tickerRunnerPrepare(el.StartValue, el.EndValue)
 }
 
 func (el *Tween) tickerRunnerPrepare(startValue, endValue float64) {
