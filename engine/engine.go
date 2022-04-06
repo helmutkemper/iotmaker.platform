@@ -35,7 +35,7 @@ type Engine struct {
 
 	funcCursorDraw FuncList
 
-	// pt_br: impede que o loop ocorra em intervalos muitos próximos e trave o
+	// pt_br: impede que o laço ocorra em intervalos muitos próximos e trave o
 	// processamento do browser para outras tarefas
 	slipFrame          int
 	slipFrameTimeAlarm time.Duration

@@ -31,7 +31,7 @@ func NewBasicBox(
 	dm = factoryDimensions.NewDimensions(dm, x, y, width, height, border, density, iDensity)
 
 	ik := ink.Ink{}
-	ik = factoryInk.NewInk(ik, int(lineWidth), color, shadow, gradient, density, iDensity)
+	ik = factoryInk.NewInk(int(lineWidth), color)
 
 	bb := &draw.BasicBox{
 		Platform:   platform,
