@@ -6,7 +6,13 @@ import (
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/ink"
 )
 
-func NewInkWothShadowAndGradient(lineWidth int, fillColor interface{}, shadow iotmaker_platform_IDraw.IFilterShadowInterface, gradient iotmaker_platform_IDraw.IFilterGradientInterface) ink.Ink {
+func NewInkWithShadowAndGradient(
+	lineWidth int,
+	fillColor interface{},
+	shadow iotmaker_platform_IDraw.IFilterShadowInterface,
+	gradient iotmaker_platform_IDraw.IFilterGradientInterface,
+) ink.Ink {
+
 	var inkObj = ink.Ink{}
 
 	densityCalc := global.Global.DensityManager
