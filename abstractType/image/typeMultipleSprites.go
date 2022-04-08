@@ -1,6 +1,7 @@
 package image
 
 import (
+	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/basic"
 	"time"
 )
@@ -8,7 +9,7 @@ import (
 type MultipleSprites struct {
 	basic.Sprite
 
-	//Platform                iotmaker_platform_IDraw.IDraw
+	Platform                iotmaker_platform_IDraw.IDraw
 	Img                     interface{}
 	data                    interface{}
 	SpriteWidth             int

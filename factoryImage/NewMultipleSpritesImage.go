@@ -8,7 +8,6 @@ import (
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/basic"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/dimensions"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/ink"
-	"log"
 	"time"
 )
 
@@ -35,10 +34,10 @@ func NewMultipleSpritesImage(
 
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
-	log.Printf("in: xImageOut: %v", xImageOut)
+
 	densityCalc.SetInt(xImageOut)
 	xImageOut = densityCalc.Int()
-	log.Printf("out: xImageOut: %v", xImageOut)
+
 	densityCalc.SetInt(yImageOut)
 	yImageOut = densityCalc.Int()
 
@@ -68,11 +67,17 @@ func NewMultipleSpritesImage(
 				Height: heightImageOut,
 			},
 		},
-		//Platform:                platform,
+		Platform:                platform,
 		Img:                     img,
+		SpriteWidth:             spriteWidth,
+		SpriteHeight:            spriteHeight,
 		SpriteFirstElementIndex: spriteFirstElementIndex,
 		SpriteLastElementIndex:  spriteLastElementIndex,
 		SpriteChangeInterval:    spriteChangeInterval,
+		X:                       xImageOut,
+		Y:                       yImageOut,
+		Width:                   widthImageOut,
+		Height:                  heightImageOut,
 	}
 	ret.Crete()
 
