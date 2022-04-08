@@ -1,7 +1,6 @@
 package image
 
 import (
-	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/basic"
 	"time"
 )
@@ -9,8 +8,9 @@ import (
 type MultipleSprites struct {
 	basic.Sprite
 
-	Platform                iotmaker_platform_IDraw.IDraw
+	//Platform                iotmaker_platform_IDraw.IDraw
 	Img                     interface{}
+	data                    interface{}
 	SpriteWidth             int
 	SpriteHeight            int
 	SpriteFirstElementIndex int
@@ -35,28 +35,9 @@ func (el *MultipleSprites) Crete() {
 	el.Platform.DrawImageMultiplesSprites(el.Img, el.SpriteWidth, el.SpriteHeight, el.SpriteFirstElementIndex, el.SpriteLastElementIndex, el.SpriteChangeInterval,
 		el.X, el.Y, el.Width, el.Height,
 		el.ClearRectDeltaX, el.ClearRectDeltaY, el.ClearRectDeltaWidth, el.ClearRectDeltaHeight,
-		el.LifeCycleLimit, el.LifeCycleRepeatLimit, el.LifeCycleRepeatInterval,
-	)
+		el.LifeCycleLimit, el.LifeCycleRepeatLimit, el.LifeCycleRepeatInterval)
 }
 
-func (el *MultipleSprites) Draw() {
-	el.ScratchPad.Save()
-	el.ColorFiltersStart(el.ScratchPad)
-	el.ScratchPad.DrawImage(
-		el.Img,
-		el.X,
-		el.Y,
-		el.Width,
-		el.Height,
-	)
-	el.ScratchPad.Restore()
-}
+func (el *MultipleSprites) Draw() {}
 
-func (el *MultipleSprites) Clear() {
-	el.ScratchPad.ClearRect(
-		el.X,
-		el.Y,
-		el.Width,
-		el.Height,
-	)
-}
+func (el *MultipleSprites) Clear() {}

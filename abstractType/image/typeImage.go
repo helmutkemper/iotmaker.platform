@@ -6,6 +6,7 @@ import (
 
 type Image struct {
 	basic.Sprite
+
 	Img  interface{}
 	data interface{}
 }

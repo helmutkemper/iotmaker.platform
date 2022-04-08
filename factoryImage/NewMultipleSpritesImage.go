@@ -67,7 +67,7 @@ func NewMultipleSpritesImage(
 				Height: heightImageOut,
 			},
 		},
-		Platform:                platform,
+		//Platform:                platform,
 		Img:                     img,
 		SpriteFirstElementIndex: spriteFirstElementIndex,
 		SpriteLastElementIndex:  spriteLastElementIndex,
