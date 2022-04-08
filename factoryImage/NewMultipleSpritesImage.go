@@ -1,14 +1,23 @@
 package factoryImage
 
 import (
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.interfaces/iStage"
 	iotmaker_platform_IDraw "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.IDraw"
 	iotmaker_platform_coordinate "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.coordinate"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/abstractType/image"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/basic"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/dimensions"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/ink"
 	"time"
 )
 
 func NewMultipleSpritesImage(
-	platform iotmaker_platform_IDraw.IDraw,
+
+	id string,
+	stage iStage.IStage,
+	platform,
+	scratchPad iotmaker_platform_IDraw.IDraw,
+	ink ink.Interface,
 	img interface{},
 	spriteWidth,
 	spriteHeight,
@@ -39,17 +48,30 @@ func NewMultipleSpritesImage(
 	heightImageOut = densityCalc.Int()
 
 	ret := &image.MultipleSprites{
+		Sprite: basic.Sprite{
+			Id:         id,
+			Stage:      stage,
+			Platform:   platform,
+			ScratchPad: scratchPad,
+			Ink:        ink,
+			Dimensions: dimensions.Dimensions{
+				X:      xImageOut,
+				Y:      yImageOut,
+				Width:  widthImageOut,
+				Height: heightImageOut,
+			},
+			OutBoxDimensions: dimensions.Dimensions{
+				X:      xImageOut,
+				Y:      yImageOut,
+				Width:  widthImageOut,
+				Height: heightImageOut,
+			},
+		},
 		Platform:                platform,
 		Img:                     img,
-		SpriteWidth:             spriteWidth,
-		SpriteHeight:            spriteHeight,
 		SpriteFirstElementIndex: spriteFirstElementIndex,
 		SpriteLastElementIndex:  spriteLastElementIndex,
 		SpriteChangeInterval:    spriteChangeInterval,
-		X:                       xImageOut,
-		Y:                       yImageOut,
-		Width:                   widthImageOut,
-		Height:                  heightImageOut,
 	}
 	ret.Crete()
 
