@@ -11,9 +11,15 @@ type MultipleSprites struct {
 
 	Platform                iotmaker_platform_IDraw.IDraw
 	Img                     interface{}
+	SpriteWidth             int
+	SpriteHeight            int
 	SpriteFirstElementIndex int
 	SpriteLastElementIndex  int
 	SpriteChangeInterval    time.Duration
+	X                       int
+	Y                       int
+	Width                   int
+	Height                  int
 
 	ClearRectDeltaX      int
 	ClearRectDeltaY      int
@@ -26,12 +32,8 @@ type MultipleSprites struct {
 }
 
 func (el *MultipleSprites) Crete() {
-	el.Platform.DrawImageMultiplesSprites(
-		el.Img,
-		el.Dimensions.Width, el.Dimensions.Height,
-		el.SpriteFirstElementIndex, el.SpriteLastElementIndex,
-		el.SpriteChangeInterval,
-		el.Dimensions.X, el.Dimensions.Y, el.Dimensions.Width, el.Dimensions.Height,
+	el.Platform.DrawImageMultiplesSprites(el.Img, el.SpriteWidth, el.SpriteHeight, el.SpriteFirstElementIndex, el.SpriteLastElementIndex, el.SpriteChangeInterval,
+		el.X, el.Y, el.Width, el.Height,
 		el.ClearRectDeltaX, el.ClearRectDeltaY, el.ClearRectDeltaWidth, el.ClearRectDeltaHeight,
 		el.LifeCycleLimit, el.LifeCycleRepeatLimit, el.LifeCycleRepeatInterval,
 	)
@@ -42,19 +44,19 @@ func (el *MultipleSprites) Draw() {
 	el.ColorFiltersStart(el.ScratchPad)
 	el.ScratchPad.DrawImage(
 		el.Img,
-		el.Dimensions.X,
-		el.Dimensions.Y,
-		el.Dimensions.Width,
-		el.Dimensions.Height,
+		el.X,
+		el.Y,
+		el.Width,
+		el.Height,
 	)
 	el.ScratchPad.Restore()
 }
 
 func (el *MultipleSprites) Clear() {
 	el.ScratchPad.ClearRect(
-		el.Dimensions.X,
-		el.Dimensions.Y,
-		el.Dimensions.Width,
-		el.Dimensions.Height,
+		el.X,
+		el.Y,
+		el.Width,
+		el.Height,
 	)
 }
