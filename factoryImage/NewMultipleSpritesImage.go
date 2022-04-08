@@ -7,7 +7,22 @@ import (
 	"time"
 )
 
-func NewMultipleSpritesImage(platform iotmaker_platform_IDraw.IDraw, img interface{}, spriteWidth, spriteHeight, spriteFirstElementIndex, spriteLastElementIndex int, spriteChangeInterval time.Duration, xImageOut, yImageOut, widthImageOut, heightImageOut int, density interface{}, iDensity iotmaker_platform_coordinate.IDensity) *image.MultipleSprites {
+func NewMultipleSpritesImage(
+	platform iotmaker_platform_IDraw.IDraw,
+	img interface{},
+	spriteWidth,
+	spriteHeight,
+	spriteFirstElementIndex,
+	spriteLastElementIndex int,
+	spriteChangeInterval time.Duration,
+	xImageOut,
+	yImageOut,
+	widthImageOut,
+	heightImageOut int,
+	density interface{},
+	iDensity iotmaker_platform_coordinate.IDensity,
+) *image.MultipleSprites {
+
 	densityCalc := iDensity
 	densityCalc.SetDensityFactor(density)
 
