@@ -57,8 +57,8 @@ func NewMultipleSpritesImage(
 			Dimensions: dimensions.Dimensions{
 				X:      xImageOut,
 				Y:      yImageOut,
-				Width:  widthImageOut,
-				Height: heightImageOut,
+				Width:  spriteWidth,
+				Height: spriteHeight,
 			},
 			OutBoxDimensions: dimensions.Dimensions{
 				X:      xImageOut,
