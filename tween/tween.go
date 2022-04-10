@@ -1,108 +1,470 @@
 package tween
 
 import (
+	global "github.com/helmutkemper/iotmaker.santa_isabel_theater.globalConfig"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/engine"
 	"time"
 )
 
 type Tween struct {
-	Engine             engine.IEngine
+	engine             engine.IEngine
 	StartValue         float64
-	EndValue           float64
-	Arguments          []interface{}
+	endValue           float64
+	arguments          []interface{}
 	startTime          time.Time
-	Duration           time.Duration
-	Func               func(currentTime, duration, startValue, changeInValue float64) float64
-	Interaction        func(value, percentToComplete float64, arguments ...interface{})
-	OnCycleStart       func(value float64, arguments ...interface{})
-	OnCycleEnd         func(value float64, arguments ...interface{})
-	OnStart            func(value float64, arguments ...interface{})
-	OnEnd              func(value float64, arguments ...interface{})
-	OnInvert           func(value float64, arguments ...interface{})
-	DoNotReverseMotion bool
+	duration           time.Duration
+	tweenFunc          func(currentTime, duration, startValue, changeInValue float64) float64
+	interaction        func(value, percentToComplete float64, arguments ...interface{})
+	onCycleStart       func(value float64, arguments ...interface{})
+	onCycleEnd         func(value float64, arguments ...interface{})
+	onStart            func(value float64, arguments ...interface{})
+	onEnd              func(value float64, arguments ...interface{})
+	onInvert           func(value float64, arguments ...interface{})
+	doNotReverseMotion bool
 	invert             bool
-	Repeat             int
+	repeat             int
 	fpsUId             string
 	loopStartValue     float64
 	loopEndValue       float64
 }
 
-func (el *Tween) Start() {
+// SetEngine
+//
+// English:
+//
+//  Defines a new engine for time control.
+//
+//   Input:
+//     value: object compatible with the engine.IEEngine interface
+//
+//   Output:
+//     object: reference to the current Tween object.
+//
+// Português:
+//
+//  Define uma nova engine para controle de tempo.
+//
+//   Entrada:
+//     value: objeto compatível com ã interface engine.IEngine
+//
+//   Saída:
+//     object: referência para o objeto Tween corrente.
+func (el *Tween) SetEngine(value engine.IEngine) (object *Tween) {
+	el.engine = value
+	return el
+}
+
+// SetTweenFunc
+//
+// English:
+//
+//  Defines the tween math function to control the loop of interactions
+//
+//   Input:
+//     value: tween math function.
+//
+//   Output:
+//     object: reference to the current Tween object.
+//
+// Português:
+//
+//  Define a função matemática tween para controle do ciclo de interações
+//
+//   Entrada:
+//     value: função matemática tween.
+//
+//   Saída:
+//     object: referência para o objeto Tween corrente.
+func (el *Tween) SetTweenFunc(value func(currentTime, duration, startValue, changeInValue float64) float64) (object *Tween) {
+	el.tweenFunc = value
+	return el
+}
+
+// SetValues
+//
+// English:
+//
+//  Defines the initial and final values of the interactions cycle.
+//
+//   Input:
+//     start: initial value for the beginning of the cycle of interactions;
+//     end:   final value for the end of the iteration cycle.
+//
+//   Output:
+//     object: reference to the current Tween object.
+//
+// Português:
+//
+//  Defines os valores inicial e final do ciclo de interações.
+//
+//   Entrada:
+//     start: valor inicial para o início do ciclo de interações;
+//     end:   valor final para o fim do ciclo de interações.
+//
+//   Saída:
+//     object: referência para o objeto Tween corrente.
+func (el *Tween) SetValues(start, end float64) (object *Tween) {
+	el.StartValue = start
+	el.endValue = end
+	return el
+}
+
+// SetDuration
+//
+// English:
+//
+//  Defines the total cycle time of interactions.
+//
+//   Input:
+//     value: time.Duration contendo o tempo do ciclo de interações.
+//
+//   Output:
+//     object: reference to the current Tween object.
+//
+// Português:
+//
+//  Define o tempo total do ciclo de interações.
+//
+//   Entrada:
+//     value: time.Duration contendo o tempo do ciclo de interações.
+//
+//   Saída:
+//     object: referência para o objeto Tween corrente.
+func (el *Tween) SetDuration(value time.Duration) (object *Tween) {
+	el.duration = value
+	return el
+}
+
+// SetDoNotReverseMotion
+//
+// English:
+//
+// Português:
+//
+//  Define a opção de reversão do movimento.
+//
+//   Entrada:
+//     value: true para não reverter o movimento.
+//
+//   Saída:
+//     object: referência para o objeto Tween corrente.
+func (el *Tween) SetDoNotReverseMotion(value bool) (object *Tween) {
+	el.doNotReverseMotion = value
+	return el
+}
+
+func (el *Tween) SetLoops(value int) (object *Tween) {
+	el.repeat = value
+	return el
+}
+
+// SetOnStartFunc
+//
+// English:
+//
+//  Add the function to be called when the animation starts.
+//
+//   Input:
+//     function: func(value float64, arguments ...interface{})
+//       value: initial value defined in startValue
+//       arguments: list of values passed to event functions, defined in SetArguments()
+//
+// Português:
+//
+//  Adiciona a função a ser chamada quando a animação inicia.
+//
+//   Entrada:
+//     function: func(value float64, arguments ...interface{})
+//       value: valor inicial definido em startValue
+//       arguments: lista de valores passados para as funções de evento, definidos em SetArguments()
+//
+//   Saída:
+//     object: referência para o objeto Tween corrente.
+func (el *Tween) SetOnStartFunc(function func(value float64, arguments ...interface{})) (object *Tween) {
+	el.onStart = function
+	return el
+}
+
+// SetOnEndFunc
+//
+// English:
+//
+//  Add the function to be called when the animation ends.
+//
+//   Input:
+//     function: func(value float64, arguments ...interface{})
+//       value: final value defined in endValue
+//       arguments: list of values passed to event functions, defined in SetArguments()
+//
+// Português:
+//
+//  Adiciona a função a ser chamada quando a animação inicia.
+//
+//   Entrada:
+//     function: func(value float64, arguments ...interface{})
+//       value: valor final definido em endValue
+//       arguments: lista de valores passados para as funções de evento, definidos em SetArguments()
+//
+//   Saída:
+//     object: referência para o objeto Tween corrente.
+func (el *Tween) SetOnEndFunc(function func(value float64, arguments ...interface{})) (object *Tween) {
+	el.onEnd = function
+	return el
+}
+
+// SetOnCycleStartFunc
+//
+// English:
+//
+//  Adds the function to be called at the beginning of the interpolation cycle
+//
+//   Input:
+//     function: func(value float64, arguments ...interface{})
+//       value: initial value defined in startValue
+//       arguments: list of values passed to event functions, defined in SetArguments()
+//
+// Português:
+//
+//  Adiciona a função a ser chamada no início do ciclo de interpolação
+//
+//   Entrada:
+//     function: func(value float64, arguments ...interface{})
+//       value: valor inicial definido em startValue
+//       arguments: lista de valores passados para as funções de evento, definidos em SetArguments()
+//
+//   Saída:
+//     object: referência para o objeto Tween corrente.
+func (el *Tween) SetOnCycleStartFunc(function func(value float64, arguments ...interface{})) (object *Tween) {
+	el.onCycleStart = function
+	return el
+}
+
+// SetOnCycleEndFunc
+//
+// English:
+//
+//  Adds the function to be called at the ending of the interpolation cycle
+//
+//   Input:
+//     function: func(value float64, arguments ...interface{})
+//       value: final value defined in endValue
+//       arguments: list of values passed to event functions, defined in SetArguments()
+//
+// Português:
+//
+//  Adiciona a função a ser chamada no fim do ciclo de interpolação
+//
+//   Entrada:
+//     function: func(value float64, arguments ...interface{})
+//       value: valor final definido em endValue
+//       arguments: lista de valores passados para as funções de evento, definidos em SetArguments()
+//
+//   Saída:
+//     object: referência para o objeto Tween corrente.
+func (el *Tween) SetOnCycleEndFunc(function func(value float64, arguments ...interface{})) (object *Tween) {
+	el.onCycleEnd = function
+	return el
+}
+
+// SetOnStepFunc
+//
+// English:
+//
+//  Adds the function to be called for each iteration.
+//
+//   Input:
+//     function: func(value float64, arguments ...interface{})
+//       value: current value
+//       percentToComplete: value between 0.0 and 1.0 indicating the percentage of the process
+//       arguments: list of values passed to event functions, defined in SetArguments()
+//
+// Português:
+//
+//  Adiciona a função a ser chamada a cada interação
+//
+//   Entrada:
+//     function: func(value float64, arguments ...interface{})
+//       value: valor corrente
+//       percentToComplete: valor entre 0.0 e 1.0 indicando o percentual do processo
+//       arguments: lista de valores passados para as funções de evento, definidos em SetArguments()
+//
+//   Saída:
+//     object: referência para o objeto Tween corrente.
+func (el *Tween) SetOnStepFunc(function func(value, percentToComplete float64, arguments ...interface{})) (object *Tween) {
+	el.interaction = function
+	return el
+}
+
+// SetOnInvertFunc
+//
+// English:
+//
+//  Adds the function to be called on inversion of the interpolation cycle
+//
+//   Input:
+//     function: func(value float64, arguments ...interface{})
+//       value: current value
+//       arguments: list of values passed to event functions, defined in SetArguments()
+//
+// Português:
+//
+//  Adiciona a função a ser chamada a cada interação
+//
+//   Entrada:
+//     function: func(value, percentToComplete float64, arguments ...interface{})
+//       value: valor corrente
+//       arguments: lista de valores passados para as funções de evento, definidos em SetArguments()
+//
+//   Saída:
+//     object: referência para o objeto Tween corrente.
+func (el *Tween) SetOnInvertFunc(function func(value float64, arguments ...interface{})) (object *Tween) {
+	el.onInvert = function
+	return el
+}
+
+// Start
+//
+// English:
+//
+//  Starts the interaction according to the chosen tween function.
+//
+//   Output:
+//     object: reference to the current Tween object.
+//
+// Português:
+//
+//  Inicia a interação conforme a função tween escolhida.
+//
+//   Saída:
+//     object: referência para o objeto Tween corrente.
+func (el *Tween) Start() (object *Tween) {
+
+	if el.engine == nil {
+		el.engine = global.Global.Engine
+	}
+
+	if el.tweenFunc == nil {
+		el.tweenFunc = KLinear
+	}
+
 	el.startTime = time.Now()
 	el.invert = true
 
-	if el.Func == nil {
+	if el.tweenFunc == nil {
 		return
 	}
 
-	if el.OnStart != nil {
-		el.OnStart(el.StartValue, el.Arguments)
+	if el.onStart != nil {
+		el.onStart(el.StartValue, el.arguments)
 	}
 
-	el.tickerRunnerPrepare(el.StartValue, el.EndValue)
+	el.tickerRunnerPrepare(el.StartValue, el.endValue)
+
+	return el
 }
 
 func (el *Tween) tickerRunnerPrepare(startValue, endValue float64) {
-	if el.OnCycleStart != nil {
-		el.OnCycleStart(el.StartValue, el.Arguments)
+	if el.onCycleStart != nil {
+		el.onCycleStart(el.StartValue, el.arguments)
 	}
 
 	el.loopStartValue = startValue
 	el.loopEndValue = endValue
 
 	// fixme: _ é um index do array? tem uso aqui?
-	el.fpsUId, _ = el.Engine.MathAddToFunctions(el.tickerRunnerRun)
+	el.fpsUId, _ = el.engine.MathAddToFunctions(el.tickerRunnerRun)
 }
 
 func (el *Tween) tickerRunnerRun() {
 	elapsed := time.Since(el.startTime)
-	value := el.Func(elapsed.Seconds(), el.Duration.Seconds(), el.loopStartValue, el.loopEndValue-el.loopStartValue)
-	percent := elapsed.Seconds() / el.Duration.Seconds()
+	value := el.tweenFunc(elapsed.Seconds(), el.duration.Seconds(), el.loopStartValue, el.loopEndValue-el.loopStartValue)
+	percent := elapsed.Seconds() / el.duration.Seconds()
 
-	if el.Interaction != nil {
-		el.Interaction(value, percent, el.Arguments)
+	if el.interaction != nil {
+		el.interaction(value, percent, el.arguments)
 	}
 
-	if elapsed >= el.Duration {
+	if elapsed >= el.duration {
 
 		el.Stop()
 
-		if el.Repeat == 0 {
-			if el.OnEnd != nil {
-				el.OnEnd(value)
+		if el.repeat == 0 {
+			if el.onEnd != nil {
+				el.onEnd(value)
 			}
 		}
 
-		if el.Repeat != 0 {
+		if el.repeat != 0 {
 			el.startTime = time.Now()
 
-			if el.OnInvert != nil {
-				el.OnInvert(value)
+			if el.onInvert != nil {
+				el.onInvert(value)
 			}
 
-			if el.DoNotReverseMotion == true {
-				el.tickerRunnerPrepare(el.StartValue, el.EndValue)
+			if el.doNotReverseMotion == true {
+				el.tickerRunnerPrepare(el.StartValue, el.endValue)
 			} else {
 				if el.invert == true {
-					el.tickerRunnerPrepare(el.EndValue, el.StartValue)
+					el.tickerRunnerPrepare(el.endValue, el.StartValue)
 				} else {
-					el.tickerRunnerPrepare(el.StartValue, el.EndValue)
+					el.tickerRunnerPrepare(el.StartValue, el.endValue)
 				}
 				el.invert = !el.invert
 			}
 
-			el.Repeat -= 1
+			el.repeat -= 1
 		}
 	}
 }
 
-func (el *Tween) End() {
-	el.Engine.MathDeleteFromFunctions(el.fpsUId)
+// End
+//
+// English:
+//
+//  Terminates all interactions of the chosen Tween function, without invoking the onCycleEnd and
+//  onEnd functions.
+//
+//   Saída:
+//     object: reference to the current Tween object.
+//
+// Português:
+//
+// Termina todas as interações da função Tween escolhida, sem invocar as funções onCycleEnd e onEnd.
+//
+//   Saída:
+//     object: referência para o objeto Tween corrente.
+func (el *Tween) End() (object *Tween) {
+	el.engine.MathDeleteFromFunctions(el.fpsUId)
+
+	return el
 }
 
-func (el *Tween) Stop() {
-	el.Engine.MathDeleteFromFunctions(el.fpsUId)
-	if el.OnCycleEnd != nil {
-		el.OnCycleEnd(el.EndValue, el.Arguments)
+// Stop
+//
+// English:
+//
+//  Ends all interactions of the chosen Tween function, interacting with the onCycleEnd and onEnd
+//  functions, respectively, in that order, if they have been defined.
+//
+//   Output:
+//     object: reference to the current Tween object.
+//
+// Português:
+//
+//  Termina todas as interações da função Tween escolhida, interagindo com as funções onCycleEnd e
+//  onEnd, respectivamente nessa ordem, se elas tiverem sido definidas.
+//
+//   Saída:
+//     object: referência para o objeto Tween corrente.
+func (el *Tween) Stop() (object *Tween) {
+	el.engine.MathDeleteFromFunctions(el.fpsUId)
+	if el.onCycleEnd != nil {
+		el.onCycleEnd(el.endValue, el.arguments)
 	}
+
+	if el.onEnd != nil {
+		el.onEnd(el.endValue, el.arguments)
+	}
+
+	return el
 }
