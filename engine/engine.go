@@ -1,6 +1,7 @@
 package engine
 
 import (
+	"log"
 	"math"
 	"math/rand"
 	"time"
@@ -25,6 +26,7 @@ type Engine struct {
 
 	ticker           *time.Ticker
 	tickerLowLatency *time.Ticker
+	tickerVerifyFps  *time.Ticker
 
 	funcListToHighLatency []FuncList
 	funcListToSystem      []FuncList
@@ -38,12 +40,15 @@ type Engine struct {
 	// processamento do browser para outras tarefas
 	slipFrame          int
 	slipFrameTimeAlarm time.Duration
+
+	// Contador de engine sobrecarregada. Não consegue gerar fps configurado.
+	conterOverflow int
 }
 
 func (el *Engine) Init() {
 	// fixme: must be a interval of time
 	el.sleepFrame = 2
-	el.fps = 120
+	el.fps = 80
 	el.fpsLowLatency = 1
 
 	el.kUIdCharList = []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s",
@@ -734,6 +739,7 @@ func (el *Engine) getUId() string {
 func (el *Engine) tickerStart() {
 	el.ticker = time.NewTicker(time.Second / time.Duration(el.fps))
 	el.tickerLowLatency = time.NewTicker(time.Second / time.Duration(el.fpsLowLatency))
+	el.tickerVerifyFps = time.NewTicker(1 * time.Second) //todo: constante ou configurar
 	el.slipFrameTimeAlarm = time.Second / time.Duration(el.fps)
 	// fixme: remover a função desnecessária
 	go func() { el.tickerRunner() }()
@@ -743,6 +749,18 @@ func (el *Engine) tickerRunner() {
 	defer el.tickerStart()
 	for {
 		select {
+		case <-el.tickerVerifyFps.C:
+			if el.conterOverflow >= 3 {
+				el.fps -= el.conterOverflow
+				if el.fps < 10 {
+					el.fps = 10
+				}
+			} else {
+				el.fps += 2
+			}
+			el.conterOverflow = 0
+			log.Printf("fps: %v", el.fps)
+
 		case <-el.tickerLowLatency.C:
 
 			for _, runnerFunc := range el.funcListToHighLatency {
@@ -752,6 +770,8 @@ func (el *Engine) tickerRunner() {
 			}
 
 		case <-el.ticker.C:
+
+			el.ticker.Reset(time.Second / time.Duration(el.fps))
 
 			if el.slipFrame != 0 {
 				el.slipFrame -= 1
@@ -796,6 +816,7 @@ func (el *Engine) tickerRunner() {
 			elapsed := time.Since(start)
 			if elapsed > el.slipFrameTimeAlarm {
 				//fmt.Printf("Esta dando timeout kemper!!\n")
+				el.conterOverflow += 1
 				el.slipFrame = el.sleepFrame
 			}
 		}

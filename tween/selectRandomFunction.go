@@ -6,15 +6,15 @@ var i = -1
 
 func SelectRandom() func(interactionCurrent, interactionTotal, startValue, endValue, delta float64) float64 {
 	var list = []func(interactionCurrent, interactionTotal, startValue, endValue, delta float64) float64{
-		KEaseInOutBounce,
-		KEaseInBack,
-		KEaseInBounce,
-		KEaseInElastic,
-		KEaseInOutBack,
-		KEaseInOutBounce,
-		KEaseOutBack,
-		KEaseOutBounce,
-		KEaseOutElastic,
+		//KEaseInOutBounce,
+		//KEaseInBack,
+		//KEaseInBounce,
+		//KEaseInElastic,
+		//KEaseInOutBack,
+		//KEaseInOutBounce,
+		//KEaseOutBack,
+		//KEaseOutBounce,
+		//KEaseOutElastic,
 
 		KEaseInOutExponential,
 		KEaseInOutQuadratic,
