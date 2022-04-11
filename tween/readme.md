@@ -2,6 +2,8 @@
 
 Webassembly and Golang tween functions example
 
+This example can move 200 divs simultaneously on my Sansung Galaxy A51 phone (a basic cell phone model, with android) and 700 divs on my Mac Book.
+
 Environment variables:
 ```shell
 GOARCH=wasm
@@ -141,8 +143,6 @@ Html code:
 
 Browser screen:
 ![motion 500 divs](./example/motion_500_divs/motion_500_divs.png)
-
-> This example can move 200 divs simultaneously on my Sansung Galaxy A51 phone (a basic cell phone model, with android) and 700 divs on my Mac Book.
 
 Webassembly needs a server to run. The example below is a simple static server that prints the IP address to standard output.
 ```go
