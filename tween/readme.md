@@ -188,6 +188,8 @@ func main() {
 }
 ```
 
+> Samples files: [./example/motion_500_divs](./example/motion_500_divs)
+
 <!-- https://github.com/ai/easings.net/blob/master/src/math/math.pug -->
 <!-- https://easings.net/pt-br -->
 <!-- https://gist.github.com/cjddmut/d789b9eb78216998e95c -->
