@@ -98,7 +98,7 @@ func main() {
 			SetLoops(-1).
 			SetTweenFunc(tween.KLinear).
 			Start()
-		
+	
 	}
 	
 	<-done
