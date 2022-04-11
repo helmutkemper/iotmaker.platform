@@ -1,4 +1,144 @@
+# Example
 
+Environment variables:
+```shell
+GOARCH=wasm
+GOOS=js
+```
+
+Go tool arguments:
+```shell
+-o main.wasm
+```
+
+Code Golang:
+```go
+//go:build js
+// +build js
+
+//
+package main
+
+import (
+	global "github.com/helmutkemper/iotmaker.santa_isabel_theater.globalConfig"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/css"
+	document2 "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/document"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform.webbrowser/factoryBrowserImage"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/mathUtil"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/tween"
+	"log"
+	"strconv"
+	"time"
+)
+
+func main() {
+	
+	done := make(chan struct{}, 0)
+	document := global.Global.Document
+	
+	// Carrega a imagem
+	factoryBrowserImage.NewImage(
+		29,
+		50,
+		map[string]interface{}{
+			"id":  "spacecraft",
+			"src": "./small.png",
+		},
+		true,
+		false,
+	)
+	
+	var err error
+	document.GetElementById(document, "palco")
+	for a := 0; a != 500; a += 1 {
+		
+		id := "div_" + strconv.FormatInt(int64(a), 10)
+		var cssClass = css.Class{}
+		cssClass.SetList("current", "animate")
+		err = document.CreateElement(document, "palco", "div", document2.Property{Property: "id", Value: id}, cssClass)
+		if err != nil {
+			log.Printf("document.CreateElement().error: %v", err.Error())
+		}
+		var e = document.GetElementById(document, id)
+		
+		a := tween.Tween{}
+		a.
+			SetDuration(
+				time.Duration(mathUtil.Int(2000, 5000))*time.Millisecond,
+			).
+			SetValues(
+				mathUtil.Float64FomInt(0, global.Global.Document.GetDocumentWidth()-29),
+				mathUtil.Float64FomInt(0, global.Global.Document.GetDocumentWidth()-29),
+			).
+			SetOnStepFunc(
+				func(x, p float64, ars ...interface{}) {
+					px := strconv.FormatFloat(x, 'E', 10, 32) + "px"
+					document.SetElementStyle(e, "left", px)
+				},
+			).
+			SetLoops(-1).
+			SetTweenFunc(tween.KLinear).
+			Start()
+		
+		b := tween.Tween{}
+		b.
+			SetDuration(
+				time.Duration(mathUtil.Int(2000, 5000))*time.Millisecond,
+			).
+			SetValues(
+				mathUtil.Float64FomInt(0, global.Global.Document.GetDocumentHeight()-50),
+				mathUtil.Float64FomInt(0, global.Global.Document.GetDocumentHeight()-50),
+			).
+			SetOnStepFunc(
+				func(y, p float64, ars ...interface{}) {
+					py := strconv.FormatFloat(y, 'E', 10, 32) + "px"
+					document.SetElementStyle(e, "top", py)
+				},
+			).
+			SetLoops(-1).
+			SetTweenFunc(tween.KLinear).
+			Start()
+		
+	}
+	
+	<-done
+}
+```
+
+Html code:
+```html
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <style>
+      body {
+          margin: 0 !important;
+          padding: 0 !important;
+      }
+
+      .animate {
+        width: 29px;
+        height: 50px;
+        position: absolute;
+        background-image: url("./small.png");
+      }
+  </style>
+  <script src="wasm_exec.js"></script>
+  <script>
+    const go = new Go();
+    WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then((result) => {
+      go.run(result.instance);
+    });
+  </script>
+</head>
+<body>
+  <div id="palco"></div>
+</body>
+</html>
+```
+
+Browser screen:
+![motion 500 divs](./example/motion_500_divs/motion_500_divs.png)
 
 <!-- https://github.com/ai/easings.net/blob/master/src/math/math.pug -->
 <!-- https://easings.net/pt-br -->
