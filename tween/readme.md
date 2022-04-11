@@ -1,0 +1,11 @@
+```js
+easeInBack
+easeOutBack:
+easeInOutBack:
+easeInElastic:
+easeOutElastic:
+easeInOutElastic:
+easeInBounce:
+easeOutBounce:
+easeInOutBounce:
+```

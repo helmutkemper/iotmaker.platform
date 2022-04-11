@@ -46,7 +46,7 @@ func SelectRandom() func(interactionCurrent, interactionTotal, startValue, delta
 		KEaseOutQuartic,
 		KEaseOutQuintic,
 		KEaseOutSine,
-		KLinear,
+		//KLinear, //fixme: descomentar
 		KEaseInCircular,
 		KEaseInCircularOutCubic,
 		KEaseInCircularOutExponential,

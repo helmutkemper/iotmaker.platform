@@ -13,7 +13,7 @@ type Tween struct {
 	arguments          []interface{}
 	startTime          time.Time
 	duration           time.Duration
-	tweenFunc          func(currentTime, duration, startValue, changeInValue float64) float64
+	tweenFunc          func(currentTime, duration, startValue, endValue, changeInValue float64) float64
 	interaction        func(value, percentToComplete float64, arguments ...interface{})
 	onCycleStart       func(value float64, arguments ...interface{})
 	onCycleEnd         func(value float64, arguments ...interface{})
@@ -75,7 +75,7 @@ func (el *Tween) SetEngine(value engine.IEngine) (object *Tween) {
 //
 //   Saída:
 //     object: referência para o objeto Tween corrente.
-func (el *Tween) SetTweenFunc(value func(currentTime, duration, startValue, changeInValue float64) float64) (object *Tween) {
+func (el *Tween) SetTweenFunc(value func(currentTime, duration, startValue, endValue, changeInValue float64) float64) (object *Tween) {
 	el.tweenFunc = value
 	return el
 }
@@ -344,7 +344,8 @@ func (el *Tween) Start() (object *Tween) {
 	}
 
 	if el.tweenFunc == nil {
-		el.tweenFunc = KLinear
+		//fixme:descomentar
+		//el.tweenFunc = KLinear
 	}
 
 	el.startTime = time.Now()
@@ -377,7 +378,7 @@ func (el *Tween) tickerRunnerPrepare(startValue, endValue float64) {
 
 func (el *Tween) tickerRunnerRun() {
 	elapsed := time.Since(el.startTime)
-	value := el.tweenFunc(elapsed.Seconds(), el.duration.Seconds(), el.loopStartValue, el.loopEndValue-el.loopStartValue)
+	value := el.tweenFunc(elapsed.Seconds(), el.duration.Seconds(), el.loopStartValue, el.loopEndValue, el.loopEndValue-el.loopStartValue)
 	percent := elapsed.Seconds() / el.duration.Seconds()
 
 	if el.interaction != nil {

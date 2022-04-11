@@ -43,7 +43,7 @@ type Engine struct {
 func (el *Engine) Init() {
 	// fixme: must be a interval of time
 	el.sleepFrame = 2
-	el.fps = 60
+	el.fps = 120
 	el.fpsLowLatency = 1
 
 	el.kUIdCharList = []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s",
