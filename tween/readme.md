@@ -140,6 +140,8 @@ Html code:
 Browser screen:
 ![motion 500 divs](./example/motion_500_divs/motion_500_divs.png)
 
+> This example can move 200 divs simultaneously on my Sansung Galaxy A51 phone (a basic cell phone model, with android) and 700 divs on my Mac Book.
+
 <!-- https://github.com/ai/easings.net/blob/master/src/math/math.pug -->
 <!-- https://easings.net/pt-br -->
 <!-- https://gist.github.com/cjddmut/d789b9eb78216998e95c -->
