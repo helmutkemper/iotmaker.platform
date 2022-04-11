@@ -144,7 +144,7 @@ Browser screen:
 
 > This example can move 200 divs simultaneously on my Sansung Galaxy A51 phone (a basic cell phone model, with android) and 700 divs on my Mac Book.
 
-Webassembly asks for a server to run. The example below is a simple static server that prints the IP address to standard output.
+Webassembly needs a server to run. The example below is a simple static server that prints the IP address to standard output.
 ```go
 package main
 
