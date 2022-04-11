@@ -1,7 +1,7 @@
 package tween
 
 // en: cubic easing in/out - acceleration until halfway, then deceleration
-var KEaseInCubicOutQuintic = func(interactionCurrent, interactionTotal, startValue, delta float64) float64 {
+var KEaseInCubicOutQuintic = func(interactionCurrent, interactionTotal, startValue, endValue, delta float64) float64 {
 	interactionCurrent = interactionCurrent / interactionTotal * 2
 	if interactionCurrent < 1 {
 		return delta/2*interactionCurrent*interactionCurrent*interactionCurrent + startValue

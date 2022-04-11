@@ -1,7 +1,7 @@
 package tween
 
 // en: quartic easing in/out - acceleration until halfway, then deceleration
-var KEaseInQuadraticOutQuartic = func(interactionCurrent, interactionTotal, startValue, delta float64) float64 {
+var KEaseInQuadraticOutQuartic = func(interactionCurrent, interactionTotal, startValue, endValue, delta float64) float64 {
 	interactionCurrent = interactionCurrent / interactionTotal * 2
 	if interactionCurrent < 1 {
 		return delta/2*interactionCurrent*interactionCurrent + startValue

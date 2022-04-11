@@ -4,8 +4,18 @@ import "github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/mathUtil"
 
 var i = -1
 
-func SelectRandom() func(interactionCurrent, interactionTotal, startValue, delta float64) float64 {
-	var list = []func(interactionCurrent, interactionTotal, startValue, delta float64) float64{
+func SelectRandom() func(interactionCurrent, interactionTotal, startValue, endValue, delta float64) float64 {
+	var list = []func(interactionCurrent, interactionTotal, startValue, endValue, delta float64) float64{
+		KEaseInOutBounce,
+		KEaseInBack,
+		KEaseInBounce,
+		KEaseInElastic,
+		KEaseInOutBack,
+		KEaseInOutBounce,
+		KEaseOutBack,
+		KEaseOutBounce,
+		KEaseOutElastic,
+
 		KEaseInOutExponential,
 		KEaseInOutQuadratic,
 		KEaseInOutQuartic,
@@ -46,7 +56,7 @@ func SelectRandom() func(interactionCurrent, interactionTotal, startValue, delta
 		KEaseOutQuartic,
 		KEaseOutQuintic,
 		KEaseOutSine,
-		//KLinear, //fixme: descomentar
+		KLinear,
 		KEaseInCircular,
 		KEaseInCircularOutCubic,
 		KEaseInCircularOutExponential,
