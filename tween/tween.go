@@ -153,6 +153,51 @@ func (el *Tween) SetDoNotReverseMotion(value bool) (object *Tween) {
 	return el
 }
 
+// SetLoops
+//
+// Português:
+//
+//  Define a quantidade de laços antes do fim da função.
+//
+//   Notas:
+//     * A cada nova interação do laço ocorrerá uma inversão de movimento, a não ser que seja usada a
+//       função SetDoNotReverseMotion(true);
+//     * Para laços infinitos, defina o valor como sendo -1;
+//     * Em caso de laço, a ordem das funções de eventos são: SetOnStartFunc(), SetOnCycleStartFunc(),
+//       SetOnCycleEndFunc(), SetOnEndFunc() e SetOnInvertFunc()
+//
+//
+//2022/04/10 22:38:39 start function
+//wasm_exec.js:51 2022/04/10 22:38:39 start ciclo
+//wasm_exec.js:51 2022/04/10 22:38:42 end ciclo
+//wasm_exec.js:51 2022/04/10 22:38:42 end function
+//wasm_exec.js:51 2022/04/10 22:38:42 inverte
+//wasm_exec.js:51 2022/04/10 22:38:42 start ciclo
+//wasm_exec.js:51 2022/04/10 22:38:44 end ciclo
+//wasm_exec.js:51 2022/04/10 22:38:44 end function
+//wasm_exec.js:51 2022/04/10 22:38:44 inverte
+//wasm_exec.js:51 2022/04/10 22:38:44 start ciclo
+//wasm_exec.js:51 2022/04/10 22:38:47 end ciclo
+//wasm_exec.js:51 2022/04/10 22:38:47 end function
+//wasm_exec.js:51 2022/04/10 22:38:47 inverte
+//wasm_exec.js:51 2022/04/10 22:38:47 start ciclo
+//wasm_exec.js:51 2022/04/10 22:38:49 end ciclo
+//wasm_exec.js:51 2022/04/10 22:38:49 end function
+//wasm_exec.js:51 2022/04/10 22:38:49 inverte
+//wasm_exec.js:51 2022/04/10 22:38:49 start ciclo
+//wasm_exec.js:51 2022/04/10 22:38:51 end ciclo
+//wasm_exec.js:51 2022/04/10 22:38:51 end function
+//wasm_exec.js:51 2022/04/10 22:38:51 inverte
+//wasm_exec.js:51 2022/04/10 22:38:51 start ciclo
+//wasm_exec.js:51 2022/04/10 22:38:54 end ciclo
+//wasm_exec.js:51 2022/04/10 22:38:54 end function
+//wasm_exec.js:51 2022/04/10 22:38:54 inverte
+//wasm_exec.js:51 2022/04/10 22:38:54 start ciclo
+//wasm_exec.js:51 2022/04/10 22:38:56 end ciclo
+//wasm_exec.js:51 2022/04/10 22:38:56 end function
+//wasm_exec.js:51 2022/04/10 22:38:56 inverte
+//
+//
 func (el *Tween) SetLoops(value int) (object *Tween) {
 	el.repeat = value
 	return el
