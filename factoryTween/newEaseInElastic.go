@@ -5,9 +5,9 @@ import (
 	"time"
 )
 
-// NewEaseOutQuadratic
+// NewEaseInElastic
 //
-// English: Ease tween out quadratic
+// English: Ease tween in elastic
 //     duration: animation duration
 //     startValue: initial value
 //     endValue: final value
@@ -16,7 +16,7 @@ import (
 //     arguments: array of arguments passed for functions onStart, onEnd, onInvert and onStep.
 //                Example: ..., [arguments] x, y) will be onStartFunc(value, args...) { args[0]: x; args[1]: y}
 //
-// Português: Facilitador de interpolação out quadratic
+// Português: Facilitador de interpolação in elastic
 //     duration: duração da animação
 //     startValue: valor inicial
 //     endValue: valor final
@@ -24,7 +24,7 @@ import (
 //     loop: número de interações ou -1 para um número infinito de interações
 //     arguments: array de argumentos passados para as funções onStart, onEnd, onInvert e onStep.
 //                Exemplo: ..., [argumentos] x, y) será onStartFunc(value, args...) { args[0]: x; args[1]: y}
-func NewEaseOutQuadratic(
+func NewEaseInElastic(
 	duration time.Duration,
 	startValue,
 	endValue float64,
@@ -39,7 +39,7 @@ func NewEaseOutQuadratic(
 		SetOnStepFunc(onStepFunc).
 		SetLoops(loop).
 		SetArgumentsFunc(arguments).
-		SetTweenFunc(tween.KEaseOutQuadratic).
+		SetTweenFunc(tween.KEaseInElastic).
 		Start()
 
 	return t

@@ -1,8 +1,10 @@
 package tween
 
+import "math"
+
 // en: quintic easing out - decelerating to zero velocity
-var KEaseOutQuintic = func(interactionCurrent, interactionTotal, startValue, endValue, delta float64) float64 {
+var KEaseOutQuintic = func(interactionCurrent, interactionTotal, currentPercentage, startValue, endValue, delta float64) float64 {
 	interactionCurrent /= interactionTotal
 	interactionCurrent--
-	return delta*(interactionCurrent*interactionCurrent*interactionCurrent*interactionCurrent*interactionCurrent+1) + startValue
+	return delta*(math.Pow(interactionCurrent, 5.0)+1) + startValue
 }

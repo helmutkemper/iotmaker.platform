@@ -8,12 +8,12 @@ import (
 
 type Tween struct {
 	engine             engine.IEngine
-	StartValue         float64
+	startValue         float64
 	endValue           float64
 	arguments          []interface{}
 	startTime          time.Time
 	duration           time.Duration
-	tweenFunc          func(currentTime, duration, startValue, endValue, changeInValue float64) float64
+	tweenFunc          func(currentTime, duration, currentPercentage, startValue, endValue, changeInValue float64) float64
 	interaction        func(value, percentToComplete float64, arguments ...interface{})
 	onCycleStart       func(value float64, arguments ...interface{})
 	onCycleEnd         func(value float64, arguments ...interface{})
@@ -62,9 +62,18 @@ func (el *Tween) SetEngine(value engine.IEngine) (object *Tween) {
 //
 //   Input:
 //     value: tween math function.
+//       currentTime:   current time, int64(time.Duration);
+//       duration:      total time, int64(time.Duration);
+//       startValue:    initial value;
+//       endValue:      final value;
+//       changeInValue: startValue - endValue
 //
 //   Output:
 //     object: reference to the current Tween object.
+//
+//   Note:
+//     * To create a new function, base it on the linear function, where:
+//         return changeInValue * currentTime / duration + startValue
 //
 // Português:
 //
@@ -72,10 +81,19 @@ func (el *Tween) SetEngine(value engine.IEngine) (object *Tween) {
 //
 //   Entrada:
 //     value: função matemática tween.
+//       currentTime:   tempo atual, int64(time.Duration);
+//       duration:      tempo total, int64(time.Duration);
+//       startValue:    valor inicial;
+//       endValue:      valor final;
+//       changeInValue: startValue - endValue
 //
 //   Saída:
 //     object: referência para o objeto Tween corrente.
-func (el *Tween) SetTweenFunc(value func(currentTime, duration, startValue, endValue, changeInValue float64) float64) (object *Tween) {
+//
+//   Nota:
+//     * Para criar uma nova função, tenha como base a função linear, onde:
+//         return changeInValue * currentTime / duration + startValue
+func (el *Tween) SetTweenFunc(value func(currentTime, duration, currentPercentage, startValue, endValue, changeInValue float64) float64) (object *Tween) {
 	el.tweenFunc = value
 	return el
 }
@@ -104,7 +122,7 @@ func (el *Tween) SetTweenFunc(value func(currentTime, duration, startValue, endV
 //   Saída:
 //     object: referência para o objeto Tween corrente.
 func (el *Tween) SetValues(start, end float64) (object *Tween) {
-	el.StartValue = start
+	el.startValue = start
 	el.endValue = end
 	return el
 }
@@ -139,21 +157,58 @@ func (el *Tween) SetDuration(value time.Duration) (object *Tween) {
 //
 // English:
 //
+//  Defines the option of reversing values at the end of each cycle.
+//
+//   Input:
+//     value: true to not revert the values at the end of each cycle.
+//
+//   Output:
+//     object: reference to the current Tween object.
+//
+//   Notas:
+//     * In case of loop, the order of event functions are: SetOnStartFunc(), SetOnCycleStartFunc(),
+//       SetOnCycleEndFunc(), SetOnInvertFunc(), SetOnCycleStartFunc(), SetOnCycleEndFunc(),
+//       SetOnInvertFunc() ...
+//     * SetOnEndFunc() will only be called at the end of all interactions;
+//     * This function prevents inversion of values, but the SetOnInvertFunc() event function
+//       continues to be called.
+//
 // Português:
 //
-//  Define a opção de reversão do movimento.
+//  Define a opção de reversão de valores ao final de cada ciclo.
 //
 //   Entrada:
-//     value: true para não reverter o movimento.
+//     value: true para não reverter os valores ao final de cada ciclo.
 //
 //   Saída:
 //     object: referência para o objeto Tween corrente.
+//
+//   Notas:
+//     * Em caso de laço, a ordem das funções de eventos são: SetOnStartFunc(), SetOnCycleStartFunc(),
+//       SetOnCycleEndFunc(), SetOnInvertFunc(), SetOnCycleStartFunc(), SetOnCycleEndFunc(),
+//       SetOnInvertFunc() ...
+//     * SetOnEndFunc() só será chamada ao final de todas as interações.
+//     * Esta função impede a inversão de valores, mas, a função de evento SetOnInvertFunc() continua
+//       sendo chamada.
 func (el *Tween) SetDoNotReverseMotion(value bool) (object *Tween) {
 	el.doNotReverseMotion = value
 	return el
 }
 
 // SetLoops
+//
+// English:
+//
+//  Defines the number of loops before the end of the function.
+//
+//   Notes:
+//     * At each new iteration of the loop, a movement inversion will occur, unless the
+//       SetDoNotReverseMotion(true) function is used;
+//     * For infinite loops, set the value to -1;
+//     * In case of loop, the order of event functions are: SetOnStartFunc(), SetOnCycleStartFunc(),
+//       SetOnCycleEndFunc(), SetOnInvertFunc(), SetOnCycleStartFunc(), SetOnCycleEndFunc(),
+//       SetOnInvertFunc() ...
+//     * SetOnEndFunc() will only be called at the end of all interactions.
 //
 // Português:
 //
@@ -164,40 +219,9 @@ func (el *Tween) SetDoNotReverseMotion(value bool) (object *Tween) {
 //       função SetDoNotReverseMotion(true);
 //     * Para laços infinitos, defina o valor como sendo -1;
 //     * Em caso de laço, a ordem das funções de eventos são: SetOnStartFunc(), SetOnCycleStartFunc(),
-//       SetOnCycleEndFunc(), SetOnEndFunc() e SetOnInvertFunc()
-//
-//
-//2022/04/10 22:38:39 start function
-//wasm_exec.js:51 2022/04/10 22:38:39 start ciclo
-//wasm_exec.js:51 2022/04/10 22:38:42 end ciclo
-//wasm_exec.js:51 2022/04/10 22:38:42 end function
-//wasm_exec.js:51 2022/04/10 22:38:42 inverte
-//wasm_exec.js:51 2022/04/10 22:38:42 start ciclo
-//wasm_exec.js:51 2022/04/10 22:38:44 end ciclo
-//wasm_exec.js:51 2022/04/10 22:38:44 end function
-//wasm_exec.js:51 2022/04/10 22:38:44 inverte
-//wasm_exec.js:51 2022/04/10 22:38:44 start ciclo
-//wasm_exec.js:51 2022/04/10 22:38:47 end ciclo
-//wasm_exec.js:51 2022/04/10 22:38:47 end function
-//wasm_exec.js:51 2022/04/10 22:38:47 inverte
-//wasm_exec.js:51 2022/04/10 22:38:47 start ciclo
-//wasm_exec.js:51 2022/04/10 22:38:49 end ciclo
-//wasm_exec.js:51 2022/04/10 22:38:49 end function
-//wasm_exec.js:51 2022/04/10 22:38:49 inverte
-//wasm_exec.js:51 2022/04/10 22:38:49 start ciclo
-//wasm_exec.js:51 2022/04/10 22:38:51 end ciclo
-//wasm_exec.js:51 2022/04/10 22:38:51 end function
-//wasm_exec.js:51 2022/04/10 22:38:51 inverte
-//wasm_exec.js:51 2022/04/10 22:38:51 start ciclo
-//wasm_exec.js:51 2022/04/10 22:38:54 end ciclo
-//wasm_exec.js:51 2022/04/10 22:38:54 end function
-//wasm_exec.js:51 2022/04/10 22:38:54 inverte
-//wasm_exec.js:51 2022/04/10 22:38:54 start ciclo
-//wasm_exec.js:51 2022/04/10 22:38:56 end ciclo
-//wasm_exec.js:51 2022/04/10 22:38:56 end function
-//wasm_exec.js:51 2022/04/10 22:38:56 inverte
-//
-//
+//       SetOnCycleEndFunc(), SetOnInvertFunc(), SetOnCycleStartFunc(), SetOnCycleEndFunc(),
+//       SetOnInvertFunc() ...
+//     * SetOnEndFunc() só será chamada ao final de todas as interações.
 func (el *Tween) SetLoops(value int) (object *Tween) {
 	el.repeat = value
 	return el
@@ -367,6 +391,38 @@ func (el *Tween) SetOnInvertFunc(function func(value float64, arguments ...inter
 	return el
 }
 
+// SetArgumentsFunc
+//
+// English:
+//
+//  Determines the arguments passed to event functions.
+//
+//   Input:
+//     arguments: list of interfaces{} passed to all event functions when they are invoked.
+//
+//   Output:
+//     object: reference to the current Tween object.
+//
+//   Note:
+//     * If you need complex functions, remember to use pointers to data in the arguments.
+//
+// Português:
+//
+//  Determina os argumentos passados para as funções de eventos.
+//
+//   Entrada:
+//     arguments: lista de interfaces{} passadas para todas as funções de eventos quando elas são invocadas.
+//
+//   Saída:
+//     object: referência para o objeto Tween corrente.
+//
+//   Nota:
+//     * Caso necessite de funções complexas, lembre-se de usar ponteiros para dados nos argumentos.
+func (el *Tween) SetArgumentsFunc(arguments ...interface{}) (object *Tween) {
+	el.arguments = arguments
+	return el
+}
+
 // Start
 //
 // English:
@@ -389,8 +445,7 @@ func (el *Tween) Start() (object *Tween) {
 	}
 
 	if el.tweenFunc == nil {
-		//fixme:descomentar
-		//el.tweenFunc = KLinear
+		el.tweenFunc = KLinear
 	}
 
 	el.startTime = time.Now()
@@ -401,17 +456,17 @@ func (el *Tween) Start() (object *Tween) {
 	}
 
 	if el.onStart != nil {
-		el.onStart(el.StartValue, el.arguments)
+		el.onStart(el.startValue, el.arguments)
 	}
 
-	el.tickerRunnerPrepare(el.StartValue, el.endValue)
+	el.tickerRunnerPrepare(el.startValue, el.endValue)
 
 	return el
 }
 
 func (el *Tween) tickerRunnerPrepare(startValue, endValue float64) {
 	if el.onCycleStart != nil {
-		el.onCycleStart(el.StartValue, el.arguments)
+		el.onCycleStart(el.startValue, el.arguments)
 	}
 
 	el.loopStartValue = startValue
@@ -423,8 +478,9 @@ func (el *Tween) tickerRunnerPrepare(startValue, endValue float64) {
 
 func (el *Tween) tickerRunnerRun() {
 	elapsed := time.Since(el.startTime)
-	value := el.tweenFunc(elapsed.Seconds(), el.duration.Seconds(), el.loopStartValue, el.loopEndValue, el.loopEndValue-el.loopStartValue)
 	percent := elapsed.Seconds() / el.duration.Seconds()
+	// fixme: passar percent para dentro da função vai impedir de parcent ser calculado mais de uma vez
+	value := el.tweenFunc(elapsed.Seconds(), el.duration.Seconds(), percent, el.loopStartValue, el.loopEndValue, el.loopEndValue-el.loopStartValue)
 
 	if el.interaction != nil {
 		el.interaction(value, percent, el.arguments)
@@ -434,26 +490,24 @@ func (el *Tween) tickerRunnerRun() {
 
 		el.Stop()
 
-		if el.repeat == 0 {
-			if el.onEnd != nil {
-				el.onEnd(value)
-			}
+		if el.repeat == 0 && el.onEnd != nil {
+			el.onEnd(value, el.arguments)
 		}
 
 		if el.repeat != 0 {
 			el.startTime = time.Now()
 
 			if el.onInvert != nil {
-				el.onInvert(value)
+				el.onInvert(value, el.arguments)
 			}
 
 			if el.doNotReverseMotion == true {
-				el.tickerRunnerPrepare(el.StartValue, el.endValue)
+				el.tickerRunnerPrepare(el.startValue, el.endValue)
 			} else {
 				if el.invert == true {
-					el.tickerRunnerPrepare(el.endValue, el.StartValue)
+					el.tickerRunnerPrepare(el.endValue, el.startValue)
 				} else {
-					el.tickerRunnerPrepare(el.StartValue, el.endValue)
+					el.tickerRunnerPrepare(el.startValue, el.endValue)
 				}
 				el.invert = !el.invert
 			}
@@ -508,7 +562,7 @@ func (el *Tween) Stop() (object *Tween) {
 		el.onCycleEnd(el.endValue, el.arguments)
 	}
 
-	if el.onEnd != nil {
+	if el.onEnd != nil && el.repeat == 0 {
 		el.onEnd(el.endValue, el.arguments)
 	}
 

@@ -3,6 +3,6 @@ package tween
 import "math"
 
 // en: sinusoidal easing out - decelerating to zero velocity
-var KEaseOutSine = func(interactionCurrent, interactionTotal, startValue, endValue, delta float64) float64 {
-	return delta*math.Sin(interactionCurrent/interactionTotal*(math.Pi/2)) + startValue
+var KEaseOutSine = func(interactionCurrent, interactionTotal, currentPercentage, startValue, endValue, delta float64) float64 {
+	return delta*math.Sin(currentPercentage*1.570796) + startValue
 }

@@ -2,7 +2,7 @@ package tween
 
 import "math"
 
-var KEaseInOutElastic = func(interactionCurrent, interactionTotal, startValue, endValue, delta float64) float64 {
+var KEaseInOutElastic = func(interactionCurrent, interactionTotal, currentPercentage, startValue, endValue, delta float64) float64 {
 
 	value := interactionCurrent / interactionTotal
 

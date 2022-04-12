@@ -2,13 +2,11 @@ package tween
 
 import "math"
 
-var KEaseInOutBounce = func(interactionCurrent, interactionTotal, startValue, endValue, delta float64) float64 {
-	value := interactionCurrent / interactionTotal
-
-	if value < 0.5 {
-		return (1.0-bounceOut(1-2*value))/2*delta + startValue
+var KEaseInOutBounce = func(interactionCurrent, interactionTotal, currentPercentage, startValue, endValue, delta float64) float64 {
+	if currentPercentage < 0.5 {
+		return (1.0-bounceOut(1-2*currentPercentage))/2*delta + startValue
 	} else {
-		return (1.0+bounceOut(2*value-1))/2*delta + startValue
+		return (1.0+bounceOut(2*currentPercentage-1))/2*delta + startValue
 	}
 }
 
