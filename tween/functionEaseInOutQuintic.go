@@ -8,6 +8,6 @@ var KEaseInOutQuintic = func(interactionCurrent, interactionTotal, currentPercen
 	if currentPercentage < 1 {
 		return delta/2*math.Pow(currentPercentage, 5.0) + startValue
 	}
-	interactionCurrent -= 2
+	currentPercentage -= 2
 	return delta/2*(math.Pow(currentPercentage, 5.0)+2) + startValue
 }

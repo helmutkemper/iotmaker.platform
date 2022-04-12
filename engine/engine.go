@@ -1,6 +1,7 @@
 package engine
 
 import (
+	"log"
 	"math"
 	"math/rand"
 	"time"
@@ -47,7 +48,7 @@ type Engine struct {
 func (el *Engine) Init() {
 	// fixme: must be a interval of time
 	el.sleepFrame = 2
-	el.fps = 80
+	el.fps = 120
 	el.fpsLowLatency = 1
 
 	el.kUIdCharList = []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s",
@@ -756,9 +757,12 @@ func (el *Engine) tickerRunner() {
 				}
 			} else {
 				el.fps += 2
+				if el.fps > 120 {
+					el.fps = 120
+				}
 			}
 			el.conterOverflow = 0
-			//log.Printf("fps: %v", el.fps)
+			log.Printf("fps: %v", el.fps)
 
 		case <-el.tickerLowLatency.C:
 

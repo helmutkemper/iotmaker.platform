@@ -479,7 +479,6 @@ func (el *Tween) tickerRunnerPrepare(startValue, endValue float64) {
 func (el *Tween) tickerRunnerRun() {
 	elapsed := time.Since(el.startTime)
 	percent := elapsed.Seconds() / el.duration.Seconds()
-	// fixme: passar percent para dentro da função vai impedir de parcent ser calculado mais de uma vez
 	value := el.tweenFunc(elapsed.Seconds(), el.duration.Seconds(), percent, el.loopStartValue, el.loopEndValue, el.loopEndValue-el.loopStartValue)
 
 	if el.interaction != nil {
