@@ -1,7 +1,6 @@
 package engine
 
 import (
-	"log"
 	"math"
 	"math/rand"
 	"time"
@@ -762,7 +761,7 @@ func (el *Engine) tickerRunner() {
 				}
 			}
 			el.conterOverflow = 0
-			log.Printf("fps: %v", el.fps)
+			//log.Printf("fps: %v", el.fps)
 
 		case <-el.tickerLowLatency.C:
 
