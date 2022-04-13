@@ -1,8 +1,8 @@
 package tween
 
 import (
-	global "github.com/helmutkemper/iotmaker.santa_isabel_theater.globalConfig"
 	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/engine"
+	"github.com/helmutkemper/iotmaker.santa_isabel_theater.platform/globalEngine"
 	"time"
 )
 
@@ -441,7 +441,7 @@ func (el *Tween) SetArgumentsFunc(arguments ...interface{}) (object *Tween) {
 func (el *Tween) Start() (object *Tween) {
 
 	if el.engine == nil {
-		el.engine = global.Global.Engine
+		el.engine = globalEngine.Engine
 	}
 
 	if el.tweenFunc == nil {

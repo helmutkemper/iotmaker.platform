@@ -751,12 +751,12 @@ func (el *Engine) tickerRunner() {
 		case <-el.tickerVerifyFps.C:
 			if el.conterOverflow >= 3 {
 				el.fps -= el.conterOverflow
-				if el.fps < 10 {
+				if el.fps < 10 { //todo: constante ou configurar
 					el.fps = 10
 				}
 			} else {
 				el.fps += 2
-				if el.fps > 120 {
+				if el.fps > 120 { //todo: constante ou configurar
 					el.fps = 120
 				}
 			}
