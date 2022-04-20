@@ -38,7 +38,7 @@ func NewSelectRandom(
 		SetValues(startValue, endValue).
 		SetOnStepFunc(onStepFunc).
 		SetLoops(loop).
-		SetArgumentsFunc(arguments).
+		SetArgumentsFunc(arguments...).
 		SetTweenFunc(tween.SelectRandom()).
 		Start()
 
